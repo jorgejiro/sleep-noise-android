@@ -28,6 +28,6 @@ Fase 0: análisis, dirección visual y especificación de la 1.0 cerrados. Sin c
 - [Icono de la app](docs/design/icono/)
 - [Textos de la ficha de Google Play](docs/play-store-publication-texts.md)
 - [Notas de la versión para Play](docs/play-release-notes.md)
-- [Política de privacidad](docs/privacy-policy/sleep-noise.html)
+- [Política de privacidad](docs/privacy-policy/sleep-noise.html) — publicada en <https://www.jorgejiro.es/sleep-noise.html>
 - [Generación de las capturas de la ficha](docs/store-assets/generar-capturas/README.md)
 - [Changelog](CHANGELOG.md)

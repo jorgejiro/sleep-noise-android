@@ -171,6 +171,7 @@
 <a href="#13-preparacion-de-la-publicacion-en-play">13. Preparación de la publicación en Play</a>
 <a href="#14-riesgos">14. Riesgos</a>
 <a href="#15-decisiones-pendientes-de-confirmar">15. Decisiones pendientes de confirmar</a>
+<a href="#15-bis-lo-que-sigue-abierto-despues-de-enviar-la-1-0">15 bis. Lo que sigue abierto después de enviar la 1.0</a>
 <a href="#16-definicion-de-listo-para-publicar">16. Definición de «listo para publicar»</a></nav>
   <main><!-- titulo al masthead -->
 <blockquote>Documento vinculante para la primera versión publicable. Lo que no está aquí, no entra en la 1.0. Complementa a <code>docs/analisis-tecnico.md</code> (el <em>cómo</em> técnico) y a <code>CLAUDE.md</code> (las reglas de trabajo). Fecha: 2026-08-24 · Estado: <strong>pendiente de una decisión del autor</strong> (§13) · Sin código todavía.</blockquote>
@@ -350,7 +351,9 @@
 <p><strong><span class="rid">RF-12</span> · Persistencia.</strong> Sonido, volumen, último temporizador usado, «reproducir al abrir» e idioma sobreviven a cerrar la app, matar el proceso y reiniciar el teléfono.</p>
 <p><strong><span class="rid">RF-19</span> · Reanudación tras una interrupción.</strong> <em>Dado</em> que el sistema pausó el ruido —una llamada, otra app— <em>cuando</em> la interrupción termina, <em>entonces</em> vuelve a sonar sin intervención.</p>
 <p>Lo que <strong>no</strong> hay es reanudación después de que el usuario pause: ahí la sesión se acaba y no queda sesión de medios que reanudar. Es la consecuencia deliberada de <span class="rid">RF-05</span>, y el camino de vuelta es abrir la app, que es de todas formas lo que alguien hace cuando quiere volver a dormirse.</p>
-<p><strong><span class="rid">RF-20</span> · Botones de auriculares.</strong> Play/pausa responde al botón central de los auriculares. Las pistas siguiente/anterior no hacen nada (no hay lista).</p>
+<p><strong><span class="rid">RF-20</span> · Botones de auriculares y del sistema.</strong> Play/pausa responde al botón central de los auriculares.</p>
+<p>La sesión <strong>anuncia solo lo que la app sabe hacer</strong>: pausar, reproducir y parar. Nada de saltar de pista, rebobinar, avanzar, buscar una posición, cambiar la velocidad, aleatorio o repetición. Por defecto una sesión de medios anuncia las veinte, y Android dibuja botones a partir de ellas: el resultado eran unas flechas en la notificación que no hacían absolutamente nada al pulsarlas.</p>
+<p><strong>Límite conocido:</strong> los huecos de esas flechas los dibuja la plantilla del sistema, no la app. Dejar de anunciar las acciones las deja inertes y atenuadas, pero no las borra de la pantalla. Para que desaparezcan habría que ocupar su sitio con acciones propias, que es una decisión de producto tomada en contra: la notificación se queda mínima.</p>
 <h3 id="5-4-ajustes-y-meta">5.4 Ajustes y meta</h3>
 <p><strong><span class="rid">RF-13</span> · Reproducir al abrir.</strong> Interruptor, activado por defecto. Desactivado, la app abre en pausa.</p>
 <p><strong><span class="rid">RF-14</span> · Idioma.</strong> Tres opciones: Automático (sistema), English, Español. El cambio se aplica al instante sin reiniciar la app.</p>
@@ -460,8 +463,8 @@
 <tr><td><strong><span class="rid">H5</span></strong> ✅</td><td>Persistencia y arranque</td><td>DataStore con las siete claves, arranque automático (<span class="rid">RF-01</span>) con sus cuatro casos</td><td><strong>Hecho.</strong> Cambiar de sonido, cerrar la app y reabrirla devuelve el sonido elegido y arranca solo</td></tr>
 <tr><td><strong><span class="rid">H6</span></strong> ✅</td><td>Temporizador</td><td>Hoja P2, cuenta atrás, fade out, +15 min, cancelar, congelar al pausar</td><td><strong>Hecho.</strong> Presets 15/30/45/60/90/120, la cuenta atrás aparece en la fila, y el congelado al pausar y el fade final están cubiertos por <code>SleepTimerTest</code> con reloj virtual</td></tr>
 <tr><td><strong><span class="rid">H7</span></strong> ✅</td><td>Ajustes y novedades</td><td>P3 y P4 completas, changelog con su catálogo, feedback por correo, selector de idioma</td><td><strong>Hecho.</strong> Cambio a español desde Ajustes: toda la app, incluida la fecha del changelog («24 de agosto de 2026»)</td></tr>
-<tr><td><strong><span class="rid">H8</span></strong> 🟨</td><td>Pulido</td><td>R8 y reglas de proguard, <strong>copiar los assets del icono</strong> a <code>res/</code> y rasterizar el PNG de Play, edge-to-edge, TalkBack completo, revisión de contrastes, splash</td><td><strong>Parcial.</strong> R8 en verde: el APK minificado se instala y suena, sin nada que R8 se llevara. Objetivos táctiles medidos, todos ≥ 48 dp. Falta el recorrido con TalkBack, el icono en un dispositivo real y la sesión de resistencia de 8 h</td></tr>
-<tr><td><strong><span class="rid">H9</span></strong></td><td>Publicación</td><td>Firma, pipeline de capturas (6 escenas × 2 idiomas × 3 formatos), publicar la política de privacidad, rellenar la ficha con los textos ya escritos, declaración de servicio en primer plano, test interno</td><td>§13 completo, <code>revisar.py</code> en verde y la release aceptada en Play Console</td></tr>
+<tr><td><strong><span class="rid">H8</span></strong> 🟨</td><td>Pulido</td><td>R8 y reglas de proguard, <strong>copiar los assets del icono</strong> a <code>res/</code> y rasterizar el PNG de Play, edge-to-edge, TalkBack completo, revisión de contrastes, splash</td><td><strong>Parcial.</strong> R8 en verde: el APK minificado se instala y suena. Objetivos táctiles medidos, todos ≥ 48 dp. Icono visto en dos dispositivos reales. <strong>Siguen faltando dos pruebas que necesitan tiempo real y una persona: el recorrido completo con TalkBack y la sesión de resistencia de 8 h con el build de release</strong></td></tr>
+<tr><td><strong><span class="rid">H9</span></strong> ✅</td><td>Publicación</td><td>Firma, pipeline de capturas (7 escenas × 2 idiomas × 3 formatos), publicar la política de privacidad, rellenar la ficha con los textos ya escritos, declaración de servicio en primer plano, test interno</td><td><strong>Hecho el 2026-08-24.</strong> Clave de subida creada, AAB firmado de 5,84 MB, 42 capturas con <code>revisar.py</code> en verde, icono de 512 y cabecera de 1024×500 generados, política de privacidad publicada y ficha escrita. <strong>Enviada a revisión</strong></td></tr>
 </tbody></table></div>
 <p>Dependencias duras: <span class="rid">H1</span> antes de <span class="rid">H2</span>, <span class="rid">H2</span> antes de <span class="rid">H3</span>, <span class="rid">H3</span> antes de <span class="rid">H4</span> (la UI habla con el servicio, no con el reproductor). <span class="rid">H5</span>, <span class="rid">H6</span> y <span class="rid">H7</span> son independientes entre sí una vez cerrado <span class="rid">H4</span>.</p>
 <p>La sesión de resistencia de 8 h (<span class="rid">RNF-01</span>) se ejecuta al terminar <span class="rid">H3</span> y <strong>se repite</strong> al terminar <span class="rid">H8</span>: R8 y el minify pueden romper cosas que funcionaban.</p>
@@ -472,12 +475,12 @@
 <tbody>
 <tr><td>Nombre, descripciones, promo, categoría, etiquetas</td><td><code>docs/play-store-publication-texts.md</code></td><td><strong>Escrito</strong>, con los conteos de caracteres calculados</td></tr>
 <tr><td>Notas de la versión 1.0 (<code>es-ES</code>, <code>en-US</code> y el formato con etiquetas)</td><td><code>docs/play-release-notes.md</code></td><td><strong>Escrito</strong></td></tr>
-<tr><td>Política de privacidad bilingüe</td><td><code>docs/privacy-policy/sleep-noise.html</code></td><td><strong>Escrita</strong>, pendiente de publicar en GitHub Pages</td></tr>
+<tr><td>Política de privacidad bilingüe</td><td>Fuente en <code>docs/privacy-policy/sleep-noise.html</code>, publicada en <a href="https://www.jorgejiro.es/sleep-noise.html">https://www.jorgejiro.es/sleep-noise.html</a></td><td><strong>Hecha y en línea</strong></td></tr>
 <tr><td>Respuestas de seguridad de los datos y clasificación de contenido</td><td><code>docs/play-store-publication-texts.md</code></td><td><strong>Escritas</strong></td></tr>
 <tr><td>Declaración de servicio en primer plano (<code>mediaPlayback</code>), en los dos idiomas</td><td><code>docs/play-store-publication-texts.md</code></td><td><strong>Escrita</strong></td></tr>
 <tr><td>Checklist de publicación y recorrido manual</td><td><code>docs/play-store-publication-texts.md</code></td><td><strong>Escrito</strong></td></tr>
 <tr><td>Pipeline de capturas</td><td><code>docs/store-assets/generar-capturas/README.md</code></td><td><strong>Diseñado</strong>, scripts pendientes de <span class="rid">H9</span></td></tr>
-<tr><td>Capturas (36 imágenes)</td><td><code>docs/store-assets/capturas/</code></td><td>Pendiente de <span class="rid">H9</span></td></tr>
+<tr><td>Capturas (42 imágenes)</td><td><code>docs/store-assets/capturas/&lt;idioma&gt;/&lt;formato&gt;/</code></td><td><strong>Hechas</strong>, y <code>revisar.py</code> en verde</td></tr>
 <tr><td>Icono de la app, las cuatro piezas</td><td><code>docs/design/icono/vector/</code></td><td><strong>Hecho</strong> (ADR 004), pendiente de copiar a <code>res/</code> en <span class="rid">H8</span></td></tr>
 <tr><td>Icono 512×512 de la ficha</td><td><code>docs/design/icono/play-icon-512.svg</code></td><td><strong>Diseñado</strong>, pendiente de rasterizar a PNG</td></tr>
 <tr><td>Gráfico de cabecera 1024×500</td><td>—</td><td>Pendiente de <span class="rid">H8</span></td></tr>
@@ -494,7 +497,7 @@
 <p>Si se edita un texto, se edita en el script y se vuelve a pasar. Editar el markdown a mano deja los conteos mintiendo, que es peor que no tenerlos.</p>
 <p>Las tres cosas que la descripción larga dice <strong>a propósito</strong>, porque son las que evitan una valoración de una estrella el primer día: que hay <strong>cuatro sonidos y ni uno más</strong>, que el ruido está <strong>generado y no grabado</strong>, y que la interfaz es <strong>oscura siempre</strong>.</p>
 <h3 id="13-3-capturas">13.3 Capturas</h3>
-<p>Automatizadas: 6 escenas × 2 idiomas × 3 formatos = <strong>36 imágenes</strong>, con <code>revisar.py</code> obligatorio antes de subirlas. El diseño, las escenas y las lecciones portadas de «¡Bebe agua!» están en <code>docs/store-assets/generar-capturas/README.md</code>, y la decisión en el ADR 003.</p>
+<p>Automatizadas: 7 escenas × 2 idiomas × 3 formatos = <strong>42 imágenes</strong>, guardadas por idioma y luego por formato —<code>capturas/&lt;idioma&gt;/&lt;formato&gt;/</code>, que es como Play Console las pide—, con <code>revisar.py</code> obligatorio antes de subirlas. El diseño, las escenas y las lecciones portadas de «¡Bebe agua!» están en <code>docs/store-assets/generar-capturas/README.md</code>, y la decisión en el ADR 003.</p>
 <p>Dos particularidades de esta app que el pipeline aprovecha o sufre:</p>
 <ul>
 <li><strong>No hay siembra de datos</strong>, así que se puede capturar con el AAB de release, que es el que se publica. En Bebe Agua la siembra con <code>run-as</code> obligaba a usar el debug, y con el de release el pase terminaba en verde con las capturas vacías.</li>
@@ -530,7 +533,7 @@
 <p>Estas cinco no las puedo decidir yo. Ninguna bloquea empezar por <span class="rid">H0</span>.</p>
 <ol>
 <li><strong>Dirección de correo para el feedback.</strong> Asumida <code>jjrmobileapps@gmail.com</code>, la misma de Bebe Agua, y <strong>ya escrita</strong> en la política de privacidad y en los textos de la ficha. Si es otra, se cambia en un sitio y se vuelve a pasar el script.</li>
-<li><strong>URL de la política de privacidad.</strong> El documento está escrito (<code>docs/privacy-policy/sleep-noise.html</code>); falta <strong>activar GitHub Pages</strong> en este repositorio y pegar la URL resultante en Play Console.</li>
+<li>~~<strong>URL de la política de privacidad.</strong>~~ <strong>Resuelto</strong>: publicada en el VPS del autor, en <a href="https://www.jorgejiro.es/sleep-noise.html">https://www.jorgejiro.es/sleep-noise.html</a>. La fuente sigue en <code>docs/privacy-policy/sleep-noise.html</code>; al tocarla hay que volver a subirla ahí, porque el fichero del repositorio no es el que Play lee.</li>
 <li><strong>Requisito de test cerrado de 12 testers</strong> (§13.4): hay que mirarlo en Play Console. Cambia el calendario en dos semanas y es lo único de esta lista que puede retrasar la publicación.</li>
 <li><strong>Nombre en la ficha de Play.</strong> Hay dos versiones escritas y contadas: con cola de búsqueda («Sleep Noise: ruido blanco» / «Sleep Noise: white noise», 25 y 24 caracteres) o limpio («Sleep Noise», 11). La recomendación es la cola en la ficha y «Sleep Noise» a secas en el lanzador.</li>
 </ol>
@@ -539,6 +542,13 @@
 <ol>
 <li><strong>Presets del temporizador</strong> (§4, P2): la lista propuesta es 15/30/45/60/90/120. Si prefieres otra, es el momento de cambiarla, porque el último preset usado se persiste y aparece en las capturas.</li>
 </ol>
+<h2 id="15-bis-lo-que-sigue-abierto-despues-de-enviar-la-1-0">15 bis. Lo que sigue abierto después de enviar la 1.0</h2>
+<p>La 1.0 se envió a revisión el 2026-08-24 sin esto cerrado, a sabiendas. Ninguna de las dos cosas la puede hacer una máquina sola, y ninguna bloquea la revisión de Play:</p>
+<ol>
+<li><strong>El recorrido completo con TalkBack.</strong> Los objetivos táctiles están medidos y el aro expone su valor y sus acciones, pero nadie ha navegado la app entera con el lector de pantalla encendido.</li>
+<li><strong>La sesión de resistencia de ocho horas con el build de release</strong> (<span class="rid">RNF-01</span> y <span class="rid">RNF-02</span>). Es la que diría si el consumo cumple el objetivo de ≤ 2,5 %/h y si algún fabricante mata el servicio a mitad de la noche. <strong>Y si <span class="rid">RNF-02</span> no se cumpliera, §14 tiene escrita la salida</strong>: evaluar un bucle pregrabado antes de seguir.</li>
+</ol>
+<p>Y una cifra a comprobar en Play Console, que no se puede medir desde aquí: <strong>el tamaño de descarga</strong>. El AAB firmado ocupa 5,84 MB, y <span class="rid">RNF-04</span> pide menos de 4 MB de descarga. El AAB genera descargas por dispositivo, más pequeñas que el bundle, así que probablemente ya se cumpla — pero eso lo dice el informe de Play, no una estimación.</p>
 <h2 id="16-definicion-de-listo-para-publicar">16. Definición de «listo para publicar»</h2>
 <p>La 1.0 se sube cuando <strong>todo</strong> esto es cierto:</p>
 <ul class="check">

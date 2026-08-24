@@ -294,7 +294,7 @@ app, y el segundo es el que la hace distinta de las demás.
 | Público objetivo | Mayores de 13 años. No dirigida a menores |
 | Anuncios | No contiene |
 | Acceso a la app | Todo el contenido está disponible sin restricciones ni credenciales |
-| Política de privacidad | URL pública obligatoria: `docs/privacy-policy/sleep-noise.html` publicada en GitHub Pages |
+| Política de privacidad | **https://www.jorgejiro.es/sleep-noise.html** |
 
 ---
 

@@ -2,15 +2,28 @@
 
 Guía de trabajo para este repositorio. Léela entera antes de tocar nada.
 
-> **Estado del proyecto: H0 a H7 hechos, H8 a medias.** La app suena: ruido sintetizado en el
+> **Estado del proyecto: 1.0 enviada a Google Play el 2026-08-24.**
+>
+> Hechos H0 a H9: la app funciona entera, con cuatro sonidos, y está firmada, con sus 42 capturas,
+> su icono de tienda, su política de privacidad publicada y su ficha escrita. Lo que queda es lo que
+> no depende de nosotros —la revisión de Play— más dos pruebas que necesitan tiempo real y una
+> persona: el recorrido con TalkBack y la sesión de resistencia de ocho horas con el build de release.
+>
+> Para un evolutivo: leer esta guía entera, y `docs/decisions/` antes de proponer cambiar algo que ya
+> se decidió. El ADR 006 es el que explica de verdad qué es este producto.
+>
+> <details><summary>Estado anterior, por si hace falta el contexto</summary>
+>
+> **H0 a H7 hechos, H8 a medias.** La app suena: ruido sintetizado en el
 > dispositivo, servicio en primer plano que sobrevive a cerrar la app y apagar la pantalla,
 > notificación de control, aro y slider de volumen, cambio de sonido con crossfade de igual potencia,
 > temporizador con apagado progresivo, ajustes, novedades y las dos lenguas. 59 tests en verde y el
 > APK de release minificado verificado en el emulador.
 >
-> **Lo que falta para publicar**: el recorrido completo con TalkBack, la sesión de resistencia de
-> ocho horas con el build de release, las filas de §7 que necesitan hardware real (llamada entrante,
-> auriculares) y todo H9.
+> **Lo que faltaba para publicar**: el recorrido completo con TalkBack, la sesión de resistencia de
+> ocho horas con el build de release, las filas de §7 que necesitan hardware real y todo H9.
+>
+> </details>
 >
 > La especificación completa está en `docs/especificacion-release-1.0.md` y la publicación en Play
 > preparada por escrito (§7 bis): textos de la ficha, notas de la versión, política de privacidad y
@@ -307,7 +320,7 @@ Todo lo que no es código y hace falta para publicar está escrito ya. En H9 se 
 | Ficha completa, cuestionarios y declaración de servicio en primer plano | `docs/play-store-publication-texts.md` |
 | Notas de la versión, en tres subsecciones | `docs/play-release-notes.md` |
 | Los dos anteriores se **generan**, no se editan | `scripts/generar-textos-ficha.py` |
-| Política de privacidad bilingüe | `docs/privacy-policy/sleep-noise.html` |
+| Política de privacidad bilingüe | Fuente en `docs/privacy-policy/sleep-noise.html`; **publicada en https://www.jorgejiro.es/sleep-noise.html**, que es la URL que Play lee. Si se toca la fuente, hay que volver a subirla |
 | Pipeline de capturas: 6 escenas × 2 idiomas × 3 formatos | `docs/store-assets/generar-capturas/README.md` |
 | Icono en sus cuatro piezas, y el 512 de la ficha | `docs/design/icono/`, generado por `scripts/generar-iconos.py` |
 | Changelog interno | `CHANGELOG.md` |

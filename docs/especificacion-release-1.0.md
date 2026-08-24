@@ -471,8 +471,8 @@ El orden no es negociable en las dependencias marcadas.
 | **H5** ✅ | Persistencia y arranque | DataStore con las siete claves, arranque automático (RF-01) con sus cuatro casos | **Hecho.** Cambiar de sonido, cerrar la app y reabrirla devuelve el sonido elegido y arranca solo |
 | **H6** ✅ | Temporizador | Hoja P2, cuenta atrás, fade out, +15 min, cancelar, congelar al pausar | **Hecho.** Presets 15/30/45/60/90/120, la cuenta atrás aparece en la fila, y el congelado al pausar y el fade final están cubiertos por `SleepTimerTest` con reloj virtual |
 | **H7** ✅ | Ajustes y novedades | P3 y P4 completas, changelog con su catálogo, feedback por correo, selector de idioma | **Hecho.** Cambio a español desde Ajustes: toda la app, incluida la fecha del changelog («24 de agosto de 2026») |
-| **H8** 🟨 | Pulido | R8 y reglas de proguard, **copiar los assets del icono** a `res/` y rasterizar el PNG de Play, edge-to-edge, TalkBack completo, revisión de contrastes, splash | **Parcial.** R8 en verde: el APK minificado se instala y suena, sin nada que R8 se llevara. Objetivos táctiles medidos, todos ≥ 48 dp. Falta el recorrido con TalkBack, el icono en un dispositivo real y la sesión de resistencia de 8 h |
-| **H9** | Publicación | Firma, pipeline de capturas (7 escenas × 2 idiomas × 3 formatos), publicar la política de privacidad, rellenar la ficha con los textos ya escritos, declaración de servicio en primer plano, test interno | §13 completo, `revisar.py` en verde y la release aceptada en Play Console |
+| **H8** 🟨 | Pulido | R8 y reglas de proguard, **copiar los assets del icono** a `res/` y rasterizar el PNG de Play, edge-to-edge, TalkBack completo, revisión de contrastes, splash | **Parcial.** R8 en verde: el APK minificado se instala y suena. Objetivos táctiles medidos, todos ≥ 48 dp. Icono visto en dos dispositivos reales. **Siguen faltando dos pruebas que necesitan tiempo real y una persona: el recorrido completo con TalkBack y la sesión de resistencia de 8 h con el build de release** |
+| **H9** ✅ | Publicación | Firma, pipeline de capturas (7 escenas × 2 idiomas × 3 formatos), publicar la política de privacidad, rellenar la ficha con los textos ya escritos, declaración de servicio en primer plano, test interno | **Hecho el 2026-08-24.** Clave de subida creada, AAB firmado de 5,84 MB, 42 capturas con `revisar.py` en verde, icono de 512 y cabecera de 1024×500 generados, política de privacidad publicada y ficha escrita. **Enviada a revisión** |
 
 Dependencias duras: H1 antes de H2, H2 antes de H3, H3 antes de H4 (la UI habla con el servicio, no
 con el reproductor). H5, H6 y H7 son independientes entre sí una vez cerrado H4.
@@ -491,7 +491,7 @@ está ya escrito**: lo que queda para H9 es ejecutarlo, no redactarlo.
 |---|---|---|
 | Nombre, descripciones, promo, categoría, etiquetas | `docs/play-store-publication-texts.md` | **Escrito**, con los conteos de caracteres calculados |
 | Notas de la versión 1.0 (`es-ES`, `en-US` y el formato con etiquetas) | `docs/play-release-notes.md` | **Escrito** |
-| Política de privacidad bilingüe | `docs/privacy-policy/sleep-noise.html` | **Escrita**, pendiente de publicar en GitHub Pages |
+| Política de privacidad bilingüe | Fuente en `docs/privacy-policy/sleep-noise.html`, publicada en [https://www.jorgejiro.es/sleep-noise.html](https://www.jorgejiro.es/sleep-noise.html) | **Hecha y en línea** |
 | Respuestas de seguridad de los datos y clasificación de contenido | `docs/play-store-publication-texts.md` | **Escritas** |
 | Declaración de servicio en primer plano (`mediaPlayback`), en los dos idiomas | `docs/play-store-publication-texts.md` | **Escrita** |
 | Checklist de publicación y recorrido manual | `docs/play-store-publication-texts.md` | **Escrito** |
@@ -583,9 +583,9 @@ Estas cinco no las puedo decidir yo. Ninguna bloquea empezar por H0.
 1. **Dirección de correo para el feedback.** Asumida `jjrmobileapps@gmail.com`, la misma de Bebe
    Agua, y **ya escrita** en la política de privacidad y en los textos de la ficha. Si es otra, se
    cambia en un sitio y se vuelve a pasar el script.
-2. **URL de la política de privacidad.** El documento está escrito
-   (`docs/privacy-policy/sleep-noise.html`); falta **activar GitHub Pages** en este repositorio y
-   pegar la URL resultante en Play Console.
+2. ~~**URL de la política de privacidad.**~~ **Resuelto**: publicada en el VPS del autor, en
+   [https://www.jorgejiro.es/sleep-noise.html](https://www.jorgejiro.es/sleep-noise.html). La fuente sigue en `docs/privacy-policy/sleep-noise.html`; al tocarla hay que volver a
+   subirla ahí, porque el fichero del repositorio no es el que Play lee.
 3. **Requisito de test cerrado de 12 testers** (§13.4): hay que mirarlo en Play Console. Cambia el
    calendario en dos semanas y es lo único de esta lista que puede retrasar la publicación.
 4. **Nombre en la ficha de Play.** Hay dos versiones escritas y contadas: con cola de búsqueda
@@ -601,6 +601,25 @@ Estas cinco no las puedo decidir yo. Ninguna bloquea empezar por H0.
    irreversible, así que la decisión es ahora o nunca.
 5. **Presets del temporizador** (§4, P2): la lista propuesta es 15/30/45/60/90/120. Si prefieres otra,
    es el momento de cambiarla, porque el último preset usado se persiste y aparece en las capturas.
+
+---
+
+## 15 bis. Lo que sigue abierto después de enviar la 1.0
+
+La 1.0 se envió a revisión el 2026-08-24 sin esto cerrado, a sabiendas. Ninguna de las dos cosas la
+puede hacer una máquina sola, y ninguna bloquea la revisión de Play:
+
+1. **El recorrido completo con TalkBack.** Los objetivos táctiles están medidos y el aro expone su
+   valor y sus acciones, pero nadie ha navegado la app entera con el lector de pantalla encendido.
+2. **La sesión de resistencia de ocho horas con el build de release** (RNF-01 y RNF-02). Es la que
+   diría si el consumo cumple el objetivo de ≤ 2,5 %/h y si algún fabricante mata el servicio a mitad
+   de la noche. **Y si RNF-02 no se cumpliera, §14 tiene escrita la salida**: evaluar un bucle
+   pregrabado antes de seguir.
+
+Y una cifra a comprobar en Play Console, que no se puede medir desde aquí: **el tamaño de descarga**.
+El AAB firmado ocupa 5,84 MB, y RNF-04 pide menos de 4 MB de descarga. El AAB genera descargas por
+dispositivo, más pequeñas que el bundle, así que probablemente ya se cumpla — pero eso lo dice el
+informe de Play, no una estimación.
 
 ---
 
