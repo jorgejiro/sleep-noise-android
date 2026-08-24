@@ -1,0 +1,245 @@
+<title>El motor de ruido de Sleep Noise</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@200;400;600&family=Newsreader:opsz,wght@6..72,300;6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --bg: #FBF9F6; --panel: #FFFFFF; --ink: oklch(0.24 0.014 62);
+    --muted: oklch(0.5 0.014 62); --faint: oklch(0.63 0.012 62);
+    --line: oklch(0.9 0.008 62); --accent: oklch(0.55 0.11 62);
+    --accent-soft: oklch(0.955 0.03 70); --code-bg: oklch(0.955 0.008 62);
+    --grid: oklch(0.92 0.006 62); --axis: oklch(0.82 0.008 62);
+    --s-white: #548CC1; --s-brown: #92611F;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #110B06; --panel: oklch(0.192 0.014 62); --ink: oklch(0.93 0.008 62);
+      --muted: oklch(0.72 0.012 62); --faint: oklch(0.58 0.014 62);
+      --line: oklch(0.28 0.012 62); --accent: oklch(0.78 0.1 68);
+      --accent-soft: oklch(0.245 0.03 62); --code-bg: oklch(0.225 0.012 62);
+      --grid: oklch(0.26 0.01 62); --axis: oklch(0.34 0.012 62);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #110B06; --panel: oklch(0.192 0.014 62); --ink: oklch(0.93 0.008 62);
+    --muted: oklch(0.72 0.012 62); --faint: oklch(0.58 0.014 62);
+    --line: oklch(0.28 0.012 62); --accent: oklch(0.78 0.1 68);
+    --accent-soft: oklch(0.245 0.03 62); --code-bg: oklch(0.225 0.012 62);
+    --grid: oklch(0.26 0.01 62); --axis: oklch(0.34 0.012 62);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: Newsreader, Georgia, serif; font-size: 17px; line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .shell { max-width: 900px; margin: 0 auto; padding: 0 28px 100px; }
+  header { padding: 76px 0 28px; }
+  .kicker {
+    font-family: "IBM Plex Mono", monospace; font-size: 11px; font-weight: 500;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent);
+  }
+  h1 {
+    font-family: Sora, system-ui, sans-serif; font-weight: 200;
+    font-size: clamp(33px, 5.2vw, 50px); line-height: 1.04; letter-spacing: -0.025em;
+    margin: 14px 0 0; text-wrap: balance;
+  }
+  .lede { margin: 18px 0 0; max-width: 64ch; color: var(--muted); text-wrap: pretty; }
+  h2 {
+    font-family: Sora, system-ui, sans-serif; font-weight: 400; font-size: 25px;
+    letter-spacing: -0.02em; margin: 54px 0 14px; padding-top: 24px;
+    border-top: 1px solid var(--line);
+  }
+  p { margin: 0 0 16px; max-width: 68ch; }
+  code { font-family: "IBM Plex Mono", monospace; font-size: 0.82em;
+         background: var(--code-bg); padding: 2px 5px; border-radius: 4px; }
+  .muted { color: var(--muted); }
+
+  figure { margin: 0; }
+  .frame {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+    padding: 20px 18px 10px; position: relative;
+  }
+  .chart { width: 100%; height: auto; display: block; overflow: visible; }
+  .grid { stroke: var(--grid); stroke-width: 1; }
+  .grid.vert { stroke-dasharray: 2 4; }
+  .axis { stroke: var(--axis); stroke-width: 1; }
+  .tick { font-family: "IBM Plex Mono", monospace; font-size: 10px; fill: var(--faint); }
+  .axis-title { font-family: Sora, system-ui, sans-serif; font-size: 11px; fill: var(--faint);
+                letter-spacing: 0.08em; }
+  .line { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+  .line.white { stroke: var(--s-white); }
+  .line.brown { stroke: var(--s-brown); }
+  .direct { font-family: Sora, system-ui, sans-serif; font-size: 12px; font-weight: 600; }
+  .white-ink { fill: var(--s-white); }
+  .brown-ink { fill: var(--s-brown); }
+  .white-fill { fill: var(--s-white); }
+  .brown-fill { fill: var(--s-brown); }
+  .dot { stroke: var(--panel); stroke-width: 2; }
+  .crosshair { stroke: var(--axis); stroke-width: 1; stroke-dasharray: 3 3; }
+
+  .legend { display: flex; gap: 22px; flex-wrap: wrap; margin: 4px 0 0; padding: 0 6px 12px; }
+  .legend span { display: inline-flex; align-items: center; gap: 8px;
+                 font-family: Sora, system-ui, sans-serif; font-size: 12.5px; color: var(--muted); }
+  .swatch { width: 22px; height: 3px; border-radius: 2px; }
+  figcaption { margin-top: 12px; font-size: 14.5px; color: var(--muted); max-width: 68ch; }
+
+  #tooltip {
+    position: absolute; pointer-events: none; opacity: 0; transition: opacity .12s;
+    background: var(--panel); border: 1px solid var(--line); border-radius: 9px;
+    padding: 9px 11px; font-family: Sora, system-ui, sans-serif; font-size: 12px;
+    color: var(--ink); box-shadow: 0 6px 18px -6px rgba(0,0,0,.35); white-space: nowrap;
+  }
+  #tooltip .hz { font-weight: 600; margin-bottom: 5px; }
+  #tooltip .row { display: flex; align-items: center; gap: 7px; }
+  #tooltip .key { width: 9px; height: 9px; border-radius: 2px; }
+  #tooltip .val { font-variant-numeric: tabular-nums; margin-left: auto; padding-left: 12px; }
+
+  .tw { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; margin: 0 0 22px; }
+  table { width: 100%; border-collapse: collapse; font-family: Sora, system-ui, sans-serif;
+          font-size: 13px; font-variant-numeric: tabular-nums; }
+  thead th { text-align: right; font-weight: 600; font-size: 10.5px; letter-spacing: 0.09em;
+             text-transform: uppercase; color: var(--faint); padding: 11px 14px;
+             background: var(--panel); border-bottom: 1px solid var(--line); }
+  thead th:first-child { text-align: left; }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--line); color: var(--muted);
+       text-align: right; }
+  td:first-child { text-align: left; color: var(--ink); }
+  tbody tr:last-child td { border-bottom: none; }
+  details { margin-bottom: 24px; }
+  summary { font-family: Sora, system-ui, sans-serif; font-size: 13.5px; color: var(--accent);
+            cursor: pointer; margin-bottom: 14px; }
+  .measures { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 18px;
+              margin: 0 0 26px; }
+  .measure { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; }
+  .measure dt { font-family: "IBM Plex Mono", monospace; font-size: 9.5px; letter-spacing: 0.14em;
+                text-transform: uppercase; color: var(--faint); }
+  .measure dd { margin: 7px 0 0; font-family: Sora, system-ui, sans-serif; font-size: 21px;
+                font-weight: 200; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .measure .note { display: block; font-family: Newsreader, serif; font-size: 13.5px;
+                   color: var(--muted); margin-top: 5px; }
+  .note-box { margin: 0 0 24px; padding: 20px 22px; background: var(--accent-soft);
+              border-radius: 12px; font-size: 15.5px; color: var(--muted); max-width: 70ch; }
+  .note-box strong { color: var(--ink); }
+  @media (prefers-reduced-motion: reduce) { #tooltip { transition: none; } }
+</style>
+
+<div class="shell">
+<header>
+  <div class="kicker">Sleep Noise · hito H1</div>
+  <h1>El ruido, medido antes de oírlo</h1>
+  <p class="lede">El motor de síntesis está escrito y verificado: 25 tests en la JVM, sin nada de Android por medio. Todo lo que hay en esta página lo produjo el generador que irá en la app, no una simulación aparte.</p>
+</header>
+
+<h2>Lo que suena, visto</h2>
+<figure>
+  <div class="frame" id="plot">
+    <svg viewBox="0 0 760 400" class="chart" role="img"
+     aria-label="Densidad espectral medida del ruido blanco y del ruido marrón, de 20 Hz a 20 kHz">
+  <g><line x1="58.0" y1="331.6" x2="686.0" y2="331.6" class="grid"/><line x1="58.0" y1="275.6" x2="686.0" y2="275.6" class="grid"/><line x1="58.0" y1="219.6" x2="686.0" y2="219.6" class="grid"/><line x1="58.0" y1="163.6" x2="686.0" y2="163.6" class="grid"/><line x1="58.0" y1="107.6" x2="686.0" y2="107.6" class="grid"/><line x1="58.0" y1="51.6" x2="686.0" y2="51.6" class="grid"/><line x1="58.0" y1="18" x2="58.0" y2="354" class="grid vert"/><line x1="141.3" y1="18" x2="141.3" y2="354" class="grid vert"/><line x1="204.3" y1="18" x2="204.3" y2="354" class="grid vert"/><line x1="267.3" y1="18" x2="267.3" y2="354" class="grid vert"/><line x1="350.6" y1="18" x2="350.6" y2="354" class="grid vert"/><line x1="413.7" y1="18" x2="413.7" y2="354" class="grid vert"/><line x1="476.7" y1="18" x2="476.7" y2="354" class="grid vert"/><line x1="560.0" y1="18" x2="560.0" y2="354" class="grid vert"/><line x1="623.0" y1="18" x2="623.0" y2="354" class="grid vert"/><line x1="686.0" y1="18" x2="686.0" y2="354" class="grid vert"/></g>
+  <line x1="58" y1="354" x2="686" y2="354" class="axis"/>
+  <text x="58.0" y="374" class="tick" text-anchor="middle">20</text><text x="141.3" y="374" class="tick" text-anchor="middle">50</text><text x="204.3" y="374" class="tick" text-anchor="middle">100</text><text x="267.3" y="374" class="tick" text-anchor="middle">200</text><text x="350.6" y="374" class="tick" text-anchor="middle">500</text><text x="413.7" y="374" class="tick" text-anchor="middle">1k</text><text x="476.7" y="374" class="tick" text-anchor="middle">2k</text><text x="560.0" y="374" class="tick" text-anchor="middle">5k</text><text x="623.0" y="374" class="tick" text-anchor="middle">10k</text><text x="686.0" y="374" class="tick" text-anchor="middle">20k</text><text x="48" y="335.6" class="tick" text-anchor="end">-30</text><text x="48" y="279.6" class="tick" text-anchor="end">-20</text><text x="48" y="223.6" class="tick" text-anchor="end">-10</text><text x="48" y="167.6" class="tick" text-anchor="end">+0</text><text x="48" y="111.6" class="tick" text-anchor="end">+10</text><text x="48" y="55.6" class="tick" text-anchor="end">+20</text>
+  <text x="14" y="186.0" class="axis-title"
+        transform="rotate(-90 14 186.0)" text-anchor="middle">dB relativos</text>
+  <text x="372.0" y="394" class="axis-title" text-anchor="middle">frecuencia (Hz)</text>
+  <path d="M74.4 165.1 L107.1 162.7 L133.2 161.9 L152.9 164.2 L172.5 164.3 L185.6 164.6 L198.6 165.2 L211.7 164.9 L218.3 163.3 L224.8 162.5 L237.9 162.2 L244.4 164.8 L251.0 165.7 L257.5 162.2 L264.1 162.3 L270.6 163.2 L277.1 163.0 L283.7 162.4 L290.2 162.5 L296.8 162.9 L303.3 163.8 L309.9 163.7 L316.4 163.1 L322.9 167.6 L329.5 164.8 L336.0 163.8 L342.6 162.5 L349.1 163.9 L355.6 164.0 L362.2 162.5 L368.7 163.8 L375.3 166.4 L381.8 165.0 L388.4 162.1 L394.9 163.7 L401.4 163.7 L408.0 164.7 L414.5 163.8 L421.1 163.2 L427.6 163.3 L434.1 163.2 L440.7 164.3 L447.2 164.3 L453.8 163.5 L460.3 164.2 L466.9 163.3 L473.4 163.8 L479.9 162.5 L486.5 161.7 L493.0 163.5 L499.6 163.5 L506.1 163.8 L512.6 163.6 L519.2 164.0 L525.7 163.7 L532.3 162.9 L538.8 163.2 L545.4 163.0 L551.9 163.5 L558.4 163.9 L565.0 163.4 L571.5 163.7 L578.1 163.4 L584.6 164.0 L591.1 163.9 L597.7 163.4 L604.2 163.8 L610.8 163.4 L617.3 163.3 L623.9 163.5 L630.4 163.6 L636.9 163.7 L643.5 163.6 L650.0 163.5 L656.6 163.5 L663.1 163.5 L669.6 163.3 L676.2 163.4 L682.7 163.4" class="line white"/>
+  <path d="M74.4 19.8 L107.1 31.7 L133.2 43.2 L152.9 53.9 L172.5 62.5 L185.6 70.0 L198.6 77.4 L211.7 83.5 L218.3 87.0 L224.8 90.5 L237.9 93.6 L244.4 99.3 L251.0 103.8 L257.5 105.2 L264.1 109.5 L270.6 114.1 L277.1 116.8 L283.7 120.1 L290.2 123.9 L296.8 127.5 L303.3 132.1 L309.9 135.8 L316.4 137.7 L322.9 145.8 L329.5 146.2 L336.0 149.6 L342.6 151.4 L349.1 156.1 L355.6 160.2 L362.2 162.7 L368.7 167.1 L375.3 172.6 L381.8 175.4 L388.4 175.5 L394.9 180.3 L401.4 184.1 L408.0 188.8 L414.5 191.6 L421.1 193.6 L427.6 198.3 L434.1 200.6 L440.7 205.7 L447.2 209.5 L453.8 212.0 L460.3 215.8 L466.9 218.5 L473.4 222.7 L479.9 225.2 L486.5 227.8 L493.0 233.0 L499.6 236.2 L506.1 240.0 L512.6 243.3 L519.2 247.3 L525.7 250.3 L532.3 253.4 L538.8 256.8 L545.4 260.1 L551.9 263.8 L558.4 267.3 L565.0 270.4 L571.5 274.2 L578.1 277.2 L584.6 281.1 L591.1 284.2 L597.7 287.0 L604.2 291.0 L610.8 293.2 L617.3 296.5 L623.9 299.5 L630.4 302.8 L636.9 305.4 L643.5 308.1 L650.0 310.7 L656.6 313.0 L663.1 315.4 L669.6 317.4 L676.2 319.3 L682.7 320.8" class="line brown"/>
+  <text x="694" y="167.44396247328575" class="direct white-ink">Blanco</text>
+  <text x="694" y="324.7821319648112" class="direct brown-ink">Marrón</text>
+  <g id="hover" style="opacity:0">
+    <line id="crosshair" y1="18" y2="354" class="crosshair"/>
+    <circle id="dotWhite" r="4.5" class="dot white-fill"/>
+    <circle id="dotBrown" r="4.5" class="dot brown-fill"/>
+  </g>
+  <rect id="surface" x="58" y="18" width="628" height="336" fill="transparent"/>
+</svg>
+    <div id="tooltip"></div>
+  </div>
+  <div class="legend">
+    <span><i class="swatch" style="background: var(--s-white)"></i> Ruido blanco</span>
+    <span><i class="swatch" style="background: var(--s-brown)"></i> Ruido marrón</span>
+  </div>
+  <figcaption>Densidad espectral de diez segundos de cada sonido, con el blanco normalizado a 0 dB. Promediado en 79 bandas logarítmicas: un espectro de ruido salta varios dB entre bins contiguos, así que dibujar los 1.705 puntos crudos sería dibujar el ruido del estimador y no la forma. La curva marrón cae 39 dB entre 100 Hz y 10 kHz, que son las 6,6 octavas de esa distancia a 5,9 dB cada una.</figcaption>
+</figure>
+
+<details>
+  <summary>Ver los mismos datos como tabla, por octavas</summary>
+  <div class="tw"><table>
+    <thead><tr><th>Banda</th><th>Blanco (dB)</th><th>Marrón (dB)</th></tr></thead>
+    <tbody><tr><td>31,5 Hz</td><td>+0.2</td><td>+23.5</td></tr><tr><td>63 Hz</td><td>-0.1</td><td>+19.6</td></tr><tr><td>125 Hz</td><td>+0.2</td><td>+13.1</td></tr><tr><td>250 Hz</td><td>+0.2</td><td>+7.1</td></tr><tr><td>500 Hz</td><td>-0.1</td><td>+1.3</td></tr><tr><td>1000 Hz</td><td>-0.0</td><td>-5.0</td></tr><tr><td>2000 Hz</td><td>-0.0</td><td>-10.6</td></tr><tr><td>4000 Hz</td><td>+0.1</td><td>-16.6</td></tr><tr><td>8000 Hz</td><td>-0.0</td><td>-22.7</td></tr><tr><td>16000 Hz</td><td>+0.0</td><td>-27.1</td></tr></tbody>
+  </table></div>
+</details>
+
+<h2>Las mediciones</h2>
+<p class="muted">Las imprime cada <code>./gradlew test</code>. Un test verde que solo dice «pasó» no registra nada: esconde si el marrón está en -18,0 dBFS o en -18,3, y la deriva aparece en el segundo decimal mucho antes de romper una tolerancia.</p>
+<dl class="measures">
+  <div class="measure"><dt>Pendiente del marrón</dt><dd>-5,91 dB/octava</dd><span class="note">Objetivo -6, medido entre 100 Hz y 10 kHz</span></div>
+  <div class="measure"><dt>Pendiente del blanco</dt><dd>0,00 dB/octava</dd><span class="note">Plano, que es la definición</span></div>
+  <div class="measure"><dt>Nivel</dt><dd>-18,01 / -18,12 dBFS</dd><span class="note">Blanco y marrón, a 0,11 dB uno del otro</span></div>
+  <div class="measure"><dt>Desviación de continua</dt><dd>1,2 · 10⁻⁴</dd><span class="note">Marrón. Inaudible como sonido, audible como margen perdido</span></div>
+  <div class="measure"><dt>Pico</dt><dd>0,62 / 0,52</dd><span class="note">Nada llega a fondo de escala: 4 dB de margen</span></div>
+  <div class="measure"><dt>Correlación entre canales</dt><dd>0,0003</dd><span class="note">Blanco. Dos generadores de verdad independientes</span></div>
+</dl>
+
+<div class="note-box">
+  <strong>Cuatro tests fallaron a la primera, y ahí estuvo el valor.</strong> Uno era un fallo real: el
+  marrón salía a -22,2 dBFS en vez de -18, porque la ganancia se derivaba de la varianza del integrador
+  ignorando que después hay un filtro que quita continua — y un paso alto se come energía justo donde el
+  ruido marrón la tiene toda. Ahora la ganancia se mide una vez al construir el generador, contra el
+  mismo camino de señal que suena.
+  <br><br>
+  Los otros tres eran tests mal planteados: pedía que el marrón tuviera mayor factor de cresta (falso,
+  el ruido gaussiano filtrado sigue siendo gaussiano), exigía a la correlación entre canales una
+  precisión que la memoria del filtro no permite, y buscaba la pendiente bajo los 16 Hz con bins de
+  11,7 Hz. Los tres se reescribieron para medir lo que de verdad distingue a estos sonidos.
+</div>
+
+<h2>Lo siguiente</h2>
+<p><strong>H2, el puente a Media3</strong>: un <code>DataSource</code> que sirva este generador como un WAV de longitud infinita, y el <code>ExoPlayer</code> configurado con sus atributos de audio, el modo de wake lock y un buffer grande. Al final de H2 esto se puede oír, que es la única prueba que ninguna medición sustituye.</p>
+</div>
+
+<script>
+  const DATA = [[23.9, -0.26, 25.68], [34.3, 0.16, 23.55], [45.8, 0.3, 21.5], [56.8, -0.1, 19.59], [70.5, -0.13, 18.05], [81.4, -0.17, 16.71], [94.0, -0.28, 15.39], [108.5, -0.24, 14.3], [116.6, 0.05, 13.69], [125.3, 0.19, 13.05], [144.7, 0.24, 12.51], [155.5, -0.22, 11.49], [167.1, -0.37, 10.68], [179.5, 0.24, 10.43], [192.9, 0.24, 9.67], [207.3, 0.08, 8.84], [222.8, 0.1, 8.35], [239.4, 0.21, 7.76], [257.3, 0.2, 7.09], [276.5, 0.12, 6.44], [297.1, -0.03, 5.63], [319.3, -0.02, 4.97], [343.1, 0.09, 4.62], [368.7, -0.71, 3.17], [396.2, -0.22, 3.11], [425.8, -0.04, 2.51], [457.5, 0.19, 2.18], [491.6, -0.06, 1.34], [528.3, -0.07, 0.6], [567.7, 0.19, 0.16], [610.1, -0.03, -0.63], [655.6, -0.49, -1.62], [704.5, -0.25, -2.11], [757.1, 0.26, -2.13], [813.6, -0.01, -2.98], [874.3, -0.03, -3.66], [939.5, -0.19, -4.5], [1009.6, -0.03, -5.0], [1084.9, 0.06, -5.36], [1165.9, 0.05, -6.19], [1252.9, 0.08, -6.62], [1346.3, -0.12, -7.51], [1446.8, -0.12, -8.2], [1554.7, 0.02, -8.63], [1670.7, -0.1, -9.32], [1795.4, 0.06, -9.8], [1929.3, -0.04, -10.56], [2073.3, 0.2, -11.01], [2227.9, 0.34, -11.46], [2394.2, 0.01, -12.39], [2572.8, 0.02, -12.96], [2764.7, -0.03, -13.64], [2971.0, 0.0, -14.22], [3192.7, -0.07, -14.94], [3430.9, -0.02, -15.49], [3686.8, 0.12, -16.04], [3961.9, 0.06, -16.64], [4257.5, 0.1, -17.23], [4575.1, 0.01, -17.89], [4916.5, -0.05, -18.53], [5283.3, 0.04, -19.07], [5677.5, -0.02, -19.75], [6101.1, 0.03, -20.28], [6556.2, -0.07, -20.98], [7045.4, -0.05, -21.53], [7571.0, 0.03, -22.04], [8135.9, -0.04, -22.74], [8742.9, 0.04, -23.15], [9395.2, 0.05, -23.74], [10096.1, 0.02, -24.28], [10849.4, -0.0, -24.85], [11658.8, -0.02, -25.32], [12528.7, 0.01, -25.8], [13463.4, 0.02, -26.26], [14467.9, 0.02, -26.67], [15547.3, 0.02, -27.1], [16707.3, 0.05, -27.46], [17953.7, 0.03, -27.8], [19293.2, 0.03, -28.07]];
+  const G = {"x0": 58, "x1": 686, "y0": 18, "y1": 354, "lo": 20.0, "hi": 20000.0, "dbMin": -34.0, "dbMax": 26.0};
+  const svg = document.querySelector('.chart');
+  const frame = document.getElementById('plot');
+  const tip = document.getElementById('tooltip');
+  const hover = document.getElementById('hover');
+  const cross = document.getElementById('crosshair');
+  const dotW = document.getElementById('dotWhite');
+  const dotB = document.getElementById('dotBrown');
+  const surface = document.getElementById('surface');
+
+  const sx = hz => G.x0 + (Math.log10(hz) - Math.log10(G.lo)) / (Math.log10(G.hi) - Math.log10(G.lo)) * (G.x1 - G.x0);
+  const sy = db => G.y1 - (db - G.dbMin) / (G.dbMax - G.dbMin) * (G.y1 - G.y0);
+  const fmt = v => (v >= 0 ? '+' : '') + v.toFixed(1).replace('.', ',');
+
+  function show(event) {
+    const box = svg.getBoundingClientRect();
+    const scale = G.x1 !== G.x0 ? box.width / svg.viewBox.baseVal.width : 1;
+    const xInSvg = (event.clientX - box.left) / scale;
+    let best = DATA[0], bestDist = Infinity;
+    for (const point of DATA) {
+      const d = Math.abs(sx(point[0]) - xInSvg);
+      if (d < bestDist) { bestDist = d; best = point; }
+    }
+    const [hz, white, brown] = best;
+    cross.setAttribute('x1', sx(hz)); cross.setAttribute('x2', sx(hz));
+    dotW.setAttribute('cx', sx(hz)); dotW.setAttribute('cy', sy(white));
+    dotB.setAttribute('cx', sx(hz)); dotB.setAttribute('cy', sy(brown));
+    hover.style.opacity = 1;
+    const label = hz >= 1000 ? (hz / 1000).toFixed(1).replace('.', ',') + ' kHz' : Math.round(hz) + ' Hz';
+    tip.innerHTML =
+      '<div class="hz">' + label + '</div>' +
+      '<div class="row"><i class="key" style="background: var(--s-white)"></i>Blanco<span class="val">' + fmt(white) + ' dB</span></div>' +
+      '<div class="row"><i class="key" style="background: var(--s-brown)"></i>Marrón<span class="val">' + fmt(brown) + ' dB</span></div>';
+    tip.style.opacity = 1;
+    const px = sx(hz) * scale;
+    tip.style.left = Math.min(box.width - 150, Math.max(0, px + 14)) + 'px';
+    tip.style.top = Math.max(0, sy(brown) * scale - 10) + 'px';
+  }
+
+  function hide() { hover.style.opacity = 0; tip.style.opacity = 0; }
+  surface.addEventListener('pointermove', show);
+  surface.addEventListener('pointerdown', show);
+  surface.addEventListener('pointerleave', hide);
+</script>

@@ -2,9 +2,10 @@
 
 Guía de trabajo para este repositorio. Léela entera antes de tocar nada.
 
-> **Estado del proyecto: H0 hecho.** El proyecto compila, `./gradlew lint test` está en verde y la
-> app arranca con el tema, la tipografía, el icono, la navegación entre las cuatro pantallas y la
-> i18n montadas. Lo siguiente es **H1, el motor de ruido**.
+> **Estado del proyecto: H0 y H1 hechos.** La app arranca con el tema, la tipografía, el icono, la
+> navegación y la i18n montadas, y el motor de ruido está escrito y medido: 25 tests en la JVM,
+> pendiente de -5,91 dB/octava en el marrón y 0,00 en el blanco. Lo siguiente es **H2, el puente a
+> Media3**, que es donde esto empieza a sonar.
 >
 > La especificación completa está en `docs/especificacion-release-1.0.md` y la publicación en Play
 > preparada por escrito (§7 bis): textos de la ficha, notas de la versión, política de privacidad y
@@ -32,7 +33,7 @@ pero solo su núcleo: escuchar un ruido y poder cambiarlo por otro.
 
 | # | Funcionalidad | Estado |
 |---|---|---|
-| F1 | Ruido blanco (gaussiano) y ruido marrón, en bucle indefinido | ⬜ Pendiente |
+| F1 | Ruido blanco (gaussiano) y ruido marrón, en bucle indefinido | 🟨 Motor hecho (H1); suena en H2 |
 | F2 | Cambio de sonido en caliente, con crossfade | ⬜ Pendiente |
 | F3 | Al abrir la app suena el último sonido escuchado (por defecto, marrón) | ⬜ Pendiente |
 | F4 | Volumen a nivel medio al arrancar, con slider en la pantalla principal | ⬜ Pendiente |
@@ -77,6 +78,23 @@ tile de ajustes rápidos, Wear OS, alarma de despertador.
 | Tests | JUnit 4 + MockK **1.14.11** + Turbine **1.2.1** + Compose UI Test |
 | Logs | Timber **5.0.1**, solo en debug |
 | Backup | `android:allowBackup="false"` |
+
+### Política de versiones
+
+**Todo en su última versión estable, con una única excepción.** Las versiones se **consultan en los
+repositorios** antes de subirlas, no se recuerdan, y `./gradlew lint` avisa cuando algo se queda
+atrás: si aparecen avisos `GradleDependency` o `NewerVersionAvailable`, es deuda, no ruido.
+
+La excepción es **`material3`**, fijada en `1.5.0-alpha26`. La estable es 1.4.0 y **no trae
+Expressive**: `MaterialExpressiveTheme`, las formas morphing y el slider ondulado solo existen en la
+rama alpha, y de ellos depende toda la dirección visual (ADR 002). Bajarla no sería actualizar, sería
+renunciar a la dirección. El catálogo lo explica donde se lee.
+
+Los avisos de lint que **sí** se dejan a la vista, porque son decisiones y no descuidos:
+
+- `OldTargetApi` — `targetSdk` 36 con `compileSdk` 37, a propósito (ADR 005).
+- `UnusedResources` sobre recursos que se estrenan en un hito posterior. Se dejan avisando: si se
+  suprimieran, nadie se enteraría el día que de verdad quedaran huérfanos.
 
 ### Permisos requeridos
 
