@@ -1,0 +1,529 @@
+<title>Especificación de Sleep Noise 1.0</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@200;400;600&family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --bg: oklch(0.985 0.006 70);
+    --panel: oklch(1 0 0);
+    --ink: oklch(0.24 0.014 62);
+    --muted: oklch(0.5 0.014 62);
+    --faint: oklch(0.63 0.012 62);
+    --line: oklch(0.9 0.008 62);
+    --line-soft: oklch(0.945 0.006 62);
+    --accent: oklch(0.55 0.11 62);
+    --accent-soft: oklch(0.955 0.03 70);
+    --code-bg: oklch(0.955 0.008 62);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: oklch(0.155 0.014 62);
+      --panel: oklch(0.192 0.014 62);
+      --ink: oklch(0.93 0.008 62);
+      --muted: oklch(0.72 0.012 62);
+      --faint: oklch(0.58 0.014 62);
+      --line: oklch(0.28 0.012 62);
+      --line-soft: oklch(0.235 0.012 62);
+      --accent: oklch(0.78 0.1 68);
+      --accent-soft: oklch(0.245 0.03 62);
+      --code-bg: oklch(0.225 0.012 62);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: oklch(0.155 0.014 62);
+    --panel: oklch(0.192 0.014 62);
+    --ink: oklch(0.93 0.008 62);
+    --muted: oklch(0.72 0.012 62);
+    --faint: oklch(0.58 0.014 62);
+    --line: oklch(0.28 0.012 62);
+    --line-soft: oklch(0.235 0.012 62);
+    --accent: oklch(0.78 0.1 68);
+    --accent-soft: oklch(0.245 0.03 62);
+    --code-bg: oklch(0.225 0.012 62);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: Newsreader, Georgia, serif; font-size: 17.5px; line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+  .shell { max-width: 1180px; margin: 0 auto; padding: 0 28px 120px; }
+  .masthead { padding: 76px 0 34px; border-bottom: 1px solid var(--line); }
+  .kicker {
+    font-family: "IBM Plex Mono", monospace; font-size: 11px; font-weight: 500;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent);
+  }
+  h1 {
+    font-family: Sora, system-ui, sans-serif; font-weight: 200;
+    font-size: clamp(34px, 5.4vw, 54px); line-height: 1.04; letter-spacing: -0.025em;
+    margin: 14px 0 0; text-wrap: balance; color: var(--ink);
+  }
+  .meta {
+    margin-top: 20px; display: flex; flex-wrap: wrap; gap: 10px;
+    font-family: "IBM Plex Mono", monospace; font-size: 11.5px;
+  }
+  .tag {
+    padding: 5px 11px; border-radius: 999px; border: 1px solid var(--line);
+    color: var(--muted); letter-spacing: 0.04em;
+  }
+  .tag.hot { border-color: var(--accent); color: var(--accent); }
+
+  .doc { display: grid; grid-template-columns: 232px minmax(0, 1fr); gap: 60px; padding-top: 44px; }
+  @media (max-width: 900px) { .doc { grid-template-columns: minmax(0, 1fr); gap: 26px; } }
+
+  nav { position: sticky; top: 32px; align-self: start; max-height: calc(100vh - 64px); overflow-y: auto; }
+  @media (max-width: 900px) {
+    nav { position: static; max-height: none; padding: 18px 20px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
+  }
+  nav a {
+    display: block; font-family: Sora, system-ui, sans-serif; font-size: 12.5px;
+    color: var(--muted); text-decoration: none; padding: 5px 0; line-height: 1.4;
+    border-left: 2px solid transparent; padding-left: 12px; margin-left: -14px;
+  }
+  nav a:hover { color: var(--ink); border-left-color: var(--accent); }
+  nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  main { max-width: 74ch; }
+  h2 {
+    font-family: Sora, system-ui, sans-serif; font-weight: 400; font-size: 27px;
+    line-height: 1.18; letter-spacing: -0.02em; margin: 68px 0 18px;
+    padding-top: 22px; border-top: 1px solid var(--line); text-wrap: balance;
+  }
+  main > h2:first-child { margin-top: 0; border-top: none; padding-top: 0; }
+  h3 {
+    font-family: Sora, system-ui, sans-serif; font-weight: 600; font-size: 15px;
+    letter-spacing: 0.01em; margin: 38px 0 12px; color: var(--ink);
+  }
+  h4 { font-family: Sora, system-ui, sans-serif; font-weight: 600; font-size: 14px; margin: 28px 0 10px; }
+  p { margin: 0 0 16px; text-wrap: pretty; }
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  strong { font-weight: 500; color: var(--ink); }
+  em { font-style: italic; color: var(--muted); }
+  code {
+    font-family: "IBM Plex Mono", monospace; font-size: 0.83em;
+    background: var(--code-bg); padding: 2px 5px; border-radius: 4px;
+  }
+  .rid {
+    font-family: "IBM Plex Mono", monospace; font-size: 0.82em; font-weight: 500;
+    color: var(--accent); letter-spacing: 0.02em; white-space: nowrap;
+  }
+
+  ul, ol { margin: 0 0 18px; padding-left: 24px; }
+  li { margin-bottom: 8px; }
+  ul.check { list-style: none; padding-left: 0; }
+  ul.check li {
+    display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 12px;
+    align-items: start; margin-bottom: 11px;
+  }
+  ul.check li::before {
+    content: ""; width: 17px; height: 17px; margin-top: 6px;
+    border: 1.5px solid var(--line); border-radius: 4px; background: var(--panel);
+  }
+
+  blockquote {
+    margin: 0 0 26px; padding: 18px 22px; background: var(--accent-soft);
+    border-radius: 10px; font-size: 15.5px; color: var(--muted); line-height: 1.55;
+  }
+  blockquote strong { color: var(--ink); }
+
+  .tw { overflow-x: auto; margin: 0 0 26px; border: 1px solid var(--line); border-radius: 10px; }
+  table {
+    width: 100%; border-collapse: collapse; font-family: Sora, system-ui, sans-serif;
+    font-size: 13.5px; line-height: 1.5; font-variant-numeric: tabular-nums;
+  }
+  thead th {
+    text-align: left; font-weight: 600; font-size: 11px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--faint); padding: 12px 15px;
+    background: var(--panel); border-bottom: 1px solid var(--line); white-space: nowrap;
+  }
+  td { padding: 12px 15px; border-bottom: 1px solid var(--line-soft); vertical-align: top; color: var(--muted); }
+  tbody tr:last-child td { border-bottom: none; }
+  td:first-child { color: var(--ink); }
+  td strong { color: var(--ink); }
+</style>
+
+<div class="shell">
+<header class="masthead">
+  <div class="kicker">Sleep Noise · release 1.0</div>
+  <h1>Todo lo que hay que construir, medir y declarar</h1>
+    <div class="meta">
+    <span class="tag">24 agosto 2026</span>
+    <span class="tag">20 requisitos funcionales</span>
+    <span class="tag">11 no funcionales</span>
+    <span class="tag">10 hitos</span>
+    <span class="tag hot">5 decisiones pendientes</span>
+  </div>
+</header>
+
+<div class="doc">
+  <nav aria-label="Secciones"><a href="#1-definicion-del-producto">1. Definición del producto</a>
+<a href="#2-alcance-de-la-1-0">2. Alcance de la 1.0</a>
+<a href="#3-direccion-visual">3. Dirección visual</a>
+<a href="#4-pantallas-y-navegacion">4. Pantallas y navegación</a>
+<a href="#5-requisitos-funcionales">5. Requisitos funcionales</a>
+<a href="#6-requisitos-no-funcionales">6. Requisitos no funcionales</a>
+<a href="#7-convivencia-con-el-sistema">7. Convivencia con el sistema</a>
+<a href="#8-datos-persistidos">8. Datos persistidos</a>
+<a href="#9-internacionalizacion">9. Internacionalización</a>
+<a href="#10-accesibilidad">10. Accesibilidad</a>
+<a href="#11-estrategia-de-pruebas">11. Estrategia de pruebas</a>
+<a href="#12-plan-de-accion">12. Plan de acción</a>
+<a href="#13-preparacion-de-la-publicacion-en-play">13. Preparación de la publicación en Play</a>
+<a href="#14-riesgos">14. Riesgos</a>
+<a href="#15-decisiones-pendientes-de-confirmar">15. Decisiones pendientes de confirmar</a>
+<a href="#16-definicion-de-listo-para-publicar">16. Definición de «listo para publicar»</a></nav>
+  <main><!-- titulo al masthead -->
+<blockquote>Documento vinculante para la primera versión publicable. Lo que no está aquí, no entra en la 1.0. Complementa a <code>docs/analisis-tecnico.md</code> (el <em>cómo</em> técnico) y a <code>CLAUDE.md</code> (las reglas de trabajo). Fecha: 2026-08-24 · Estado: <strong>pendiente de una decisión del autor</strong> (§13) · Sin código todavía.</blockquote>
+<h2 id="1-definicion-del-producto">1. Definición del producto</h2>
+<p>Una app Android para dormir escuchando ruido. Se abre, suena, y no pide nada más.</p>
+<p><strong>El caso de uso que gobierna cada decisión</strong>: una persona en la cama, a oscuras, con los ojos medio cerrados, que quiere que suene algo en dos segundos y luego olvidarse del móvil durante ocho horas. Cualquier funcionalidad que no sirva a ese momento se queda fuera.</p>
+<div class="tw"><table>
+<tbody>
+<tr><td>Nombre</td><td>Sleep Noise</td></tr>
+<tr><td><code>applicationId</code></td><td><code>com.jjrapps.sleepnoise</code></td></tr>
+<tr><td>Versión objetivo</td><td><code>versionName</code> <strong>1.0</strong>, <code>versionCode</code> <strong>1</strong></td></tr>
+<tr><td>Idiomas</td><td>Inglés (base) y español</td></tr>
+<tr><td>Dispositivos</td><td>Teléfonos y tablets Android 12+ (<code>minSdk</code> 31)</td></tr>
+<tr><td>Precio</td><td>Gratis, sin anuncios, sin compras, sin cuentas</td></tr>
+<tr><td>Red</td><td>La app <strong>no usa internet</strong>. No declara <code>INTERNET</code>.</td></tr>
+</tbody></table></div>
+<h2 id="2-alcance-de-la-1-0">2. Alcance de la 1.0</h2>
+<h3 id="2-1-entra">2.1 Entra</h3>
+<div class="tw"><table>
+<thead><tr><th>Bloque</th><th>Contenido</th></tr></thead>
+<tbody>
+<tr><td>Sonidos</td><td>Dos: ruido blanco y ruido marrón, sintetizados en el dispositivo</td></tr>
+<tr><td>Reproducción</td><td>Bucle indefinido, en segundo plano, con la pantalla apagada, durante horas</td></tr>
+<tr><td>Arranque</td><td>Automático al abrir la app, con el último sonido escuchado</td></tr>
+<tr><td>Volumen</td><td>Aro arrastrable + slider convencional, con curva perceptual</td></tr>
+<tr><td>Temporizador</td><td>Presets y valor personalizado, con fade out final</td></tr>
+<tr><td>Notificación</td><td><code>MediaStyle</code> con pausa, parar y +15 min</td></tr>
+<tr><td>Ajustes</td><td>Reproducir al abrir, idioma, versión, novedades, feedback</td></tr>
+<tr><td>Novedades</td><td>Changelog por versión, traducido</td></tr>
+<tr><td>Accesibilidad</td><td>TalkBack completo, targets ≥ 48 dp, texto escalable hasta 200 %</td></tr>
+</tbody></table></div>
+<h3 id="2-2-no-entra-y-no-se-discute-durante-la-1-0">2.2 No entra (y no se discute durante la 1.0)</h3>
+<p>Ruido rosa y gris · sonidos naturales o grabados · mezcla de varios sonidos · ecualizador · modo claro · dynamic color · widget de escritorio · tile de ajustes rápidos · Wear OS · Android Auto · alarma de despertador · estadísticas de sueño · copia de seguridad en la nube · analítica · onboarding con pantallas de bienvenida · valoración in-app.</p>
+<p>El modo claro y dynamic color quedan fuera <strong>por decisión de diseño</strong>, no por falta de tiempo: ver <code>docs/decisions/002-direccion-visual-noche-profunda.md</code>.</p>
+<h2 id="3-direccion-visual">3. Dirección visual</h2>
+<p>Dirección <strong>«Noche profunda»</strong>, aprobada el 2026-08-24. Tema <strong>oscuro único</strong>.</p>
+<h3 id="3-1-color">3.1 Color</h3>
+<p>Un solo color saturado en toda la app. El resto es una escala de grises cálidos.</p>
+<div class="tw"><table>
+<thead><tr><th>Token</th><th>Valor</th><th>Uso</th></tr></thead>
+<tbody>
+<tr><td><code>background</code></td><td><code>oklch(0.155 0.014 62)</code></td><td>Fondo de todas las pantallas</td></tr>
+<tr><td><code>surface</code></td><td><code>oklch(0.185 0.012 62)</code></td><td>Tarjetas y controles en reposo</td></tr>
+<tr><td><code>surfaceSelected</code></td><td><code>oklch(0.235 0.022 62)</code></td><td>Control seleccionado</td></tr>
+<tr><td><code>surfaceRaised</code></td><td><code>oklch(0.215 0.018 62)</code></td><td>Centro del aro, hojas modales</td></tr>
+<tr><td><code>outline</code></td><td><code>oklch(0.26 0.012 62)</code></td><td>Bordes y separadores</td></tr>
+<tr><td><code>accent</code></td><td><code>#E8A860</code></td><td>Aro de volumen, iconos activos, valores</td></tr>
+<tr><td><code>onBackground</code></td><td><code>oklch(0.94 0.008 62)</code></td><td>Texto principal</td></tr>
+<tr><td><code>onBackgroundVariant</code></td><td><code>oklch(0.80 0.012 62)</code></td><td>Texto secundario</td></tr>
+<tr><td><code>onBackgroundMuted</code></td><td><code>oklch(0.58 0.018 62)</code></td><td>Etiquetas y unidades</td></tr>
+</tbody></table></div>
+<p>Contraste verificado: <code>onBackground</code> sobre <code>background</code> ≥ 13:1; <code>onBackgroundMuted</code> sobre <code>background</code> ≥ 4.6:1; <code>accent</code> sobre <code>background</code> ≥ 7:1.</p>
+<h3 id="3-2-tipografia">3.2 Tipografía</h3>
+<p><strong>Sora</strong> en pesos 200, 300, 400 y 600, empaquetada en la app (no descargada: la app no usa red).</p>
+<div class="tw"><table>
+<thead><tr><th>Rol</th><th>Tamaño</th><th>Peso</th><th>Uso</th></tr></thead>
+<tbody>
+<tr><td>Display</td><td>34 sp</td><td>200</td><td>Nombre del sonido</td></tr>
+<tr><td>Título</td><td>22 sp</td><td>400</td><td>Cabeceras de pantalla</td></tr>
+<tr><td>Cuerpo</td><td>15 sp</td><td>300/400</td><td>Filas de ajustes, etiquetas</td></tr>
+<tr><td>Etiqueta</td><td>12 sp</td><td>300</td><td>Unidades, mayúsculas con <code>letterSpacing</code> 0.1em</td></tr>
+<tr><td>Marca</td><td>11 sp</td><td>400</td><td>«SLEEP NOISE», <code>letterSpacing</code> 0.22em</td></tr>
+</tbody></table></div>
+<p>Todos los tamaños en <code>sp</code>, escalables hasta el 200 % del sistema sin que se corte texto.</p>
+<h3 id="3-3-forma-y-movimiento">3.3 Forma y movimiento</h3>
+<ul>
+<li>Radios: 20 dp en píldoras de sonido, 24 dp en hojas modales, círculo completo en el aro y el botón.</li>
+<li><strong>Halo que respira</strong>: ciclo de 9 s, escala 1 → 1.09, opacidad 0.55 → 0.9. Se detiene cuando la app pasa a segundo plano y cuando <code>Settings.Global.ANIMATOR_DURATION_SCALE</code> es 0.</li>
+<li>Transiciones entre pantallas: las de Material 3 Expressive por defecto (<code>motionScheme</code>), sin animaciones propias.</li>
+<li>Cambio de sonido: crossfade de audio de 800 ms, y el nombre en pantalla cruza con un fade de 200 ms.</li>
+</ul>
+<h2 id="4-pantallas-y-navegacion">4. Pantallas y navegación</h2>
+<div class="tw"><table>
+<thead><tr><th>Id</th><th>Pantalla</th><th>Llega desde</th></tr></thead>
+<tbody>
+<tr><td>P1</td><td>Reproductor</td><td>Lanzador (pantalla de inicio de la app)</td></tr>
+<tr><td>P2</td><td>Temporizador (hoja modal inferior)</td><td>P1, fila «Temporizador»</td></tr>
+<tr><td>P3</td><td>Ajustes</td><td>P1, icono de engranaje</td></tr>
+<tr><td>P4</td><td>Novedades</td><td>P3, fila «Novedades»</td></tr>
+</tbody></table></div>
+<p>Navegación con Navigation Compose. P2 es un <code>ModalBottomSheet</code>, no un destino de navegación. Predictive back activo en todas.</p>
+<h3 id="p1-reproductor">P1 · Reproductor</h3>
+<p>De arriba abajo: marca «SLEEP NOISE» e icono de ajustes · aro de volumen de 264 dp con el botón de play/pausa de 100 dp en el centro · nombre del sonido a 34 sp · línea de volumen («VOLUMEN 50») · <strong>slider de volumen</strong> · dos píldoras de sonido (Blanco / Marrón) · separador · fila de temporizador con su estado y un chevron.</p>
+<p>El slider es la corrección acordada sobre el mockup: el aro es un atajo, el slider es el camino garantizado.</p>
+<h3 id="p2-temporizador">P2 · Temporizador</h3>
+<p>Hoja modal con: opción «Sin temporizador» · presets 15, 30, 45, 60, 90 y 120 minutos · «Personalizado…» que abre un selector de 5 a 600 minutos. La opción activa se marca con el acento. Al elegir, la hoja se cierra y el temporizador arranca inmediatamente.</p>
+<h3 id="p3-ajustes">P3 · Ajustes</h3>
+<p>Dos secciones, sin más:</p>
+<ul>
+<li><strong>Reproducción</strong>: «Reproducir al abrir la app» (interruptor, activado por defecto).</li>
+<li><strong>Acerca de</strong>: «Idioma» · «Versión» (solo lectura) · «Novedades» · «Enviar comentarios».</li>
+</ul>
+<h3 id="p4-novedades">P4 · Novedades</h3>
+<p>Lista de versiones, la más reciente arriba: número de versión, fecha y sus cambios en viñetas, traducidos.</p>
+<h2 id="5-requisitos-funcionales">5. Requisitos funcionales</h2>
+<p>Cada requisito tiene un identificador estable. Los criterios de aceptación son la definición de «hecho»: si no se pueden comprobar en un dispositivo, el requisito no está terminado.</p>
+<h3 id="5-1-reproduccion">5.1 Reproducción</h3>
+<p><strong><span class="rid">RF-01</span> · Arranque automático.</strong> Al abrir la app se reproduce el último sonido escuchado, al último volumen usado, sin que el usuario pulse nada.</p>
+<ul>
+<li><em>Dado</em> que es la primera vez que se abre tras instalar, <em>cuando</em> se abre, <em>entonces</em> suena <strong>ruido marrón</strong> a <strong>volumen 50</strong> con un fade in de 1,5 s.</li>
+<li><em>Dado</em> que la última vez se escuchó ruido blanco a volumen 70, <em>cuando</em> se abre, <em>entonces</em> suena ruido blanco a volumen 70.</li>
+<li><em>Dado</em> que el ruido <strong>ya está sonando</strong> en segundo plano, <em>cuando</em> se abre la app, <em>entonces</em> no se reinicia nada: la pantalla refleja el estado actual.</li>
+<li><em>Dado</em> que el usuario desactivó «Reproducir al abrir la app», <em>cuando</em> se abre, <em>entonces</em> la app aparece en pausa con el último sonido seleccionado.</li>
+</ul>
+<p><strong><span class="rid">RF-02</span> · Bucle indefinido.</strong> El sonido no termina nunca por sí solo. Solo lo paran el usuario, el temporizador o el sistema.</p>
+<ul>
+<li><em>Dado</em> un sonido en reproducción, <em>cuando</em> pasan 8 horas, <em>entonces</em> sigue sonando sin cortes, saltos ni cambios de nivel.</li>
+</ul>
+<p><strong><span class="rid">RF-03</span> · Cambio de sonido.</strong> Se puede cambiar de sonido durante la reproducción.</p>
+<ul>
+<li><em>Dado</em> que suena ruido marrón, <em>cuando</em> se pulsa «Blanco», <em>entonces</em> el audio cruza al ruido blanco en 800 ms sin silencio intermedio ni chasquido, y el nombre en pantalla cambia con él.</li>
+<li><em>Dado</em> que la app está en pausa, <em>cuando</em> se cambia de sonido, <em>entonces</em> se guarda la selección y <strong>no</strong> empieza a sonar.</li>
+</ul>
+<p><strong><span class="rid">RF-04</span> · Volumen.</strong> Dos controles equivalentes sobre el mismo valor: el aro y el slider.</p>
+<ul>
+<li>El valor va de 0 a 100 y se muestra siempre junto al aro.</li>
+<li>La ganancia aplicada es <code>(valor/100)²</code>, no lineal, porque el oído no lo es. Volumen 50 equivale a unos -12 dB respecto al máximo.</li>
+<li><em>Dado</em> volumen 50, <em>cuando</em> se arrastra el aro hasta arriba, <em>entonces</em> el valor llega a 100 y el audio sube sin saltos escalonados.</li>
+<li><em>Dado</em> el volumen a 0, <em>entonces</em> el audio queda en silencio pero la reproducción <strong>no</strong> se pausa.</li>
+<li>El volumen de la app es independiente del volumen de multimedia del sistema. La app <strong>nunca</strong> modifica el volumen del sistema.</li>
+</ul>
+<p><strong><span class="rid">RF-05</span> · Play y pausa.</strong> Un único botón, en el centro del aro.</p>
+<ul>
+<li><em>Dado</em> que suena, <em>cuando</em> se pulsa, <em>entonces</em> se detiene con un fade out de 400 ms y el icono pasa a play.</li>
+<li><em>Dado</em> que está en pausa, <em>cuando</em> se pulsa, <em>entonces</em> arranca con un fade in de 1,5 s.</li>
+</ul>
+<h3 id="5-2-temporizador">5.2 Temporizador</h3>
+<p><strong><span class="rid">RF-06</span> · Configuración.</strong> Presets de 15, 30, 45, 60, 90 y 120 minutos, «Sin temporizador» y un valor personalizado entre 5 y 600 minutos. El último valor usado se recuerda y aparece preseleccionado.</p>
+<p><strong><span class="rid">RF-07</span> · Cuenta atrás y apagado.</strong> El tiempo restante se muestra en P1 y en la notificación, en unidades legibles («1 h 26 min», no «01:26:04»).</p>
+<ul>
+<li><em>Dado</em> un temporizador de 30 min, <em>cuando</em> quedan 60 s, <em>entonces</em> empieza un fade out lineal en dB.</li>
+<li><em>Cuando</em> llega a cero, <em>entonces</em> el audio está en silencio, la reproducción se <strong>pausa</strong> (no se para el servicio) y la notificación pasa a estado pausado sin temporizador.</li>
+<li><em>Dado</em> un temporizador activo, <em>cuando</em> el usuario pausa manualmente, <em>entonces</em> el temporizador se <strong>congela</strong>; al reanudar, continúa desde donde estaba.</li>
+<li><em>Dado</em> un temporizador activo, <em>cuando</em> el usuario cambia de sonido, <em>entonces</em> el temporizador sigue corriendo sin alterarse.</li>
+</ul>
+<p><strong><span class="rid">RF-08</span> · Ajuste en caliente.</strong> Desde la notificación y desde P1 se puede añadir 15 minutos o cancelar el temporizador.</p>
+<ul>
+<li><em>Dado</em> un temporizador en fade out, <em>cuando</em> se pulsa «+15 min», <em>entonces</em> el volumen vuelve a su valor con un fade in de 1,5 s y la cuenta atrás se reanuda.</li>
+</ul>
+<h3 id="5-3-segundo-plano-y-sistema">5.3 Segundo plano y sistema</h3>
+<p><strong><span class="rid">RF-09</span> · Notificación de control.</strong> Notificación <code>MediaStyle</code> permanente mientras hay sesión.</p>
+<ul>
+<li>Contenido: nombre del sonido como título; tiempo restante del temporizador (o «Sin temporizador») como texto secundario.</li>
+<li>Acciones: <strong>pausa/reanudar</strong>, <strong>parar</strong> y, si hay temporizador activo, <strong>+15 min</strong>.</li>
+<li>Canal <code>playback</code>, importancia baja, sin sonido ni vibración, no descartable mientras suena.</li>
+<li><em>Dado</em> el ruido sonando y la app cerrada, <em>cuando</em> se pulsa «parar» en la notificación, <em>entonces</em> el audio se detiene con fade out, el servicio sale de foreground y la notificación desaparece.</li>
+</ul>
+<p><strong><span class="rid">RF-10</span> · Reproducción con la app en segundo plano.</strong></p>
+<ul>
+<li><em>Dado</em> el ruido sonando, <em>cuando</em> se pulsa inicio y se apaga la pantalla, <em>entonces</em> sigue sonando indefinidamente.</li>
+<li><em>Dado</em> el ruido sonando, <em>cuando</em> el usuario <strong>desliza la app fuera de recientes</strong>, <em>entonces</em> <strong>sigue sonando</strong>. Cerrar la app es lo que hace alguien que se va a dormir, no una orden de parar.</li>
+</ul>
+<p><strong><span class="rid">RF-11</span> · Convivencia con el sistema.</strong> Ver la tabla completa en §7.</p>
+<p><strong><span class="rid">RF-12</span> · Persistencia.</strong> Sonido, volumen, último temporizador usado, «reproducir al abrir» e idioma sobreviven a cerrar la app, matar el proceso y reiniciar el teléfono.</p>
+<p><strong><span class="rid">RF-19</span> · Reanudación desde el sistema.</strong> <em>Dado</em> que el ruido se paró, <em>cuando</em> el usuario le da a play en el control de medios del sistema o en unos auriculares Bluetooth, <em>entonces</em> vuelve a sonar el último sonido sin abrir la app.</p>
+<p><strong><span class="rid">RF-20</span> · Botones de auriculares.</strong> Play/pausa responde al botón central de los auriculares. Las pistas siguiente/anterior no hacen nada (no hay lista).</p>
+<h3 id="5-4-ajustes-y-meta">5.4 Ajustes y meta</h3>
+<p><strong><span class="rid">RF-13</span> · Reproducir al abrir.</strong> Interruptor, activado por defecto. Desactivado, la app abre en pausa.</p>
+<p><strong><span class="rid">RF-14</span> · Idioma.</strong> Tres opciones: Automático (sistema), English, Español. El cambio se aplica al instante sin reiniciar la app.</p>
+<p><strong><span class="rid">RF-15</span> · Versión.</strong> Fila de solo lectura con <code>versionName</code> y <code>versionCode</code>.</p>
+<p><strong><span class="rid">RF-16</span> · Novedades.</strong> Lista de versiones con sus cambios, traducida. Cada versión publicada tiene su entrada.</p>
+<p><strong><span class="rid">RF-17</span> · Enviar comentarios.</strong> Abre el cliente de correo con el destinatario y un asunto que ya incluye nombre de app, <code>versionName</code> y <code>versionCode</code>. Si no hay ningún cliente de correo instalado, la app no se rompe: no pasa nada visible y se registra en el log.</p>
+<p><strong><span class="rid">RF-18</span> · Permiso de notificaciones.</strong> En Android 13+ se solicita <code>POST_NOTIFICATIONS</code> la primera vez que se va a reproducir, explicando antes para qué sirve: es la única forma de pausar sin abrir la app.</p>
+<ul>
+<li><em>Dado</em> que el usuario deniega el permiso, <em>entonces</em> el ruido suena igualmente y la app muestra una vez, de forma discreta, que sin la notificación habrá que abrir la app para pausar.</li>
+</ul>
+<h2 id="6-requisitos-no-funcionales">6. Requisitos no funcionales</h2>
+<p>Cada uno con su forma de medirlo. Un requisito no funcional sin método de medida es una intención.</p>
+<div class="tw"><table>
+<thead><tr><th>Id</th><th>Requisito</th><th>Objetivo</th><th>Cómo se mide</th></tr></thead>
+<tbody>
+<tr><td><span class="rid">RNF-01</span></td><td>Estabilidad de sesión larga</td><td>8 h continuas sin corte, salto ni cambio de nivel</td><td>Dispositivo físico, pantalla apagada, Doze forzado con <code>adb shell dumpsys deviceidle force-idle</code>, auriculares Bluetooth</td></tr>
+<tr><td><span class="rid">RNF-02</span></td><td>Consumo de batería</td><td>≤ 2,5 % por hora con pantalla apagada</td><td><code>adb shell dumpsys batterystats</code> sobre una sesión de 4 h; objetivo a validar, no promesa</td></tr>
+<tr><td><span class="rid">RNF-03</span></td><td>Tiempo hasta el primer sonido</td><td>&lt; 800 ms desde el toque en el icono, arranque en frío</td><td><code>adb shell am start -W</code> más marca temporal del primer buffer</td></tr>
+<tr><td><span class="rid">RNF-04</span></td><td>Tamaño de descarga</td><td>&lt; 4 MB el AAB firmado</td><td>Informe de tamaño de Play Console</td></tr>
+<tr><td><span class="rid">RNF-05</span></td><td>CPU en reproducción</td><td>&lt; 3 % de un núcleo con la pantalla apagada</td><td><code>adb shell top -m 5</code> durante 10 min</td></tr>
+<tr><td><span class="rid">RNF-06</span></td><td>Calidad de audio</td><td>Sin chasquidos en arranque, pausa ni cambio de sonido; sin clipping; deriva de DC &lt; 0,001</td><td>Tests JVM del generador + escucha con auriculares de estudio</td></tr>
+<tr><td><span class="rid">RNF-07</span></td><td>Fluidez de la UI</td><td>Ningún frame por encima de 16 ms en P1 con el halo animando</td><td>Macrobenchmark o <code>adb shell dumpsys gfxinfo</code></td></tr>
+<tr><td><span class="rid">RNF-08</span></td><td>Accesibilidad</td><td>Recorrido completo con TalkBack; targets ≥ 48 dp; texto legible al 200 %</td><td>Accessibility Scanner + recorrido manual con TalkBack</td></tr>
+<tr><td><span class="rid">RNF-09</span></td><td>Privacidad</td><td>La app no declara <code>INTERNET</code> y no recoge ningún dato</td><td>Revisión del manifest fusionado (<code>app/build/outputs/logs</code>)</td></tr>
+<tr><td><span class="rid">RNF-10</span></td><td>Cambios de configuración</td><td>Girar la pantalla o cambiar de idioma no interrumpe el audio ni pierde el estado</td><td>Prueba manual + test instrumentado</td></tr>
+<tr><td><span class="rid">RNF-11</span></td><td>Fabricantes agresivos</td><td>Sobrevive 8 h en un Xiaomi o Samsung con ahorro de batería activo, o detecta el corte y avisa</td><td>Prueba en dispositivo real de cada marca disponible</td></tr>
+</tbody></table></div>
+<h2 id="7-convivencia-con-el-sistema">7. Convivencia con el sistema</h2>
+<p>La tabla de decisiones que evita discusiones más adelante. Cada fila es un test manual.</p>
+<div class="tw"><table>
+<thead><tr><th>Evento del sistema</th><th>Comportamiento</th></tr></thead>
+<tbody>
+<tr><td>Llega una notificación con sonido</td><td><strong>Duck</strong>: el volumen baja temporalmente y vuelve solo</td></tr>
+<tr><td>Entra una llamada</td><td><strong>Pausa</strong>, y al colgar <strong>reanuda</strong></td></tr>
+<tr><td>Otra app empieza a reproducir música</td><td><strong>Pausa</strong> (pérdida permanente de foco). No reanuda solo</td></tr>
+<tr><td>Se desconectan los auriculares</td><td><strong>Pausa</strong>. Nunca saltar al altavoz: sería un despertar brusco</td></tr>
+<tr><td>Se conectan unos auriculares</td><td>No arranca solo. Si estaba sonando, sigue</td></tr>
+<tr><td>Asistente de voz</td><td>Duck mientras habla</td></tr>
+<tr><td>Pantalla apagada</td><td>Sigue sonando. <code>WAKE_MODE_LOCAL</code> mantiene el proceso vivo</td></tr>
+<tr><td>Doze / modo avión</td><td>Sigue sonando: el servicio en primer plano está exento</td></tr>
+<tr><td>Reinicio del teléfono</td><td><strong>No</strong> arranca solo. El usuario abre la app cuando quiere dormir</td></tr>
+<tr><td>Batería crítica</td><td>El sistema puede matar el servicio. No se hace nada especial</td></tr>
+<tr><td>App deslizada fuera de recientes</td><td><strong>Sigue sonando</strong> (<span class="rid">RF-10</span>)</td></tr>
+<tr><td>Modo «No molestar»</td><td>Sigue sonando: es multimedia, no una notificación</td></tr>
+<tr><td>Alarma del despertador</td><td>El sistema la mezcla por encima. La app no interfiere</td></tr>
+</tbody></table></div>
+<h2 id="8-datos-persistidos">8. Datos persistidos</h2>
+<p>Todo en DataStore Preferences. <strong>Sin base de datos</strong>: no hay nada que historiar.</p>
+<div class="tw"><table>
+<thead><tr><th>Clave</th><th>Tipo</th><th>Valor inicial</th><th>Notas</th></tr></thead>
+<tbody>
+<tr><td><code>last_sound</code></td><td>String</td><td><code>"brown"</code></td><td><code>"brown"</code> o <code>"white"</code></td></tr>
+<tr><td><code>volume</code></td><td>Int</td><td><code>50</code></td><td>0–100</td></tr>
+<tr><td><code>timer_minutes</code></td><td>Int</td><td><code>60</code></td><td>Último preset usado. <code>0</code> = sin temporizador</td></tr>
+<tr><td><code>autoplay_on_open</code></td><td>Boolean</td><td><code>true</code></td><td><span class="rid">RF-13</span></td></tr>
+<tr><td><code>language</code></td><td>String</td><td><code>"auto"</code></td><td><code>"auto"</code>, <code>"en"</code>, <code>"es"</code></td></tr>
+<tr><td><code>last_seen_changelog</code></td><td>Int</td><td><code>0</code></td><td><code>versionCode</code> de las últimas novedades vistas</td></tr>
+<tr><td><code>notif_rationale_shown</code></td><td>Boolean</td><td><code>false</code></td><td>Para no repetir el aviso de <span class="rid">RF-18</span></td></tr>
+</tbody></table></div>
+<p>El temporizador en curso <strong>no</strong> se persiste: si el proceso muere, se ha perdido la sesión de sueño de todas formas y reanudar una cuenta atrás huérfana sería peor que no hacerlo.</p>
+<p><code>android:allowBackup="false"</code>: son siete preferencias reconstruibles en dos toques, y no merecen el riesgo de restaurar un estado incoherente en otro dispositivo.</p>
+<h2 id="9-internacionalizacion">9. Internacionalización</h2>
+<p>Regla completa en <code>CLAUDE.md</code> §5. Resumen operativo:</p>
+<ul>
+<li><strong>Inglés</strong> en <code>res/values/strings.xml</code> (base y fallback para cualquier idioma no soportado).</li>
+<li><strong>Español</strong> en <code>res/values-es/strings.xml</code>, sin cualificador de región.</li>
+<li><code>res/xml/locale_config.xml</code> con <code>en</code> y <code>es</code>, declarado en el manifest.</li>
+<li>Cambio en Ajustes con <code>AppCompatDelegate.setApplicationLocales()</code>, más copia en DataStore para API 31–32.</li>
+<li><code>androidResources { localeFilters += listOf("en", "es") }</code>.</li>
+</ul>
+<p>Superficies que hay que traducir y que se olvidan siempre: <strong>el nombre del canal de notificación</strong>, <strong>el texto de la notificación</strong>, <strong>las acciones de la notificación</strong>, el nombre de la app en el lanzador, el asunto del correo de feedback y las entradas del changelog.</p>
+<p>Criterio de aceptación: con el teléfono en alemán, toda la app se ve en inglés, incluida la notificación. Con el teléfono en español de México, toda la app se ve en español.</p>
+<h2 id="10-accesibilidad">10. Accesibilidad</h2>
+<p>No es una fase final, es parte de cada pantalla.</p>
+<ul>
+<li><strong>Etiquetas de contenido</strong> en todos los controles sin texto: botón de play/pausa (con estado: «Reproducir» / «Pausar»), icono de ajustes, chevron del temporizador.</li>
+<li><strong>El aro es un control</strong>, así que expone su rol y su valor a TalkBack: <code>progressBarRangeInfo</code> con el valor actual, y acciones de incrementar/decrementar. El slider de debajo cubre a quien navegue con teclado o conmutador.</li>
+<li><strong>Estado leído en voz alta</strong> al cambiar de sonido y al vencer el temporizador, mediante anuncios de accesibilidad, no solo cambio visual.</li>
+<li><strong>Objetivos táctiles ≥ 48 dp</strong> en todo, incluidos los iconos de 20 dp, que van dentro de una caja de 44–48 dp.</li>
+<li><strong>Texto escalable</strong> hasta el 200 % sin recortes: nada de alturas fijas en filas con texto.</li>
+<li><strong>Movimiento</strong>: el halo se detiene si el sistema tiene las animaciones desactivadas.</li>
+<li><strong>Contraste</strong>: mínimo 4.5:1 en texto normal y 3:1 en texto grande y elementos gráficos (§3.1).</li>
+</ul>
+<h2 id="11-estrategia-de-pruebas">11. Estrategia de pruebas</h2>
+<div class="tw"><table>
+<thead><tr><th>Nivel</th><th>Qué cubre</th><th>Herramienta</th></tr></thead>
+<tbody>
+<tr><td>Unitario JVM</td><td>Generadores de ruido (RMS, deriva de DC, clipping, pendiente espectral por FFT), curva de volumen, cálculo del fade, lógica del temporizador con reloj virtual, repositorio de preferencias</td><td>JUnit 4, MockK, Turbine</td></tr>
+<tr><td>UI</td><td>P1 refleja el estado del reproductor; el slider y el aro escriben el mismo valor; la hoja del temporizador devuelve el preset; navegación a Ajustes y Novedades</td><td>Compose UI Test</td></tr>
+<tr><td>Instrumentado</td><td>El servicio arranca en primer plano y publica notificación; el <code>MediaController</code> se conecta; parar desde la notificación detiene el audio</td><td>AndroidJUnit + <code>MediaController</code> de prueba</td></tr>
+<tr><td>Manual obligatorio</td><td>Las 13 filas de §7, una por una</td><td>Dispositivo físico</td></tr>
+<tr><td>Manual de resistencia</td><td>Una sesión de 8 h real con auriculares, y una escucha crítica de cada sonido</td><td>Oído</td></tr>
+</tbody></table></div>
+<p>Matriz mínima antes de publicar: <strong>API 31</strong> (emulador), <strong>API 33</strong> (emulador, para el permiso de notificaciones), <strong>API 36</strong> (emulador, edge-to-edge y predictive back) y <strong>un dispositivo físico</strong> para todo lo que tiene que ver con audio, batería y Doze.</p>
+<p>Los tests unitarios y de UI se ejecutan con <code>./gradlew lint test</code>, y tienen que quedar en verde antes de cada commit.</p>
+<p>El <strong>recorrido manual completo previo a cada release</strong> está escrito como lista de comprobación en <code>docs/play-store-publication-texts.md</code>, sección «Checklist para publicar»: es la que no se puede saltar, e incluye el caso del permiso de notificaciones <strong>denegado</strong>, que es el que se olvida.</p>
+<h2 id="12-plan-de-accion">12. Plan de acción</h2>
+<p>Diez hitos secuenciales. Cada uno acaba con algo comprobable: si no se puede demostrar, no está hecho. El orden no es negociable en las dependencias marcadas.</p>
+<div class="tw"><table>
+<thead><tr><th>#</th><th>Hito</th><th>Contenido</th><th>Hecho cuando</th></tr></thead>
+<tbody>
+<tr><td><strong><span class="rid">H0</span></strong></td><td>Scaffolding</td><td>Proyecto Gradle, version catalog, Hilt, tema oscuro con tokens de §3, fuente Sora empaquetada, navegación con las cuatro pantallas vacías, i18n montada con dos strings de prueba</td><td><code>./gradlew assembleDebug</code> pasa y la app abre en negro con el nombre en su sitio, en inglés y en español</td></tr>
+<tr><td><strong><span class="rid">H1</span></strong></td><td>Motor de ruido</td><td><code>NoiseGenerator</code>, blanco gaussiano, marrón con corrección de DC y limitador, estéreo decorrelacionado</td><td>Tests JVM en verde: RMS igualado entre ambos, DC &lt; 0,001, sin clipping, pendiente de -6 dB/oct verificada por FFT</td></tr>
+<tr><td><strong><span class="rid">H2</span></strong></td><td>Puente a Media3</td><td><code>NoiseDataSource</code> sirviendo WAV infinito, <code>ExoPlayer</code> configurado (atributos de audio, wake mode, becoming noisy, buffer grande)</td><td>Suena en un test instrumentado y a oído, 10 min sin artefactos</td></tr>
+<tr><td><strong><span class="rid">H3</span></strong></td><td>Servicio y notificación</td><td><code>PlaybackService</code> sobre <code>MediaSessionService</code>, notificación <code>MediaStyle</code>, <code>onTaskRemoved</code> que no para, permiso de notificaciones</td><td>Suena con la app cerrada y la pantalla apagada; la notificación pausa y para; las 13 filas de §7 pasan</td></tr>
+<tr><td><strong><span class="rid">H4</span></strong></td><td>Pantalla principal</td><td>P1 completa: aro, botón, nombre, slider, píldoras de sonido, crossfade</td><td>Se puede usar la app entera desde P1; test de UI en verde</td></tr>
+<tr><td><strong><span class="rid">H5</span></strong></td><td>Persistencia y arranque</td><td>DataStore con las siete claves, arranque automático (<span class="rid">RF-01</span>) con sus cuatro casos</td><td>Los cuatro criterios de <span class="rid">RF-01</span> comprobados en dispositivo</td></tr>
+<tr><td><strong><span class="rid">H6</span></strong></td><td>Temporizador</td><td>Hoja P2, cuenta atrás, fade out, +15 min, cancelar, congelar al pausar</td><td><span class="rid">RF-06</span> a <span class="rid">RF-08</span> comprobados, incluido el caso de pausa manual a mitad de cuenta</td></tr>
+<tr><td><strong><span class="rid">H7</span></strong></td><td>Ajustes y novedades</td><td>P3 y P4 completas, changelog con su catálogo, feedback por correo, selector de idioma</td><td>Cambio de idioma en caliente correcto, incluida la notificación; correo se abre con el asunto bien formado</td></tr>
+<tr><td><strong><span class="rid">H8</span></strong></td><td>Pulido</td><td>R8 y reglas de proguard, icono adaptativo, edge-to-edge, TalkBack completo, revisión de contrastes, splash</td><td>Accessibility Scanner sin hallazgos críticos; build de release funciona con minify</td></tr>
+<tr><td><strong><span class="rid">H9</span></strong></td><td>Publicación</td><td>Firma, pipeline de capturas (6 escenas × 2 idiomas × 3 formatos), publicar la política de privacidad, rellenar la ficha con los textos ya escritos, declaración de servicio en primer plano, test interno</td><td>§13 completo, <code>revisar.py</code> en verde y la release aceptada en Play Console</td></tr>
+</tbody></table></div>
+<p>Dependencias duras: <span class="rid">H1</span> antes de <span class="rid">H2</span>, <span class="rid">H2</span> antes de <span class="rid">H3</span>, <span class="rid">H3</span> antes de <span class="rid">H4</span> (la UI habla con el servicio, no con el reproductor). <span class="rid">H5</span>, <span class="rid">H6</span> y <span class="rid">H7</span> son independientes entre sí una vez cerrado <span class="rid">H4</span>.</p>
+<p>La sesión de resistencia de 8 h (<span class="rid">RNF-01</span>) se ejecuta al terminar <span class="rid">H3</span> y <strong>se repite</strong> al terminar <span class="rid">H8</span>: R8 y el minify pueden romper cosas que funcionaban.</p>
+<h2 id="13-preparacion-de-la-publicacion-en-play">13. Preparación de la publicación en Play</h2>
+<p>Lo que hay que tener listo además del código. Es donde se pierden las releases, así que <strong>casi todo está ya escrito</strong>: lo que queda para <span class="rid">H9</span> es ejecutarlo, no redactarlo.</p>
+<div class="tw"><table>
+<thead><tr><th>Pieza</th><th>Dónde está</th><th>Estado</th></tr></thead>
+<tbody>
+<tr><td>Nombre, descripciones, promo, categoría, etiquetas</td><td><code>docs/play-store-publication-texts.md</code></td><td><strong>Escrito</strong>, con los conteos de caracteres calculados</td></tr>
+<tr><td>Notas de la versión 1.0 (<code>es-ES</code>, <code>en-US</code> y el formato con etiquetas)</td><td><code>docs/play-release-notes.md</code></td><td><strong>Escrito</strong></td></tr>
+<tr><td>Política de privacidad bilingüe</td><td><code>docs/privacy-policy/sleep-noise.html</code></td><td><strong>Escrita</strong>, pendiente de publicar en GitHub Pages</td></tr>
+<tr><td>Respuestas de seguridad de los datos y clasificación de contenido</td><td><code>docs/play-store-publication-texts.md</code></td><td><strong>Escritas</strong></td></tr>
+<tr><td>Declaración de servicio en primer plano (<code>mediaPlayback</code>), en los dos idiomas</td><td><code>docs/play-store-publication-texts.md</code></td><td><strong>Escrita</strong></td></tr>
+<tr><td>Checklist de publicación y recorrido manual</td><td><code>docs/play-store-publication-texts.md</code></td><td><strong>Escrito</strong></td></tr>
+<tr><td>Pipeline de capturas</td><td><code>docs/store-assets/generar-capturas/README.md</code></td><td><strong>Diseñado</strong>, scripts pendientes de <span class="rid">H9</span></td></tr>
+<tr><td>Capturas (36 imágenes)</td><td><code>docs/store-assets/capturas/</code></td><td>Pendiente de <span class="rid">H9</span></td></tr>
+<tr><td>Icono 512×512 y gráfico de cabecera 1024×500</td><td>—</td><td>Pendiente de <span class="rid">H8</span></td></tr>
+</tbody></table></div>
+<h3 id="13-1-firma-y-build">13.1 Firma y build</h3>
+<ul>
+<li>Keystore de subida <strong>nuevo</strong> para esta app, con Play App Signing activado.</li>
+<li><code>keystore.properties</code> y el <code>.jks</code> fuera del repositorio. El <code>.gitignore</code> los cubre <strong>antes</strong> del primer commit de código, no después.</li>
+<li>Build de release con <code>isMinifyEnabled</code> y <code>isShrinkResources</code> activados. El generador de ruido no usa reflexión, pero hay que confirmar que las reglas que trae Media3 se están aplicando de verdad.</li>
+<li>El keystore se respalda fuera del ordenador de desarrollo antes de publicar. Perderlo es perder la capacidad de actualizar la app.</li>
+</ul>
+<h3 id="13-2-los-textos-y-por-que-se-generan-con-un-script">13.2 Los textos, y por qué se generan con un script</h3>
+<p><code>scripts/generar-textos-ficha.py</code> contiene los textos de origen, verifica los límites de Play y <strong>escribe</strong> <code>play-store-publication-texts.md</code> y <code>play-release-notes.md</code> con los conteos calculados. Los límites de Play son duros —30 caracteres el nombre, 80 la descripción corta, 500 las notas de la versión— y se rechazan al pegar. Contar a mano es como se cuela el error.</p>
+<p>Si se edita un texto, se edita en el script y se vuelve a pasar. Editar el markdown a mano deja los conteos mintiendo, que es peor que no tenerlos.</p>
+<p>Las tres cosas que la descripción larga dice <strong>a propósito</strong>, porque son las que evitan una valoración de una estrella el primer día: que hay <strong>solo dos sonidos</strong>, que el ruido está <strong>generado y no grabado</strong>, y que la interfaz es <strong>oscura siempre</strong>.</p>
+<h3 id="13-3-capturas">13.3 Capturas</h3>
+<p>Automatizadas: 6 escenas × 2 idiomas × 3 formatos = <strong>36 imágenes</strong>, con <code>revisar.py</code> obligatorio antes de subirlas. El diseño, las escenas y las lecciones portadas de «¡Bebe agua!» están en <code>docs/store-assets/generar-capturas/README.md</code>, y la decisión en el ADR 003.</p>
+<p>Dos particularidades de esta app que el pipeline aprovecha o sufre:</p>
+<ul>
+<li><strong>No hay siembra de datos</strong>, así que se puede capturar con el AAB de release, que es el que se publica. En Bebe Agua la siembra con <code>run-as</code> obligaba a usar el debug, y con el de release el pase terminaba en verde con las capturas vacías.</li>
+<li><strong>El halo animado rompería el control de idioma</strong> de <code>revisar.py</code>, que detecta un idioma colado comprobando que la captura <code>es</code> y la <code>en</code> de la misma escena no sean idénticas. Se desactivan las animaciones del sistema durante el pase, que además hace las capturas reproducibles.</li>
+</ul>
+<h3 id="13-4-ruta-de-lanzamiento">13.4 Ruta de lanzamiento</h3>
+<ol>
+<li><strong>Test interno</strong> con el propio autor, para validar el AAB firmado y minificado en un dispositivo real, incluida la sesión de resistencia de 8 h.</li>
+<li><strong>Test cerrado</strong> si la cuenta de desarrollador lo requiere: las cuentas personales creadas después de noviembre de 2023 necesitan 12 testers durante 14 días antes de poder publicar en producción. Al haber publicado ya «¡Bebe agua!» con esta cuenta probablemente no aplique, pero <strong>hay que confirmarlo en Play Console antes de planificar fechas</strong>: son dos semanas de diferencia.</li>
+<li><strong>Producción</strong>, con despliegue por fases al 20 % durante 48 h antes del 100 %.</li>
+</ol>
+<h3 id="13-5-documentacion-que-se-actualiza-con-cada-release">13.5 Documentación que se actualiza con cada release</h3>
+<ul>
+<li><code>CHANGELOG.md</code>: la sección de la versión.</li>
+<li><code>ChangelogCatalog.kt</code> y los <code>string-array</code> <code>changelog_*</code> en inglés y español.</li>
+<li><code>scripts/generar-textos-ficha.py</code>: el bloque de notas de la nueva versión, y volver a pasarlo.</li>
+</ul>
+<p>Las tres cosas tienen que decir lo mismo con distinto nivel de detalle: el <code>CHANGELOG.md</code> es interno, la pantalla de Novedades es para quien ya tiene la app, y las notas de Play son para quien todavía no.</p>
+<h2 id="14-riesgos">14. Riesgos</h2>
+<div class="tw"><table>
+<thead><tr><th>Riesgo</th><th>Impacto</th><th>Qué hacemos</th></tr></thead>
+<tbody>
+<tr><td>Fabricantes que matan el servicio</td><td>El ruido se corta a mitad de la noche y la app parece rota</td><td>Wake mode, notificación permanente, y detección del corte para sugerir excluir la app del ahorro de batería</td></tr>
+<tr><td><code>material3</code> en alpha</td><td>Una subida de versión rompe la UI</td><td>Fijar versión exacta, revisar el changelog de la librería antes de subirla, no subir durante <span class="rid">H9</span></td></tr>
+<tr><td>Valoraciones por «solo dos sonidos»</td><td>Media de estrellas baja desde el primer día</td><td>Decirlo en la descripción corta, no solo en la larga</td></tr>
+<tr><td>El fade out del temporizador molesta</td><td>Alguien lo percibe como que la app «se muere»</td><td>60 s es largo y es lineal en dB; si aparece la queja, hacerlo configurable en la 1.1</td></tr>
+<tr><td>El aro de volumen no se descubre</td><td>El usuario no sabe cambiar el volumen</td><td>Ya mitigado: el slider convencional debajo (§4, P1)</td></tr>
+<tr><td>Consumo de batería por encima del objetivo</td><td>Desinstalaciones y reseñas negativas</td><td>Buffer grande en el <code>AudioTrack</code>, medida obligatoria en <span class="rid">H3</span> y <span class="rid">H8</span>, y si <span class="rid">RNF-02</span> no se cumple, evaluar volver a un bucle pregrabado antes de publicar</td></tr>
+<tr><td>Revisión de Play por el servicio en primer plano</td><td>Retraso de días en el lanzamiento</td><td>Preparar la declaración y el vídeo <strong>antes</strong> de subir el AAB, no cuando lo pidan</td></tr>
+</tbody></table></div>
+<h2 id="15-decisiones-pendientes-de-confirmar">15. Decisiones pendientes de confirmar</h2>
+<p>Estas cinco no las puedo decidir yo. Ninguna bloquea empezar por <span class="rid">H0</span>.</p>
+<ol>
+<li><strong>Dirección de correo para el feedback.</strong> Asumida <code>jjrmobileapps@gmail.com</code>, la misma de Bebe Agua, y <strong>ya escrita</strong> en la política de privacidad y en los textos de la ficha. Si es otra, se cambia en un sitio y se vuelve a pasar el script.</li>
+<li><strong>URL de la política de privacidad.</strong> El documento está escrito (<code>docs/privacy-policy/sleep-noise.html</code>); falta <strong>activar GitHub Pages</strong> en este repositorio y pegar la URL resultante en Play Console.</li>
+<li><strong>Requisito de test cerrado de 12 testers</strong> (§13.4): hay que mirarlo en Play Console. Cambia el calendario en dos semanas y es lo único de esta lista que puede retrasar la publicación.</li>
+<li><strong>Nombre en la ficha de Play.</strong> Hay dos versiones escritas y contadas: con cola de búsqueda («Sleep Noise: ruido para dormir» / «Sleep Noise: white noise sleep», 30 caracteres justos los dos) o limpio («Sleep Noise», 11). La recomendación es la cola en la ficha y «Sleep Noise» a secas en el lanzador. Hay que elegir.</li>
+<li><strong>Presets del temporizador</strong> (§4, P2): la lista propuesta es 15/30/45/60/90/120. Si prefieres otra, es el momento de cambiarla, porque el último preset usado se persiste y aparece en las capturas.</li>
+</ol>
+<h2 id="16-definicion-de-listo-para-publicar">16. Definición de «listo para publicar»</h2>
+<p>La 1.0 se sube cuando <strong>todo</strong> esto es cierto:</p>
+<ul class="check">
+<li>Los 20 requisitos funcionales de §5 comprobados en un dispositivo físico.</li>
+<li>Los 11 requisitos no funcionales de §6 medidos, con sus números anotados.</li>
+<li>Las 13 filas de §7 probadas una a una.</li>
+<li>Sesión de resistencia de 8 h superada <strong>con el build de release minificado</strong>.</li>
+<li><code>./gradlew lint test</code> en verde, sin avisos suprimidos a mano.</li>
+<li>Recorrido completo con TalkBack, y Accessibility Scanner sin hallazgos críticos.</li>
+<li>La app entera revisada en inglés, en español y con el teléfono en un tercer idioma.</li>
+<li>Ficha de Play completa en los dos idiomas, con los textos de <code>docs/play-store-publication-texts.md</code> pegados tal cual.</li>
+<li>Las 36 capturas generadas y <code>revisar.py</code> en verde.</li>
+<li>Política de privacidad publicada en GitHub Pages y accesible desde Play Console.</li>
+<li>Declaración de servicio en primer plano enviada.</li>
+<li><code>CHANGELOG.md</code>, <code>ChangelogCatalog.kt</code>, los <code>string-array</code> y <code>docs/play-release-notes.md</code> actualizados y coherentes entre sí.</li>
+<li>Keystore respaldado fuera del ordenador de desarrollo.</li>
+</ul></main>
+</div>
+</div>

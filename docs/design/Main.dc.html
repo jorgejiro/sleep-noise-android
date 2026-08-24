@@ -1,0 +1,125 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@200;300;400;600&display=swap">
+  <style>
+    body { margin: 0; }
+    a { color: #e8a860; } a:hover { color: #f2c391; }
+    @keyframes breathe {
+      0%, 100% { transform: scale(1); opacity: 0.55; }
+      50% { transform: scale(1.09); opacity: 0.9; }
+    }
+    .halo { animation: breathe 9s ease-in-out infinite; }
+    @media (prefers-reduced-motion: reduce) { .halo { animation: none; } }
+  </style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: oklch(0.155 0.014 62); font-family: Sora, system-ui, sans-serif; display: flex; flex-direction: column; padding: 56px 24px 34px; position: relative; overflow: hidden;">
+
+  <div style="position: absolute; top: 150px; left: 50%; width: 420px; height: 420px; margin-left: -210px; border-radius: 50%; background: radial-gradient(circle, {{accentGlow}} 0%, rgba(0,0,0,0) 68%); pointer-events: none;" class="halo"></div>
+
+  <div style="display: flex; align-items: center; justify-content: space-between; position: relative;">
+    <div style="font-size: 11px; font-weight: 400; letter-spacing: 0.22em; text-transform: uppercase; color: oklch(0.62 0.02 62);">Sleep Noise</div>
+    <div style="width: 44px; height: 44px; margin-right: -12px; display: flex; align-items: center; justify-content: center;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="oklch(0.72 0.02 62)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3.1"></circle>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6h.09A1.65 1.65 0 0 0 10.6 3.09V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9v.09a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+      </svg>
+    </div>
+  </div>
+
+  <div style="flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; gap: 30px;">
+
+    <div style="position: relative; width: 264px; height: 264px; display: flex; align-items: center; justify-content: center;">
+      <svg width="264" height="264" viewBox="0 0 264 264" style="position: absolute; inset: 0;">
+        <circle cx="132" cy="132" r="118" fill="none" stroke="oklch(0.26 0.012 62)" stroke-width="5"></circle>
+        <circle cx="132" cy="132" r="118" fill="none" stroke="{{accent}}" stroke-width="5" stroke-linecap="round" stroke-dasharray="{{dash}}" transform="rotate(-90 132 132)"></circle>
+        <circle cx="132" cy="14" r="1.8" fill="oklch(0.42 0.012 62)"></circle>
+      </svg>
+      <div style="width: 100px; height: 100px; border-radius: 50%; background: oklch(0.215 0.018 62); display: flex; align-items: center; justify-content: center; box-shadow: 0 18px 44px rgba(0,0,0,0.45);">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="{{accent}}">
+          <rect x="6.5" y="4.5" width="3.9" height="15" rx="1.6"></rect>
+          <rect x="13.6" y="4.5" width="3.9" height="15" rx="1.6"></rect>
+        </svg>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 9px;">
+      <div style="font-size: 34px; font-weight: 200; letter-spacing: -0.015em; color: oklch(0.94 0.008 62);">{{name}}</div>
+      <div style="font-size: 12px; font-weight: 300; letter-spacing: 0.1em; color: oklch(0.58 0.018 62);">VOLUMEN {{volume}} · ARRASTRA EL ARO</div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 14px; position: relative;">
+
+    <div style="display: flex; gap: 10px;">
+      <div style="flex-grow: 1; height: 58px; border-radius: 20px; display: flex; align-items: center; justify-content: center; gap: 9px; background: {{whitePill.bg}}; border: 1px solid {{whitePill.border}};">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="{{whitePill.fg}}" stroke-width="1.7" stroke-linecap="round">
+          <path d="M2 12h2.6M6.4 5.5v13M10.2 8.5v7M14 4v16M17.8 9v6M21.6 11h.4"></path>
+        </svg>
+        <span style="font-size: 15px; font-weight: 400; color: {{whitePill.fg}};">Blanco</span>
+      </div>
+      <div style="flex-grow: 1; height: 58px; border-radius: 20px; display: flex; align-items: center; justify-content: center; gap: 9px; background: {{brownPill.bg}}; border: 1px solid {{brownPill.border}};">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="{{brownPill.fg}}" stroke-width="1.7" stroke-linecap="round">
+          <path d="M2 12h2.6M6.4 4v16M10.2 6.5v11M14 9v6M17.8 10.5v3M21.6 11.6v.8"></path>
+        </svg>
+        <span style="font-size: 15px; font-weight: 400; color: {{brownPill.fg}};">Marrón</span>
+      </div>
+    </div>
+
+    <div style="height: 1px; background: oklch(0.24 0.01 62);"></div>
+
+    <div style="height: 62px; display: flex; align-items: center; justify-content: space-between;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="oklch(0.66 0.02 62)" stroke-width="1.6" stroke-linecap="round">
+          <circle cx="12" cy="13" r="8"></circle>
+          <path d="M12 9.4v3.6l2.4 1.6M9 2h6"></path>
+        </svg>
+        <span style="font-size: 15px; font-weight: 300; color: oklch(0.8 0.012 62);">Temporizador</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="font-size: 15px; font-weight: 400; color: {{accent}};">1 h 26 min</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="oklch(0.55 0.018 62)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 6l6 6-6 6"></path>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":390,"height":844},"sound":{"editor":"enum","options":["brown","white"],"default":"brown","section":"Estado"},"volume":{"editor":"range","min":0,"max":100,"step":1,"default":50,"section":"Estado"},"accent":{"editor":"color","default":"#E8A860","options":["#E8A860","#D98A6A","#C9A9E0","#8FC0B0"],"section":"Tema"}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const accent = this.props.accent ?? '#E8A860';
+    const volume = Math.round(this.props.volume ?? 50);
+    const sound = this.props.sound ?? 'brown';
+    const circumference = 2 * Math.PI * 118;
+    const on = {
+      bg: 'oklch(0.235 0.022 62)',
+      border: accent,
+      fg: 'oklch(0.95 0.008 62)'
+    };
+    const off = {
+      bg: 'oklch(0.185 0.012 62)',
+      border: 'oklch(0.26 0.012 62)',
+      fg: 'oklch(0.63 0.018 62)'
+    };
+    return {
+      accent,
+      accentGlow: accent + '2e',
+      volume,
+      name: sound === 'white' ? 'Ruido blanco' : 'Ruido marrón',
+      dash: (circumference * volume / 100).toFixed(1) + ' ' + circumference.toFixed(1),
+      whitePill: sound === 'white' ? on : off,
+      brownPill: sound === 'brown' ? on : off
+    };
+  }
+}
+</script>
+</body>
+</html>

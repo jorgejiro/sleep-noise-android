@@ -1,0 +1,571 @@
+<title>Direcciones para Sleep Noise</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@200;300;400;600&family=Instrument+Serif&family=Karla:wght@300;400;500&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+  :root {
+    --paper: oklch(0.975 0.004 265);
+    --surface: oklch(1 0 0);
+    --ink: oklch(0.21 0.018 268);
+    --muted: oklch(0.505 0.016 268);
+    --faint: oklch(0.63 0.014 268);
+    --line: oklch(0.905 0.008 268);
+    --accent: oklch(0.47 0.11 268);
+    --pro: oklch(0.44 0.075 158);
+    --pro-bg: oklch(0.955 0.022 158);
+    --con: oklch(0.5 0.085 62);
+    --con-bg: oklch(0.965 0.03 78);
+    --shadow: 0 24px 60px -18px oklch(0.21 0.04 268 / 0.28);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: oklch(0.155 0.014 268);
+      --surface: oklch(0.196 0.016 268);
+      --ink: oklch(0.945 0.006 268);
+      --muted: oklch(0.695 0.014 268);
+      --faint: oklch(0.575 0.016 268);
+      --line: oklch(0.285 0.016 268);
+      --accent: oklch(0.775 0.1 268);
+      --pro: oklch(0.79 0.09 158);
+      --pro-bg: oklch(0.255 0.03 158);
+      --con: oklch(0.83 0.09 78);
+      --con-bg: oklch(0.265 0.035 78);
+      --shadow: 0 24px 60px -18px oklch(0 0 0 / 0.6);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: oklch(0.155 0.014 268);
+    --surface: oklch(0.196 0.016 268);
+    --ink: oklch(0.945 0.006 268);
+    --muted: oklch(0.695 0.014 268);
+    --faint: oklch(0.575 0.016 268);
+    --line: oklch(0.285 0.016 268);
+    --accent: oklch(0.775 0.1 268);
+    --pro: oklch(0.79 0.09 158);
+    --pro-bg: oklch(0.255 0.03 158);
+    --con: oklch(0.83 0.09 78);
+    --con-bg: oklch(0.265 0.035 78);
+    --shadow: 0 24px 60px -18px oklch(0 0 0 / 0.6);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Instrument Sans", system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 28px 96px; }
+
+  /* ---------- head ---------- */
+  header { padding: 88px 0 0; }
+  .eyebrow {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px; font-weight: 500; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--accent);
+  }
+  h1 {
+    font-family: Newsreader, Georgia, serif;
+    font-weight: 300; font-size: clamp(38px, 6vw, 62px); line-height: 1.02;
+    letter-spacing: -0.02em; margin: 16px 0 0; text-wrap: balance;
+  }
+  h1 em { font-style: italic; }
+  .lede {
+    margin: 20px 0 0; max-width: 62ch; font-size: 17px; color: var(--muted);
+    text-wrap: pretty;
+  }
+  .rules {
+    margin: 34px 0 0; padding: 22px 0 0; border-top: 1px solid var(--line);
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 22px;
+  }
+  .rule dt {
+    font-family: "IBM Plex Mono", monospace; font-size: 10px; font-weight: 500;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--faint);
+  }
+  .rule dd { margin: 6px 0 0; font-size: 14.5px; color: var(--ink); }
+
+  /* ---------- one direction ---------- */
+  .dir {
+    display: grid; grid-template-columns: 390px minmax(0, 1fr); gap: 56px;
+    align-items: start; padding: 72px 0; border-top: 1px solid var(--line);
+  }
+  .dir:first-of-type { border-top: none; }
+  @media (max-width: 860px) {
+    .dir { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+    .phone-wrap { display: flex; justify-content: center; }
+  }
+
+  .phone-wrap { position: sticky; top: 40px; }
+  @media (max-width: 860px) { .phone-wrap { position: static; } }
+  .phone {
+    width: 390px; height: 844px; border-radius: 46px; overflow: hidden;
+    box-shadow: var(--shadow); border: 1px solid var(--line);
+    transform: scale(1); transform-origin: top left;
+  }
+  @media (max-width: 470px) {
+    .phone { transform: scale(0.82); }
+    .phone-wrap { height: 700px; }
+  }
+
+  .dir-head { display: flex; align-items: baseline; gap: 14px; }
+  .badge {
+    font-family: "IBM Plex Mono", monospace; font-size: 13px; font-weight: 500;
+    color: var(--accent); letter-spacing: 0.04em;
+  }
+  h2 {
+    font-family: Newsreader, Georgia, serif; font-weight: 400;
+    font-size: 34px; line-height: 1.08; letter-spacing: -0.015em; margin: 0;
+  }
+  .pitch { margin: 18px 0 0; max-width: 54ch; color: var(--muted); text-wrap: pretty; }
+
+  .specs {
+    margin: 26px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 10px;
+    overflow: hidden;
+  }
+  .spec { background: var(--surface); padding: 13px 15px; }
+  .spec dt {
+    font-family: "IBM Plex Mono", monospace; font-size: 9.5px; font-weight: 500;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--faint);
+  }
+  .spec dd { margin: 5px 0 0; font-size: 14px; font-weight: 500; }
+
+  .verdicts { margin: 26px 0 0; display: flex; flex-direction: column; gap: 14px; }
+  .verdict { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 14px; align-items: start; }
+  .mark {
+    width: 22px; height: 22px; border-radius: 6px; display: flex;
+    align-items: center; justify-content: center; margin-top: 2px;
+  }
+  .mark.up { background: var(--pro-bg); color: var(--pro); }
+  .mark.down { background: var(--con-bg); color: var(--con); }
+  .verdict h3 {
+    margin: 0 0 3px; font-family: "IBM Plex Mono", monospace; font-size: 10px;
+    font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase;
+  }
+  .verdict.up h3 { color: var(--pro); }
+  .verdict.down h3 { color: var(--con); }
+  .verdict p { margin: 0; max-width: 54ch; font-size: 15px; color: var(--ink); text-wrap: pretty; }
+
+  /* ---------- close ---------- */
+  .close { border-top: 1px solid var(--line); padding: 64px 0 0; }
+  .close h2 { font-size: 28px; }
+  .close p { max-width: 62ch; color: var(--muted); }
+  .close ol { max-width: 62ch; padding-left: 22px; color: var(--muted); }
+  .close li { margin-bottom: 10px; }
+  .close strong { color: var(--ink); font-weight: 600; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+
+  /* ---------- mockup A ---------- */
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); opacity: 0.55; }
+    50% { transform: scale(1.09); opacity: 0.9; }
+  }
+  .halo { animation: breathe 9s ease-in-out infinite; }
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">Sleep Noise · fase de diseño</div>
+  <h1>Cuatro maneras de <em>sonar</em> a oscuras</h1>
+  <p class="lede">Cuatro direcciones para la pantalla principal, que es donde vive el 90 % de la app. Todas hacen exactamente lo mismo — elegir entre ruido blanco y marrón, ajustar el volumen, poner un temporizador y pausar — y lo hacen desde premisas distintas. Elige una y la construyo entera; el resto se descarta.</p>
+  <dl class="rules">
+    <div class="rule"><dt>Restricciones comunes</dt><dd>Material 3 Expressive, 390 × 844, objetivos táctiles ≥ 44 px, iconos vectoriales</dd></div>
+    <div class="rule"><dt>Lo que no dibujan</dt><dd>Barra de estado ni teclado falsos: los pinta el sistema encima</dd></div>
+    <div class="rule"><dt>Idioma</dt><dd>Mostrado en español; la app irá en inglés y español</dd></div>
+  </dl>
+</header>
+
+<!-- ============ A ============ -->
+<section class="dir">
+  <div class="phone-wrap">
+    <div class="phone">
+      <div style="width: 390px; height: 844px; background: oklch(0.155 0.014 62); font-family: Sora, system-ui, sans-serif; display: flex; flex-direction: column; padding: 56px 24px 34px; position: relative; overflow: hidden;">
+        <div class="halo" style="position: absolute; top: 150px; left: 50%; width: 420px; height: 420px; margin-left: -210px; border-radius: 50%; background: radial-gradient(circle, rgba(232,168,96,0.18) 0%, rgba(0,0,0,0) 68%); pointer-events: none;"></div>
+        <div style="display: flex; align-items: center; justify-content: space-between; position: relative;">
+          <div style="font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: oklch(0.62 0.02 62);">Sleep Noise</div>
+          <div style="width: 44px; height: 44px; margin-right: -12px; display: flex; align-items: center; justify-content: center;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="oklch(0.72 0.02 62)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.1"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6h.09A1.65 1.65 0 0 0 10.6 3.09V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9v.09a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          </div>
+        </div>
+        <div style="flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; gap: 30px;">
+          <div style="position: relative; width: 264px; height: 264px; display: flex; align-items: center; justify-content: center;">
+            <svg width="264" height="264" viewBox="0 0 264 264" style="position: absolute; inset: 0;">
+              <circle cx="132" cy="132" r="118" fill="none" stroke="oklch(0.26 0.012 62)" stroke-width="5"></circle>
+              <circle cx="132" cy="132" r="118" fill="none" stroke="#E8A860" stroke-width="5" stroke-linecap="round" stroke-dasharray="370.6 741.4" transform="rotate(-90 132 132)"></circle>
+              <circle cx="132" cy="14" r="1.8" fill="oklch(0.42 0.012 62)"></circle>
+            </svg>
+            <div style="width: 100px; height: 100px; border-radius: 50%; background: oklch(0.215 0.018 62); display: flex; align-items: center; justify-content: center; box-shadow: 0 18px 44px rgba(0,0,0,0.45);">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="#E8A860"><rect x="6.5" y="4.5" width="3.9" height="15" rx="1.6"></rect><rect x="13.6" y="4.5" width="3.9" height="15" rx="1.6"></rect></svg>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 9px;">
+            <div style="font-size: 34px; font-weight: 200; letter-spacing: -0.015em; color: oklch(0.94 0.008 62);">Ruido marrón</div>
+            <div style="font-size: 12px; font-weight: 300; letter-spacing: 0.1em; color: oklch(0.58 0.018 62);">VOLUMEN 50 · ARRASTRA EL ARO</div>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 14px; position: relative;">
+          <div style="display: flex; gap: 10px;">
+            <div style="flex-grow: 1; height: 58px; border-radius: 20px; display: flex; align-items: center; justify-content: center; gap: 9px; background: oklch(0.185 0.012 62); border: 1px solid oklch(0.26 0.012 62);">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="oklch(0.63 0.018 62)" stroke-width="1.7" stroke-linecap="round"><path d="M2 12h2.6M6.4 5.5v13M10.2 8.5v7M14 4v16M17.8 9v6M21.6 11h.4"></path></svg>
+              <span style="font-size: 15px; color: oklch(0.63 0.018 62);">Blanco</span>
+            </div>
+            <div style="flex-grow: 1; height: 58px; border-radius: 20px; display: flex; align-items: center; justify-content: center; gap: 9px; background: oklch(0.235 0.022 62); border: 1px solid #E8A860;">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="oklch(0.95 0.008 62)" stroke-width="1.7" stroke-linecap="round"><path d="M2 12h2.6M6.4 4v16M10.2 6.5v11M14 9v6M17.8 10.5v3M21.6 11.6v.8"></path></svg>
+              <span style="font-size: 15px; color: oklch(0.95 0.008 62);">Marrón</span>
+            </div>
+          </div>
+          <div style="height: 1px; background: oklch(0.24 0.01 62);"></div>
+          <div style="height: 62px; display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="oklch(0.66 0.02 62)" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="13" r="8"></circle><path d="M12 9.4v3.6l2.4 1.6M9 2h6"></path></svg>
+              <span style="font-size: 15px; font-weight: 300; color: oklch(0.8 0.012 62);">Temporizador</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 15px; color: #E8A860;">1 h 26 min</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="oklch(0.55 0.018 62)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="dir-head"><span class="badge">A</span><h2>Noche profunda</h2></div>
+    <p class="pitch">Un solo gesto domina la pantalla: el aro <em>es</em> el volumen y el centro es play. Oscuro cálido, tipografía de trazo muy fino, y un halo que respira con un ciclo de nueve segundos — el ritmo al que se le pide al usuario que baje el suyo.</p>
+    <dl class="specs">
+      <div class="spec"><dt>Fondo</dt><dd>Oscuro cálido, único</dd></div>
+      <div class="spec"><dt>Tipografía</dt><dd>Sora 200 / 400</dd></div>
+      <div class="spec"><dt>Control estrella</dt><dd>Dial de volumen</dd></div>
+    </dl>
+    <div class="verdicts">
+      <div class="verdict up">
+        <div class="mark up"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4.5 4.5L19 7"></path></svg></div>
+        <div><h3>A favor</h3><p>Es la única pensada para verse a oscuras con los ojos medio cerrados. Nada compite por la atención, y el objetivo táctil del centro es tan grande que se acierta sin mirar.</p></div>
+      </div>
+      <div class="verdict down">
+        <div class="mark down"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v5M12 16.5v.5"></path><circle cx="12" cy="12" r="9"></circle></svg></div>
+        <div><h3>El coste</h3><p>Solo tiene sentido en oscuro: renuncia al modo claro y al dynamic color, y eso es apartarse de una recomendación explícita de Google. El aro-volumen además es un gesto que hay que descubrir, así que el número de al lado no es decoración, es la instrucción.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ B ============ -->
+<section class="dir">
+  <div class="phone-wrap">
+    <div class="phone">
+      <div style="width: 390px; height: 844px; background: oklch(0.955 0.014 84); font-family: Karla, system-ui, sans-serif; display: flex; flex-direction: column; padding: 56px 22px 30px;">
+        <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+          <div style="display: flex; flex-direction: column;">
+            <div style="font-family: 'Instrument Serif', Georgia, serif; font-size: 25px; line-height: 1.05; color: oklch(0.28 0.02 60);">Sleep Noise</div>
+            <div style="font-size: 12px; font-weight: 300; color: oklch(0.52 0.02 60); margin-top: 3px;">dormir con ruido, sin más</div>
+          </div>
+          <div style="width: 44px; height: 44px; margin: -10px -12px 0 0; display: flex; align-items: center; justify-content: center;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="oklch(0.45 0.02 60)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.1"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6h.09A1.65 1.65 0 0 0 10.6 3.09V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9v.09a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          </div>
+        </div>
+        <div style="margin-top: 22px; height: 320px; border-radius: 38px; background: oklch(0.42 0.045 52); position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; padding: 26px;">
+          <svg width="358" height="320" viewBox="0 0 358 320" style="position: absolute; inset: 0; opacity: 0.5; mix-blend-mode: multiply;">
+            <filter id="grainB"><feTurbulence type="fractalNoise" baseFrequency="0.32" numOctaves="4" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter>
+            <rect width="358" height="320" filter="url(#grainB)"></rect>
+          </svg>
+          <div style="position: relative; display: flex; flex-direction: column; gap: 6px;">
+            <div style="font-size: 11px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: oklch(0.82 0.02 76);">Suena ahora</div>
+            <div style="font-family: 'Instrument Serif', Georgia, serif; font-size: 44px; line-height: 1; color: oklch(0.96 0.012 84);">Ruido marrón</div>
+            <div style="font-size: 13px; font-weight: 300; line-height: 1.5; color: oklch(0.82 0.02 76); max-width: 250px; text-wrap: pretty;">Grave y envolvente, como lluvia lejana o el mar de fondo.</div>
+          </div>
+        </div>
+        <div style="margin-top: 24px; display: flex; gap: 26px; align-items: baseline;">
+          <div style="display: flex; flex-direction: column; gap: 7px; padding-bottom: 3px;">
+            <span style="font-family: 'Instrument Serif', Georgia, serif; font-size: 26px; line-height: 1; color: oklch(0.68 0.016 60);">Blanco</span>
+            <div style="height: 2px; border-radius: 2px; background: rgba(0,0,0,0);"></div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 7px; padding-bottom: 3px;">
+            <span style="font-family: 'Instrument Serif', Georgia, serif; font-size: 26px; line-height: 1; color: oklch(0.26 0.02 60);">Marrón</span>
+            <div style="height: 2px; border-radius: 2px; background: #B4542F;"></div>
+          </div>
+        </div>
+        <div style="margin-top: 26px; display: flex; flex-direction: column; gap: 11px;">
+          <div style="display: flex; align-items: baseline; justify-content: space-between;">
+            <span style="font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: oklch(0.5 0.02 60);">Volumen</span>
+            <span style="font-family: 'Instrument Serif', Georgia, serif; font-size: 19px; color: oklch(0.32 0.02 60);">50</span>
+          </div>
+          <div style="height: 30px; display: flex; align-items: center; position: relative;">
+            <div style="height: 4px; width: 100%; border-radius: 4px; background: oklch(0.88 0.014 84);"></div>
+            <div style="height: 4px; width: 50%; border-radius: 4px; background: #B4542F; position: absolute; left: 0;"></div>
+            <div style="position: absolute; left: 50%; width: 22px; height: 22px; margin-left: -11px; border-radius: 50%; background: oklch(0.985 0.006 84); border: 2px solid #B4542F; box-shadow: 0 2px 7px rgba(60,40,20,0.16);"></div>
+          </div>
+        </div>
+        <div style="flex-grow: 1;"></div>
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <div style="flex-grow: 1; height: 68px; border-radius: 24px; background: oklch(0.925 0.016 84); display: flex; flex-direction: column; justify-content: center; padding: 0 20px; gap: 2px;">
+            <span style="font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: oklch(0.52 0.02 60);">Se apaga en</span>
+            <span style="font-family: 'Instrument Serif', Georgia, serif; font-size: 22px; line-height: 1; color: oklch(0.3 0.02 60);">1 h 26 min</span>
+          </div>
+          <div style="width: 88px; height: 88px; border-radius: 30px; background: #B4542F; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 26px rgba(180,84,47,0.24);">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="oklch(0.985 0.008 84)"><rect x="6.5" y="4.5" width="3.9" height="15" rx="1.7"></rect><rect x="13.6" y="4.5" width="3.9" height="15" rx="1.7"></rect></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="dir-head"><span class="badge">B</span><h2>Editorial de papel</h2></div>
+    <p class="pitch">Serif de display sobre fondo de papel, y una tarjeta con textura de grano generada con <code>feTurbulence</code>: ruido de verdad, dibujado como ruido. El sonido se presenta con una frase que lo describe en lugar de un dato que lo mida, y el grano cambia de escala según cuál suena.</p>
+    <dl class="specs">
+      <div class="spec"><dt>Fondo</dt><dd>Claro, papel cálido</dd></div>
+      <div class="spec"><dt>Tipografía</dt><dd>Instrument Serif + Karla</dd></div>
+      <div class="spec"><dt>Control estrella</dt><dd>Tarjeta de textura</dd></div>
+    </dl>
+    <div class="verdicts">
+      <div class="verdict up">
+        <div class="mark up"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4.5 4.5L19 7"></path></svg></div>
+        <div><h3>A favor</h3><p>Es la que mejor ficha de Play daría: la textura une concepto e imagen sin recurrir a una ilustración de stock, y el conjunto se lee como un objeto cuidado más que como una utilidad.</p></div>
+      </div>
+      <div class="verdict down">
+        <div class="mark down"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v5M12 16.5v.5"></path><circle cx="12" cy="12" r="9"></circle></svg></div>
+        <div><h3>El coste</h3><p>Un fondo claro a las tres de la mañana deslumbra, así que el modo oscuro deja de ser un extra: hay que diseñarlo aparte, no derivarlo invirtiendo tokens. Y el aire editorial baja la densidad, así que caben menos cosas cuando lleguen más sonidos.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ C ============ -->
+<section class="dir">
+  <div class="phone-wrap">
+    <div class="phone">
+      <div style="width: 390px; height: 844px; background: oklch(0.982 0.008 288); font-family: Manrope, system-ui, sans-serif; display: flex; flex-direction: column; padding: 50px 16px 26px;">
+        <div style="height: 56px; display: flex; align-items: center; justify-content: space-between; padding-left: 8px;">
+          <span style="font-size: 22px; font-weight: 600; letter-spacing: -0.01em; color: oklch(0.24 0.024 288);">Sleep Noise</span>
+          <div style="width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="oklch(0.42 0.026 288)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.1"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6h.09A1.65 1.65 0 0 0 10.6 3.09V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9v.09a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          </div>
+        </div>
+        <div style="margin-top: 10px; border-radius: 30px; background: oklch(0.945 0.016 288); padding: 24px; display: flex; flex-direction: column; gap: 18px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="width: 8px; height: 8px; border-radius: 50%; background: #5B4CC4;"></div>
+            <span style="font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: oklch(0.46 0.028 288);">Reproduciendo</span>
+          </div>
+          <div style="font-size: 32px; font-weight: 700; line-height: 1.05; letter-spacing: -0.02em; color: oklch(0.22 0.032 288);">Ruido marrón</div>
+          <svg width="306" height="72" viewBox="0 0 306 72" style="display: block;">
+            <path id="cWave" fill="none" stroke="#5B4CC4" stroke-width="3" stroke-linecap="round"></path>
+            <path id="cWaveGhost" fill="none" stroke="#5B4CC4" stroke-width="3" stroke-linecap="round" opacity="0.28"></path>
+          </svg>
+        </div>
+        <div style="margin-top: 20px; display: flex; gap: 4px;">
+          <div style="flex-grow: 1; height: 60px; border-radius: 18px; background: oklch(0.92 0.02 288); display: flex; align-items: center; justify-content: center; gap: 9px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="oklch(0.34 0.03 288)" stroke-width="1.9" stroke-linecap="round"><path d="M2.5 12h2M6.2 5.5v13M10 8.5v7M13.8 4v16M17.6 9v6M21.4 11h.4"></path></svg>
+            <span style="font-size: 15px; font-weight: 600; color: oklch(0.34 0.03 288);">Blanco</span>
+          </div>
+          <div style="flex-grow: 1.35; height: 60px; border-radius: 30px; background: #5B4CC4; display: flex; align-items: center; justify-content: center; gap: 9px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="oklch(0.99 0.004 288)" stroke-width="1.9" stroke-linecap="round"><path d="M2.5 12h2M6.2 4v16M10 6.5v11M13.8 9v6M17.6 10.5v3M21.4 11.6v.8"></path></svg>
+            <span style="font-size: 15px; font-weight: 600; color: oklch(0.99 0.004 288);">Marrón</span>
+          </div>
+        </div>
+        <div style="margin-top: 22px; padding: 0 6px; display: flex; flex-direction: column; gap: 6px;">
+          <div style="display: flex; align-items: baseline; justify-content: space-between;">
+            <span style="font-size: 14px; font-weight: 600; color: oklch(0.42 0.026 288);">Volumen</span>
+            <span style="font-size: 14px; font-weight: 700; color: oklch(0.28 0.03 288);">50</span>
+          </div>
+          <svg width="342" height="44" viewBox="0 0 342 44" style="display: block; margin-left: -6px;">
+            <path id="cSliderWave" fill="none" stroke="#5B4CC4" stroke-width="5" stroke-linecap="round"></path>
+            <path id="cSliderRest" fill="none" stroke="oklch(0.87 0.02 288)" stroke-width="5" stroke-linecap="round"></path>
+            <rect x="174" y="9" width="5" height="26" rx="2.5" fill="#5B4CC4"></rect>
+          </svg>
+        </div>
+        <div style="flex-grow: 1;"></div>
+        <div style="border-radius: 30px; background: oklch(0.945 0.016 288); padding: 20px 22px; display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; flex-direction: column; gap: 3px;">
+            <span style="font-size: 12px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: oklch(0.46 0.026 288);">Temporizador</span>
+            <div style="display: flex; align-items: baseline; gap: 5px;">
+              <span style="font-size: 40px; font-weight: 700; line-height: 1; letter-spacing: -0.03em; color: oklch(0.26 0.03 288); font-variant-numeric: tabular-nums;">1:26</span>
+              <span style="font-size: 13px; font-weight: 500; color: oklch(0.5 0.026 288);">restante</span>
+            </div>
+          </div>
+          <div style="height: 48px; border-radius: 24px; background: oklch(0.895 0.024 288); display: flex; align-items: center; padding: 0 18px;">
+            <span style="font-size: 14px; font-weight: 600; color: oklch(0.32 0.034 288);">+15 min</span>
+          </div>
+        </div>
+        <div style="margin-top: 18px; display: flex; justify-content: center;">
+          <div style="width: 154px; height: 96px; border-radius: 34px; background: #5B4CC4; display: flex; align-items: center; justify-content: center; box-shadow: 0 12px 30px rgba(91,76,196,0.25);">
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="oklch(0.99 0.004 288)"><rect x="6.4" y="4.4" width="4.1" height="15.2" rx="2"></rect><rect x="13.5" y="4.4" width="4.1" height="15.2" rx="2"></rect></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="dir-head"><span class="badge">C</span><h2>Expressive de libro</h2></div>
+    <p class="pitch">Material 3 Expressive aplicado tal cual: el <em>button group</em> donde el seleccionado crece y cambia de forma, el slider de track ondulado, el FAB extra ancho, superficies tonales y las cifras grandes del temporizador. La forma de onda del cabecero traduce la diferencia entre los dos ruidos sin una etiqueta que la repita.</p>
+    <dl class="specs">
+      <div class="spec"><dt>Fondo</dt><dd>Claro y oscuro, tonal</dd></div>
+      <div class="spec"><dt>Tipografía</dt><dd>Manrope 500 / 700</dd></div>
+      <div class="spec"><dt>Control estrella</dt><dd>Slider ondulado</dd></div>
+    </dl>
+    <div class="verdicts">
+      <div class="verdict up">
+        <div class="mark up"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4.5 4.5L19 7"></path></svg></div>
+        <div><h3>A favor</h3><p>Casi todo son componentes de <code>material3</code> 1.5 sin retocar, así que es la que menos código propio necesita y la que menos se romperá cuando la librería suba de versión. También la que mejor encaja con dynamic color y la más fácil de dejar accesible: objetivos de 60 px y contraste heredado del sistema.</p></div>
+      </div>
+      <div class="verdict down">
+        <div class="mark down"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v5M12 16.5v.5"></path><circle cx="12" cy="12" r="9"></circle></svg></div>
+        <div><h3>El coste</h3><p>Es la menos memorable: se parece a cualquier otra app Material bien hecha. Y con dynamic color activado, su color lo decide el fondo de pantalla del usuario, no nosotros — cómoda de construir, imposible de reconocer en una captura.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ D ============ -->
+<section class="dir">
+  <div class="phone-wrap">
+    <div class="phone">
+      <div style="width: 390px; height: 844px; background: oklch(0.168 0.024 252); font-family: 'IBM Plex Sans', system-ui, sans-serif; display: flex; flex-direction: column; padding: 54px 20px 30px;">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.26em; color: oklch(0.6 0.026 252);">SLEEP NOISE</span>
+          <div style="width: 44px; height: 44px; margin-right: -12px; display: flex; align-items: center; justify-content: center;">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="oklch(0.66 0.03 252)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.1"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6h.09A1.65 1.65 0 0 0 10.6 3.09V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9v.09a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          </div>
+        </div>
+        <div style="margin-top: 30px; display: flex; flex-direction: column; gap: 10px;">
+          <div style="font-size: 30px; font-weight: 600; letter-spacing: -0.02em; line-height: 1; color: oklch(0.94 0.012 252);">Ruido marrón</div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.06em; color: #7EC8C3;">-6 dB/OCTAVA · 48 kHz · ESTÉREO · SINTETIZADO EN EL DISPOSITIVO</div>
+        </div>
+        <div style="margin-top: 26px;">
+          <svg width="350" height="164" viewBox="0 0 350 164" style="display: block;">
+            <path d="M0 34.5 L350 34.5 M0 69.5 L350 69.5 M0 104.5 L350 104.5 M0 139.5 L350 139.5" stroke="oklch(0.235 0.022 252)" stroke-width="1"></path>
+            <path id="dSpectrum" fill="#7EC8C3"></path>
+          </svg>
+          <div style="margin-top: 9px; display: flex; justify-content: space-between; font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.08em; color: oklch(0.5 0.024 252);">
+            <span>31 Hz</span><span>125</span><span>500</span><span>2 k</span><span>8 k</span><span>16 k</span>
+          </div>
+        </div>
+        <div style="margin-top: 30px; display: flex; flex-direction: column; gap: 11px;">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.2em; color: oklch(0.52 0.024 252);">FUENTE</span>
+          <div style="display: flex; gap: 9px;">
+            <div style="flex-grow: 1; height: 56px; border-radius: 4px; background: oklch(0.19 0.022 252); border: 1px solid oklch(0.26 0.022 252); display: flex; align-items: center; padding: 0 15px; gap: 11px;">
+              <div style="width: 9px; height: 9px; border-radius: 1px; background: oklch(0.34 0.022 252);"></div>
+              <div style="display: flex; flex-direction: column; gap: 1px;">
+                <span style="font-size: 14px; font-weight: 500; color: oklch(0.62 0.024 252);">Blanco</span>
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; color: oklch(0.45 0.024 252);">0 dB/oct</span>
+              </div>
+            </div>
+            <div style="flex-grow: 1; height: 56px; border-radius: 4px; background: oklch(0.225 0.03 252); border: 1px solid #7EC8C3; display: flex; align-items: center; padding: 0 15px; gap: 11px;">
+              <div style="width: 9px; height: 9px; border-radius: 1px; background: #7EC8C3;"></div>
+              <div style="display: flex; flex-direction: column; gap: 1px;">
+                <span style="font-size: 14px; font-weight: 500; color: oklch(0.95 0.012 252);">Marrón</span>
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; color: oklch(0.7 0.024 252);">-6 dB/oct</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top: 26px; display: flex; flex-direction: column; gap: 11px;">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.2em; color: oklch(0.52 0.024 252);">GANANCIA</span>
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: oklch(0.86 0.014 252); font-variant-numeric: tabular-nums;">-20.0 dB</span>
+          </div>
+          <div style="height: 30px; display: flex; align-items: center;">
+            <div style="width: 100%; height: 10px; border-radius: 2px; background: oklch(0.225 0.022 252); position: relative; overflow: hidden;">
+              <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 50%; background: #7EC8C3;"></div>
+            </div>
+          </div>
+        </div>
+        <div style="flex-grow: 1;"></div>
+        <div style="display: flex; align-items: flex-end; justify-content: space-between; border-top: 1px solid oklch(0.245 0.022 252); padding-top: 22px;">
+          <div style="display: flex; flex-direction: column; gap: 5px;">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.2em; color: oklch(0.52 0.024 252);">APAGADO EN</span>
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 32px; line-height: 1; color: oklch(0.93 0.012 252); font-variant-numeric: tabular-nums;">01:26:04</span>
+          </div>
+          <div style="width: 76px; height: 76px; border-radius: 4px; background: #7EC8C3; display: flex; align-items: center; justify-content: center;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="oklch(0.17 0.024 252)"><rect x="6.6" y="4.5" width="4" height="15" rx="0.8"></rect><rect x="13.4" y="4.5" width="4" height="15" rx="0.8"></rect></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="dir-head"><span class="badge">D</span><h2>Espectro</h2></div>
+    <p class="pitch">El ruido como dato: densidad espectral en barras, plana para el blanco y cayendo seis decibelios por octava para el marrón. Tipografía monoespaciada, ganancia en dB y cuenta atrás con segundos. Es la dirección que presume del motor: ese espectro es lo que la app está generando de verdad, muestra a muestra.</p>
+    <dl class="specs">
+      <div class="spec"><dt>Fondo</dt><dd>Oscuro azulado, único</dd></div>
+      <div class="spec"><dt>Tipografía</dt><dd>IBM Plex Sans + Mono</dd></div>
+      <div class="spec"><dt>Control estrella</dt><dd>Espectro comparado</dd></div>
+    </dl>
+    <div class="verdicts">
+      <div class="verdict up">
+        <div class="mark up"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4.5 4.5L19 7"></path></svg></div>
+        <div><h3>A favor</h3><p>Enseña la diferencia entre los dos sonidos en lugar de nombrarla: se ve por qué el marrón es más grave antes de darle a play. Ninguna otra dirección explica el producto sin usar palabras.</p></div>
+      </div>
+      <div class="verdict down">
+        <div class="mark down"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v5M12 16.5v.5"></path><circle cx="12" cy="12" r="9"></circle></svg></div>
+        <div><h3>El coste</h3><p>Es demasiada información para alguien que solo quiere dormirse, y los segundos del temporizador invitan a mirar el reloj — justo lo contrario de lo que busca la app. Además obliga a decidir si el espectro es real (medido del audio, con coste de batería) o una ilustración fija; si es fija y alguien se da cuenta, la promesa se cae.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="close">
+  <h2>Lo que haría falta decidir</h2>
+  <p>Las cuatro son mockups estáticos de la pantalla principal: sirven para elegir dirección, no para navegar. Elegida una, la construyo completa — pantalla principal, hoja del temporizador, ajustes y novedades — con su modo claro y oscuro.</p>
+  <ol>
+    <li><strong>Mi recomendación es A</strong>, con una corrección: mantener el aro para el volumen pero añadir el slider convencional debajo, para que el gesto sea un atajo y no el único camino. Es la única dirección diseñada para el momento real de uso, que es la cama a oscuras.</li>
+    <li><strong>Si el objetivo es la ficha de Play</strong>, B gana sin discusión, y entonces hay que presupuestar un modo oscuro diseñado aparte.</li>
+    <li><strong>Si la prioridad es no pelearse con la librería</strong>, C es la vía corta: casi todo sale de <code>material3</code> 1.5 sin tocar.</li>
+    <li><strong>D funciona mejor como pantalla secundaria</strong> — un «detalles del sonido» al que se llega desde cualquiera de las otras tres — que como pantalla principal.</li>
+  </ol>
+</section>
+</div>
+
+<script>
+  // The wavy active track and the spectrum bars are generated rather than
+  // hand-authored: both are formulas, and the formula is the point.
+  function wave(fromX, toX, midY, amplitude, wavelength) {
+    let d = "M" + fromX + " " + midY;
+    let x = fromX;
+    let up = true;
+    while (x < toX) {
+      const next = Math.min(x + wavelength / 2, toX);
+      const ctrlY = up ? midY - amplitude : midY + amplitude;
+      d += " Q" + ((x + next) / 2).toFixed(1) + " " + ctrlY.toFixed(1) + " " + next.toFixed(1) + " " + midY;
+      x = next;
+      up = !up;
+    }
+    return d;
+  }
+
+  function spectrum(isWhite) {
+    const bars = 26;
+    const step = 350 / bars;
+    const width = step - 5.4;
+    const floor = 158;
+    const perOctave = isWhite ? 0 : -6;
+    const barsPerOctave = bars / 9;
+    let d = "";
+    for (let i = 0; i < bars; i++) {
+      const jitter = Math.sin(i * 2.399) * (isWhite ? 2.6 : 1.8);
+      const db = -4 + (perOctave * i / barsPerOctave) + jitter;
+      const height = Math.max(3, (db + 56) / 56 * 148);
+      const x = i * step + 2.7;
+      const y = floor - height;
+      d += "M" + x.toFixed(1) + " " + floor + " L" + x.toFixed(1) + " " + y.toFixed(1) +
+           " L" + (x + width).toFixed(1) + " " + y.toFixed(1) +
+           " L" + (x + width).toFixed(1) + " " + floor + " Z ";
+    }
+    return d.trim();
+  }
+
+  document.getElementById("cWave").setAttribute("d", wave(3, 303, 30, 20, 46));
+  document.getElementById("cWaveGhost").setAttribute("d", wave(3, 303, 52, 10, 64));
+  document.getElementById("cSliderWave").setAttribute("d", wave(8, 171, 22, 4.5, 20));
+  document.getElementById("cSliderRest").setAttribute("d", "M185 22 L334 22");
+  document.getElementById("dSpectrum").setAttribute("d", spectrum(false));
+</script>

@@ -13,10 +13,16 @@ Kotlin · Jetpack Compose · Material 3 Expressive · Media3 1.11
 
 ## Estado
 
-Fase 0: análisis cerrado, sin código todavía.
+Fase 0: análisis, dirección visual y especificación de la 1.0 cerrados. Sin código todavía.
 
 ## Documentación
 
+- [Especificación y plan de la release 1.0](docs/especificacion-release-1.0.md)
 - [Análisis técnico y plan de implementación](docs/analisis-tecnico.md)
 - [Guía de trabajo del repositorio](CLAUDE.md)
 - [Decisiones de arquitectura (ADR)](docs/decisions/)
+- [Textos de la ficha de Google Play](docs/play-store-publication-texts.md)
+- [Notas de la versión para Play](docs/play-release-notes.md)
+- [Política de privacidad](docs/privacy-policy/sleep-noise.html)
+- [Generación de las capturas de la ficha](docs/store-assets/generar-capturas/README.md)
+- [Changelog](CHANGELOG.md)

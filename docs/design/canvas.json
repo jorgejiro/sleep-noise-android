@@ -1,0 +1,15 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "title": "Pantalla principal", "x": 0, "y": 0, "w": 390, "h": 844 }
+  ],
+  "annotations": [
+    {
+      "id": "note-direccion",
+      "x": 470,
+      "y": 0,
+      "w": 420,
+      "text": "DIRECCIÓN ELEGIDA · NOCHE PROFUNDA\n\nAprobada el 2026-08-24. Las direcciones B (editorial de papel), C (Expressive de libro) y D (espectro) quedan descartadas de forma definitiva; no se retoman.\n\nCorrección acordada sobre el mockup: el aro sigue siendo el volumen, pero se añade un slider convencional debajo para que el gesto sea un atajo y no el único camino.\n\nDetalle completo en docs/especificacion-release-1.0.md y docs/decisions/002-direccion-visual-noche-profunda.md"
+    }
+  ],
+  "launch": { "view": "focused", "file": "Main.dc.html" }
+}

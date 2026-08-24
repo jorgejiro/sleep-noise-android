@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Política de Privacidad de la aplicación Sleep Noise / Privacy Policy for the Sleep Noise app.">
+<title>Sleep Noise — Política de Privacidad / Privacy Policy</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@200;300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(0.155 0.014 62);
+    --surface: oklch(0.192 0.014 62);
+    --line: oklch(0.27 0.012 62);
+    --ink: oklch(0.94 0.008 62);
+    --muted: oklch(0.76 0.012 62);
+    --faint: oklch(0.6 0.014 62);
+    --accent: #E8A860;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: Sora, system-ui, sans-serif; font-weight: 300;
+    font-size: 16px; line-height: 1.65; padding: 56px 20px 96px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; }
+  header { text-align: center; padding-bottom: 40px; }
+  .ring {
+    width: 92px; height: 92px; margin: 0 auto 26px; border-radius: 50%;
+    border: 4px solid var(--line); border-top-color: var(--accent);
+    border-right-color: var(--accent); position: relative;
+  }
+  .ring::after {
+    content: ""; position: absolute; inset: 26px; border-radius: 50%;
+    background: oklch(0.215 0.018 62);
+  }
+  h1 { font-size: 30px; font-weight: 200; letter-spacing: -0.02em; }
+  .sub {
+    margin-top: 10px; font-size: 12px; font-weight: 400; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--faint);
+  }
+  .card {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 22px;
+    padding: 34px 32px; margin-bottom: 26px;
+  }
+  .lang {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 22px;
+  }
+  h2 {
+    font-size: 16px; font-weight: 600; margin: 30px 0 10px; color: var(--ink);
+  }
+  .card > h2:first-of-type { margin-top: 0; }
+  p { color: var(--muted); margin-bottom: 12px; }
+  ul { margin: 0 0 12px 20px; color: var(--muted); }
+  li { margin-bottom: 7px; }
+  strong { font-weight: 600; color: var(--ink); }
+  a { color: var(--accent); text-underline-offset: 3px; }
+  code {
+    font-family: ui-monospace, SFMono-Regular, monospace; font-size: 0.85em;
+    background: oklch(0.235 0.012 62); padding: 2px 6px; border-radius: 5px; color: var(--ink);
+  }
+  footer {
+    text-align: center; font-size: 12px; color: var(--faint); padding-top: 14px;
+  }
+  @media (max-width: 560px) { .card { padding: 26px 22px; } h1 { font-size: 25px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="ring"></div>
+  <h1>Sleep Noise</h1>
+  <div class="sub">Política de privacidad · Privacy policy</div>
+</header>
+
+<section class="card" lang="es">
+  <div class="lang">Español</div>
+
+  <p>Sleep Noise es una aplicación para escuchar ruido blanco o ruido marrón mientras duermes.
+  <strong>No recoge ningún dato, no tiene cuentas y no usa internet.</strong></p>
+
+  <h2>1. Datos guardados en el dispositivo</h2>
+  <p>La aplicación guarda únicamente estos ajustes, y solo en el almacenamiento privado de la app
+  dentro de tu dispositivo:</p>
+  <ul>
+    <li>el último sonido que escuchaste (ruido blanco o marrón);</li>
+    <li>el nivel de volumen;</li>
+    <li>la duración del último temporizador que usaste;</li>
+    <li>si prefieres que el sonido empiece al abrir la app;</li>
+    <li>el idioma elegido;</li>
+    <li>la última versión cuyas novedades has visto.</li>
+  </ul>
+  <p>No se guarda nada más. No hay historial de uso, ni registros de sueño, ni identificadores del
+  dispositivo, ni datos de audio: el ruido se genera en el momento y no se graba en ningún sitio.</p>
+
+  <h2>2. Recogida de datos</h2>
+  <p>Ninguna. La aplicación no incorpora analítica, ni informes de errores con telemetría, ni SDK de
+  publicidad, ni herramientas de seguimiento de terceros.</p>
+
+  <h2>3. Compartición de datos</h2>
+  <p>Ninguna. La aplicación <strong>no declara el permiso <code>INTERNET</code></strong>, de manera
+  que no puede conectarse a ningún servidor ni enviar información a nadie, ni siquiera al autor.
+  Puedes comprobarlo en la sección «Permisos de la app» de Google Play.</p>
+
+  <h2>4. Conservación de datos</h2>
+  <p>Los ajustes permanecen en tu dispositivo mientras la aplicación esté instalada.</p>
+
+  <h2>5. Eliminación de datos</h2>
+  <p>Desinstalar la aplicación elimina todos sus ajustes. También puedes borrarlos sin desinstalar,
+  desde los ajustes de Android: <em>Aplicaciones → Sleep Noise → Almacenamiento → Borrar datos</em>.
+  No hay ningún dato en servidores, así que no hay nada que solicitar por escrito.</p>
+
+  <h2>6. Permisos de la aplicación</h2>
+  <ul>
+    <li><strong>Servicio en primer plano</strong> y <strong>servicio de reproducción multimedia</strong>:
+    para que el sonido siga reproduciéndose con la aplicación cerrada y la pantalla apagada.</li>
+    <li><strong>Notificaciones</strong>: para mostrar el control de reproducción con el que pausar,
+    parar o ampliar el temporizador sin desbloquear el teléfono. Si lo deniegas, la aplicación
+    funciona igual, pero tendrás que abrirla para pausar.</li>
+  </ul>
+  <p>La aplicación no pide acceso al micrófono, a la cámara, a los contactos, a la ubicación, ni a
+  los archivos del dispositivo.</p>
+
+  <h2>7. Menores de edad</h2>
+  <p>La aplicación no está dirigida a menores de 13 años y no recoge datos de ninguna persona,
+  independientemente de su edad.</p>
+
+  <h2>8. Cambios en esta política</h2>
+  <p>Si alguna versión futura cambiara algo de lo anterior, esta página se actualizará antes de
+  publicarla, y el cambio aparecerá en la pantalla de Novedades de la propia aplicación.</p>
+
+  <h2>9. Contacto</h2>
+  <p>Para cualquier duda sobre esta política:
+  <a href="mailto:jjrmobileapps@gmail.com">jjrmobileapps@gmail.com</a></p>
+</section>
+
+<section class="card" lang="en">
+  <div class="lang">English</div>
+
+  <p>Sleep Noise is an app for listening to white or brown noise while you sleep.
+  <strong>It collects no data, has no accounts and does not use the internet.</strong></p>
+
+  <h2>1. Data stored on your device</h2>
+  <p>The app stores only these settings, and only in the app's private storage on your device:</p>
+  <ul>
+    <li>the last sound you listened to (white or brown noise);</li>
+    <li>the volume level;</li>
+    <li>the length of the last sleep timer you used;</li>
+    <li>whether you want sound to start when you open the app;</li>
+    <li>your chosen language;</li>
+    <li>the last version whose release notes you have seen.</li>
+  </ul>
+  <p>Nothing else is stored. There is no usage history, no sleep log, no device identifier and no
+  audio data: the noise is generated as you listen and is never recorded anywhere.</p>
+
+  <h2>2. Data collection</h2>
+  <p>None. The app contains no analytics, no crash reporting with telemetry, no advertising SDK and
+  no third-party tracking.</p>
+
+  <h2>3. Data sharing</h2>
+  <p>None. The app <strong>does not declare the <code>INTERNET</code> permission</strong>, so it
+  cannot connect to any server or send information to anyone, including its author. You can verify
+  this in the "App permissions" section on Google Play.</p>
+
+  <h2>4. Data retention</h2>
+  <p>Your settings stay on your device for as long as the app is installed.</p>
+
+  <h2>5. Data deletion</h2>
+  <p>Uninstalling the app deletes all of its settings. You can also clear them without uninstalling,
+  from Android settings: <em>Apps → Sleep Noise → Storage → Clear data</em>. No data exists on any
+  server, so there is nothing to request in writing.</p>
+
+  <h2>6. App permissions</h2>
+  <ul>
+    <li><strong>Foreground service</strong> and <strong>media playback service</strong>: so the sound
+    keeps playing with the app closed and the screen off.</li>
+    <li><strong>Notifications</strong>: to show the playback control that lets you pause, stop or
+    extend the sleep timer without unlocking your phone. If you deny it, the app still works, but
+    you will have to open it to pause.</li>
+  </ul>
+  <p>The app requests no access to your microphone, camera, contacts, location or files.</p>
+
+  <h2>7. Children</h2>
+  <p>The app is not directed at children under 13, and it collects no data from anyone, at any age.</p>
+
+  <h2>8. Changes to this policy</h2>
+  <p>If a future version changes anything above, this page will be updated before that version is
+  published, and the change will appear in the app's own release notes screen.</p>
+
+  <h2>9. Contact</h2>
+  <p>For any question about this policy:
+  <a href="mailto:jjrmobileapps@gmail.com">jjrmobileapps@gmail.com</a></p>
+</section>
+
+<footer>Última actualización · Last updated: 24 de agosto de 2026</footer>
+</div>
+</body>
+</html>

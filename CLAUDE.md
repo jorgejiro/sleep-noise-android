@@ -2,9 +2,12 @@
 
 Guía de trabajo para este repositorio. Léela entera antes de tocar nada.
 
-> **Estado del proyecto: fase 0.** Todavía no hay código. Existe el análisis técnico
-> (`docs/analisis-tecnico.md`) y este documento. La siguiente fase es el diseño de la interfaz;
-> después, el scaffolding del proyecto Gradle.
+> **Estado del proyecto: fase 0, listo para empezar a construir.** Todavía no hay código.
+> Cerrados: el análisis técnico (`docs/analisis-tecnico.md`), la dirección visual (ADR 002) y la
+> especificación completa de la 1.0 (`docs/especificacion-release-1.0.md`), que incluye los 20
+> requisitos funcionales, los 11 no funcionales y el plan de diez hitos. Lo siguiente es **H0,
+> scaffolding**. La publicación en Play está preparada por escrito (§7 bis): textos de la ficha,
+> notas de la versión, política de privacidad y pipeline de capturas.
 
 ---
 
@@ -37,6 +40,9 @@ pero solo su núcleo: escuchar un ruido y poder cambiarlo por otro.
 | F7 | Ajustes: changelog, versión, feedback por email, idioma | ⬜ Pendiente |
 | F8 | Inglés y español, con fallback a inglés y cambio desde Ajustes | ⬜ Pendiente |
 
+Los requisitos detallados, con sus criterios de aceptación, están en
+`docs/especificacion-release-1.0.md` §5. Esta tabla es solo el mapa.
+
 **Fuera de la v1**: ruido rosa/gris, sonidos naturales, mezclas simultáneas, ecualizador, widget,
 tile de ajustes rápidos, Wear OS, alarma de despertador.
 
@@ -51,6 +57,8 @@ tile de ajustes rápidos, Wear OS, alarma de despertador.
 | Lenguaje | Kotlin **2.3.21** |
 | UI | Jetpack Compose con BOM **2026.08.00** |
 | Material | **Material 3 Expressive** — `androidx.compose.material3` **1.5.0-alpha26**, fijado por encima de la BOM |
+| Tema | **Oscuro único**, cálido. **Sin modo claro y sin dynamic color** (ADR 002). Tokens en `docs/especificacion-release-1.0.md` §3.1 |
+| Tipografía | **Sora** (200/300/400/600) empaquetada en la app. No se descargan fuentes: la app no usa red |
 | Audio | **Media3 1.11.0**: `media3-exoplayer`, `media3-session`, `media3-ui-compose` |
 | `minSdk` | 31 (Android 12) |
 | `targetSdk` / `compileSdk` | 36 (Android 16) |
@@ -139,6 +147,28 @@ Reglas:
 
 ---
 
+## 5 bis. Dirección visual
+
+Dirección **«Noche profunda»** (ADR 002). Lo que no se toca sin un ADR nuevo:
+
+- **Tema oscuro único** de base cálida. No hay modo claro. No hay dynamic color. Es una decisión de
+  diseño, no un pendiente: el contexto de uso de esta app es la oscuridad.
+- **Un solo elemento dominante** en la pantalla principal: el aro de volumen de 264 dp con el botón de
+  play/pausa en el centro. Todo lo demás es subordinado.
+- **Un solo color saturado** en toda la app: el acento ámbar `#E8A860`. El resto es escala de grises
+  cálidos. No se añaden colores sin quitar otro.
+- **El aro es un atajo, no el único camino**: debajo va siempre un slider de volumen convencional.
+  Un control que hay que descubrir no puede ser la única forma de hacer algo.
+- **El halo respira** con ciclo de 9 s, y se para cuando la app pasa a segundo plano o cuando el
+  sistema tiene las animaciones desactivadas.
+- Los valores exactos de color, tipografía, radios y movimiento están en
+  `docs/especificacion-release-1.0.md` §3. No inventes estilos: ábrelo.
+
+El mockup aprobado de la pantalla principal es `docs/design/Main.dc.html`. Las direcciones B, C y D
+quedaron descartadas de forma definitiva y no se retoman.
+
+---
+
 ## 6. Convenciones de código
 
 - **Idioma del código y de los comentarios técnicos**: inglés. Strings de UI: recursos i18n.
@@ -160,8 +190,8 @@ Reglas:
 
 ### Antes de cada tarea
 
-1. Lee este fichero entero y `docs/analisis-tecnico.md`. Si la tarea contradice algo de aquí, pregunta
-   antes de tirar adelante.
+1. Lee este fichero entero, `docs/especificacion-release-1.0.md` y `docs/analisis-tecnico.md`. Si la
+   tarea contradice algo de ahí, pregunta antes de tirar adelante.
 2. Mira el último commit y `git status` para no pisar cambios.
 3. Si vas a tocar UI, abre `Theme.kt`, `Color.kt`, `Type.kt` y `Shape.kt` antes de inventarte estilos.
 
@@ -170,10 +200,21 @@ Reglas:
 - Strings en `strings.xml`, en los **dos** idiomas. Ver §5.
 - Si subes `versionCode`/`versionName` → actualiza `CHANGELOG.md`, los `string-array` `changelog_*`
   (EN y ES) y `ChangelogCatalog.kt`.
-- Si la versión se publica en Play → añade su bloque de novedades en `docs/play-release-notes.md`, con
-  sus tres subsecciones: `es-ES`, `en-US` (máximo 500 caracteres cada una) y **el formato con etiquetas
-  de idioma**, que repite ambos textos envueltos en `<es-ES>`/`<en-US>` para pegarlos de una vez en
-  Play Console. La tercera no es opcional: sin ella hay que copiar idioma por idioma.
+- Si la versión se publica en Play → **no edites a mano** `docs/play-release-notes.md` ni
+  `docs/play-store-publication-texts.md`: los dos los **genera** `scripts/generar-textos-ficha.py`,
+  que además verifica los límites de caracteres de Play y escribe los conteos. Edita los textos en el
+  script y vuelve a pasarlo. Editar el markdown deja los conteos mintiendo, que es peor que no
+  tenerlos.
+- Cada bloque de novedades lleva **tres** subsecciones: `es-ES`, `en-US` (máximo 500 caracteres cada
+  una) y **el formato con etiquetas de idioma**, que repite ambos textos envueltos en
+  `<es-ES>`/`<en-US>` para pegarlos de una vez en Play Console. La tercera no es opcional: sin ella
+  hay que copiar idioma por idioma.
+- Los tres textos de una versión dicen lo mismo con distinto destinatario, y no se copian entre sí:
+  `CHANGELOG.md` es interno, los `string-array` `changelog_*` son para quien ya tiene la app, y las
+  notas de Play para quien todavía no la tiene.
+- Si cambias una pantalla → las capturas de la ficha quedan desactualizadas. Se regeneran con el
+  pipeline de `docs/store-assets/generar-capturas/`, **nunca a mano**, y se pasa `revisar.py` antes de
+  subirlas.
 - Si tocas audio o el servicio → prueba **una sesión larga real** con auriculares y pantalla apagada.
   Los tests no te dicen si suena bien.
 - Si tocas notificaciones o permisos → prueba en emulador con Android 12, 13 y 16: la lógica cambia en
@@ -202,6 +243,28 @@ Reglas:
 
 ---
 
+## 7 bis. Publicación en Play
+
+Todo lo que no es código y hace falta para publicar está escrito ya. En H9 se ejecuta, no se redacta.
+
+| Pieza | Fichero |
+|---|---|
+| Ficha completa, cuestionarios y declaración de servicio en primer plano | `docs/play-store-publication-texts.md` |
+| Notas de la versión, en tres subsecciones | `docs/play-release-notes.md` |
+| Los dos anteriores se **generan**, no se editan | `scripts/generar-textos-ficha.py` |
+| Política de privacidad bilingüe | `docs/privacy-policy/sleep-noise.html` |
+| Pipeline de capturas: 6 escenas × 2 idiomas × 3 formatos | `docs/store-assets/generar-capturas/README.md` |
+| Changelog interno | `CHANGELOG.md` |
+
+Dos trampas conocidas, ambas capaces de bloquear una release:
+
+- **La declaración de servicio en primer plano** para `mediaPlayback` se prepara **antes** de subir el
+  AAB. Sin ella, la revisión se para. El texto en los dos idiomas ya está escrito.
+- **El requisito de 12 testers durante 14 días** puede aplicar a la cuenta. Hay que confirmarlo en
+  Play Console antes de prometer una fecha.
+
+---
+
 ## 8. Roadmap posterior a la v1
 
 Sin compromiso de fechas ni de orden:
@@ -217,7 +280,11 @@ Sin compromiso de fechas ni de orden:
 
 ## 9. Referencias
 
+- Especificación y plan de la 1.0: `docs/especificacion-release-1.0.md`
 - Análisis técnico completo: `docs/analisis-tecnico.md`
+- Decisiones de arquitectura y diseño: `docs/decisions/`
+- Publicación en Play: `docs/play-store-publication-texts.md`, `docs/play-release-notes.md`
+- Capturas de la ficha: `docs/store-assets/generar-capturas/README.md`
 - [Media3 1.11: What's new](https://android-developers.googleblog.com/2026/08/media3-1-11-whats-new.html)
 - [Background playback with MediaSessionService](https://developer.android.com/media/media3/session/background-playback)
 - [Compose Material3 release notes](https://developer.android.com/jetpack/androidx/releases/compose-material3)

@@ -1,0 +1,30 @@
+# Secretos: esto va primero a propósito. El .gitignore cubre el keystore ANTES
+# del primer commit de código, no después de subirlo por error.
+*.jks
+*.keystore
+keystore.properties
+*.pwd.txt
+local.properties
+
+# Gradle y build
+.gradle/
+build/
+captures/
+.cxx/
+*.apk
+*.aab
+*.ap_
+*.dex
+
+# Android Studio / IntelliJ
+.idea/
+*.iml
+.kotlin/
+
+# macOS
+.DS_Store
+
+# Python del pipeline de capturas
+__pycache__/
+*.pyc
+.venv/
