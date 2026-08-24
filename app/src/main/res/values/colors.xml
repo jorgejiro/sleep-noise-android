@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Solo lo que el sistema necesita antes de que Compose pinte. La paleta
+         completa vive en ui/theme/Color.kt. -->
+    <color name="background">#110B06</color>
+</resources>

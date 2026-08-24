@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- El nombre es el mismo en los dos idiomas: la cola de busqueda vive en la
+         ficha de Play, no en el lanzador. Ver docs/play-store-publication-texts.md -->
+    <string name="app_name" translatable="false">Sleep Noise</string>
+
+    <string name="sound_white_name">White noise</string>
+    <string name="sound_brown_name">Brown noise</string>
+    <string name="sound_white_short">White</string>
+    <string name="sound_brown_short">Brown</string>
+
+    <string name="timer_title">Sleep timer</string>
+    <string name="timer_none">No timer</string>
+
+    <string name="settings_title">Settings</string>
+    <string name="changelog_title">What\'s new</string>
+
+    <string name="a11y_open_settings">Open settings</string>
+    <string name="a11y_back">Back</string>
+</resources>

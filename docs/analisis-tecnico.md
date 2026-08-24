@@ -163,7 +163,8 @@ Alineado con [Bebe Agua](https://github.com/jorgejiro) salvo donde el dominio pi
 | Material | **material3 1.5.0-alpha26** (override sobre la BOM) | Material 3 Expressive. Ver aviso abajo |
 | Audio | **Media3 1.11.0** (`media3-exoplayer`, `media3-session`, `media3-ui-compose`) | Estable desde julio de 2026 |
 | `minSdk` | 31 (Android 12) | Coherente con Bebe Agua |
-| `targetSdk` / `compileSdk` | 36 (Android 16) | Edge-to-edge obligatorio, predictive back |
+| `compileSdk` | **37** | Lo exigen la Compose BOM 2026.08 y `material3` 1.5.0-alpha. Ver ADR 005 |
+| `targetSdk` | 36 (Android 16) | Edge-to-edge obligatorio, predictive back |
 | Build | AGP 9.3.1, Gradle 9.5.0, version catalog (`libs.versions.toml`) | Igual |
 | Arquitectura | MVVM + UDF, capas `ui` / `domain` / `data` | Igual |
 | DI | Hilt 2.59.2 + KSP (nunca kapt) | `@AndroidEntryPoint` en el servicio |

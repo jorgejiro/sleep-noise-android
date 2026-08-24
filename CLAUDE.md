@@ -2,12 +2,13 @@
 
 Guía de trabajo para este repositorio. Léela entera antes de tocar nada.
 
-> **Estado del proyecto: fase 0, listo para empezar a construir.** Todavía no hay código.
-> Cerrados: el análisis técnico (`docs/analisis-tecnico.md`), la dirección visual (ADR 002) y la
-> especificación completa de la 1.0 (`docs/especificacion-release-1.0.md`), que incluye los 20
-> requisitos funcionales, los 11 no funcionales y el plan de diez hitos. Lo siguiente es **H0,
-> scaffolding**. La publicación en Play está preparada por escrito (§7 bis): textos de la ficha,
-> notas de la versión, política de privacidad y pipeline de capturas.
+> **Estado del proyecto: H0 hecho.** El proyecto compila, `./gradlew lint test` está en verde y la
+> app arranca con el tema, la tipografía, el icono, la navegación entre las cuatro pantallas y la
+> i18n montadas. Lo siguiente es **H1, el motor de ruido**.
+>
+> La especificación completa está en `docs/especificacion-release-1.0.md` y la publicación en Play
+> preparada por escrito (§7 bis): textos de la ficha, notas de la versión, política de privacidad y
+> pipeline de capturas.
 
 ---
 
@@ -61,7 +62,8 @@ tile de ajustes rápidos, Wear OS, alarma de despertador.
 | Tipografía | **Sora** (200/300/400/600) empaquetada en la app. No se descargan fuentes: la app no usa red |
 | Audio | **Media3 1.11.0**: `media3-exoplayer`, `media3-session`, `media3-ui-compose` |
 | `minSdk` | 31 (Android 12) |
-| `targetSdk` / `compileSdk` | 36 (Android 16) |
+| `compileSdk` | **37** — lo exigen la Compose BOM 2026.08 y `material3` 1.5.0-alpha. Ver ADR 005 |
+| `targetSdk` | 36 (Android 16) |
 | Build | Gradle Kotlin DSL + version catalog (`libs.versions.toml`), wrapper **9.5.0** |
 | AGP | **9.3.1** |
 | KSP | **2.3.7** (para Hilt; **no usar kapt**) |

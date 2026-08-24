@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sound_white_name">Ruido blanco</string>
+    <string name="sound_brown_name">Ruido marrón</string>
+    <string name="sound_white_short">Blanco</string>
+    <string name="sound_brown_short">Marrón</string>
+
+    <string name="timer_title">Temporizador</string>
+    <string name="timer_none">Sin temporizador</string>
+
+    <string name="settings_title">Ajustes</string>
+    <string name="changelog_title">Novedades</string>
+
+    <string name="a11y_open_settings">Abrir ajustes</string>
+    <string name="a11y_back">Atrás</string>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- AppCompat porque la Activity hereda de AppCompatActivity: es lo que hace
+         funcionar setApplicationLocales por debajo de API 33. El tema solo pinta
+         el fondo antes de que Compose arranque; los colores de las barras los
+         gestiona enableEdgeToEdge. -->
+    <style name="Theme.SleepNoise" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@color/background</item>
+    </style>
+</resources>

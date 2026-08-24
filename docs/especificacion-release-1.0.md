@@ -73,10 +73,15 @@ Un solo color saturado en toda la app. El resto es una escala de grises cálidos
 | `accent` | `#E8A860` | Aro de volumen, iconos activos, valores |
 | `onBackground` | `oklch(0.94 0.008 62)` | Texto principal |
 | `onBackgroundVariant` | `oklch(0.80 0.012 62)` | Texto secundario |
-| `onBackgroundMuted` | `oklch(0.58 0.018 62)` | Etiquetas y unidades |
+| `onBackgroundMuted` | `oklch(0.60 0.018 62)` | Etiquetas y unidades |
 
-Contraste verificado: `onBackground` sobre `background` ≥ 13:1; `onBackgroundMuted` sobre
-`background` ≥ 4.6:1; `accent` sobre `background` ≥ 7:1.
+Contraste **medido**, no estimado: `onBackground` 16.4:1 · `onBackgroundVariant` 10.4:1 ·
+`onBackgroundMuted` 4.9:1 · `accent` 9.5:1, todos sobre `background`. Lo comprueba
+`ColorContrastTest` en cada `./gradlew test`, así que un token que se mueva y baje del mínimo de
+WCAG AA rompe el build en lugar de colarse.
+
+`onBackgroundMuted` subió de `oklch(0.58 …)` a `0.60` durante H0: a 0.58 medía 4.53:1, que clava el
+mínimo de 4.5 por tres centésimas y se rompería con el siguiente ajuste.
 
 ### 3.2 Tipografía
 
@@ -423,7 +428,7 @@ El orden no es negociable en las dependencias marcadas.
 
 | # | Hito | Contenido | Hecho cuando |
 |---|---|---|---|
-| **H0** | Scaffolding | Proyecto Gradle, version catalog, Hilt, tema oscuro con tokens de §3, fuente Sora empaquetada, navegación con las cuatro pantallas vacías, i18n montada con dos strings de prueba | `./gradlew assembleDebug` pasa y la app abre en negro con el nombre en su sitio, en inglés y en español |
+| **H0** ✅ | Scaffolding | Proyecto Gradle, version catalog, Hilt, tema oscuro con tokens de §3, fuente Sora empaquetada, navegación con las cuatro pantallas vacías, i18n montada con dos strings de prueba | **Hecho el 2026-08-24.** `lint test assembleDebug` en verde, arranque en 449 ms en un Samsung Z Fold, los tres idiomas comprobados (es, en, y de cayendo a en) y la navegación recorrida. Capturas en `docs/capturas/h0/` |
 | **H1** | Motor de ruido | `NoiseGenerator`, blanco gaussiano, marrón con corrección de DC y limitador, estéreo decorrelacionado | Tests JVM en verde: RMS igualado entre ambos, DC < 0,001, sin clipping, pendiente de -6 dB/oct verificada por FFT |
 | **H2** | Puente a Media3 | `NoiseDataSource` sirviendo WAV infinito, `ExoPlayer` configurado (atributos de audio, wake mode, becoming noisy, buffer grande) | Suena en un test instrumentado y a oído, 10 min sin artefactos |
 | **H3** | Servicio y notificación | `PlaybackService` sobre `MediaSessionService`, notificación `MediaStyle`, `onTaskRemoved` que no para, permiso de notificaciones | Suena con la app cerrada y la pantalla apagada; la notificación pausa y para; las 13 filas de §7 pasan |
