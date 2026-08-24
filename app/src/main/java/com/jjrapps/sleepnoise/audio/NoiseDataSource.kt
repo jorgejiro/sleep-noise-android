@@ -41,7 +41,11 @@ class NoiseDataSource(
         transferInitializing(dataSpec)
         uri = dataSpec.uri
         header = WavHeader.create()
-        headerRemaining = header.size
+        // La cabecera solo va al principio. Si el reproductor pide datos desde mas
+        // adelante —lo que ocurre cuando se descarta el buffer para que un cambio de
+        // sonido se oiga ya— hay que servir PCM, no otra cabecera en mitad del
+        // stream: el extractor la leeria como si fueran muestras.
+        headerRemaining = (WavHeader.SIZE - dataSpec.position).coerceIn(0L, WavHeader.SIZE.toLong()).toInt()
         // The generator is NOT reset here: see the class comment. A repeat has to be
         // inaudible, and resetting is exactly what would make it audible.
         opened = true

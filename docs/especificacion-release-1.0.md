@@ -293,8 +293,18 @@ Lo que **no** hay es reanudación después de que el usuario pause: ahí la sesi
 sesión de medios que reanudar. Es la consecuencia deliberada de RF-05, y el camino de vuelta es
 abrir la app, que es de todas formas lo que alguien hace cuando quiere volver a dormirse.
 
-**RF-20 · Botones de auriculares.** Play/pausa responde al botón central de los auriculares. Las
-pistas siguiente/anterior no hacen nada (no hay lista).
+**RF-20 · Botones de auriculares y del sistema.** Play/pausa responde al botón central de los
+auriculares.
+
+La sesión **anuncia solo lo que la app sabe hacer**: pausar, reproducir y parar. Nada de saltar de
+pista, rebobinar, avanzar, buscar una posición, cambiar la velocidad, aleatorio o repetición. Por
+defecto una sesión de medios anuncia las veinte, y Android dibuja botones a partir de ellas: el
+resultado eran unas flechas en la notificación que no hacían absolutamente nada al pulsarlas.
+
+**Límite conocido:** los huecos de esas flechas los dibuja la plantilla del sistema, no la app. Dejar
+de anunciar las acciones las deja inertes y atenuadas, pero no las borra de la pantalla. Para que
+desaparezcan habría que ocupar su sitio con acciones propias, que es una decisión de producto tomada
+en contra: la notificación se queda mínima.
 
 ### 5.4 Ajustes y meta
 

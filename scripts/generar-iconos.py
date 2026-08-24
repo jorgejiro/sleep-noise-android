@@ -590,20 +590,60 @@ def _paint_background(image, scale, cx_ratio=0.5, cy_ratio=0.42, radius_ratio=0.
 
 
 def write_play_icon(path, size=512):
-    """El PNG de 512x512 de la ficha. Esquinas cuadradas: la mascara la pone Play."""
+    """El PNG de 512x512 de la ficha. Esquinas cuadradas: la mascara la pone Play.
+
+    Ojo con la escala: el lienzo del icono adaptativo son 108 dp de los que el
+    sistema solo ensena los 72 centrales. Este PNG no pasa por esa mascara, asi que
+    dibujarlo a 108 dp lo deja un tercio mas pequeno de lo que la gente ve en su
+    lanzador, con un marco de fondo vacio alrededor. Se dibuja el recorte —los 72 dp
+    centrales llenando los 512 px— para que el icono de la tienda y el del telefono
+    sean el mismo icono.
+    """
     accent = _hex(ACCENT)
+    # Un punto intermedio entre los 108 dp del lienzo y los 72 que ensena la mascara.
+    # A 108 el icono sale un tercio mas pequeno de lo que la gente ve en su lanzador;
+    # a 72 exactos el creciente roza el borde izquierdo, y Play muestra este PNG con
+    # esquinas redondeadas pero sin recortar los lados.
+    visible = 84.0
 
     def paint(image, draw, scale):
         _paint_background(image, scale)
-        unit = size * scale / CANVAS          # de dp del lienzo a pixeles
+        unit = size * scale / visible
+        offset = -(CANVAS - visible) / 2 * unit      # centrar los 72 dp de en medio
         for x, y, r in GRAIN:
             draw.ellipse(
-                [(x - r) * unit, (y - r) * unit, (x + r) * unit, (y + r) * unit],
+                [offset + (x - r) * unit, offset + (y - r) * unit,
+                 offset + (x + r) * unit, offset + (y + r) * unit],
                 fill=accent,
             )
 
     _rasterize(size, size, paint).save(path)
     return path
+
+
+def _dense_grain(seed=13, target=520):
+    """Grano mas denso y mas fino, para el grafico de cabecera.
+
+    Los 230 puntos del icono estan calibrados para verse a 48 dp. Ampliados a la
+    altura de una cabecera se separan y el creciente se lee como una salpicadura en
+    vez de como una forma.
+    """
+    rng = Rng(seed)
+    m = MOON
+    dots = []
+    for _ in range(20000):
+        x = m["cx"] - m["R"] + rng.next() * 2 * m["R"]
+        y = m["cy"] - m["R"] + rng.next() * 2 * m["R"]
+        if not inside_crescent(x, y):
+            continue
+        edge = min(m["R"] - math.hypot(x - m["cx"], y - m["cy"]),
+                   math.hypot(x - m["c2x"], y - m["c2y"]) - m["r2"])
+        if edge < 0.5 and rng.next() < 0.55:
+            continue
+        dots.append((x, y, 0.35 + rng.next() * 0.75))
+        if len(dots) >= target:
+            break
+    return dots
 
 
 def write_feature_graphic(path, width=1024, height=500):
@@ -617,11 +657,12 @@ def write_feature_graphic(path, width=1024, height=500):
 
     def paint(image, draw, scale):
         _paint_background(image, scale, cx_ratio=0.22, cy_ratio=0.5, radius_ratio=0.55)
-        # El creciente a la izquierda, al mismo tamano relativo que en el icono.
-        unit = height * scale * 0.62 / CANVAS
-        ox = width * scale * 0.20 - 54 * unit
+        # El creciente a la izquierda. Se mide contra los 72 dp visibles y no contra
+        # los 108 del lienzo, por lo mismo que en el icono de la tienda.
+        unit = height * scale * 0.74 / 72.0
+        ox = width * scale * 0.19 - 54 * unit
         oy = height * scale * 0.5 - 54 * unit
-        for x, y, r in GRAIN:
+        for x, y, r in _dense_grain():
             draw.ellipse([ox + (x - r) * unit, oy + (y - r) * unit,
                           ox + (x + r) * unit, oy + (y + r) * unit], fill=accent)
         try:

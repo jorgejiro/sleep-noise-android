@@ -83,6 +83,15 @@ class PlaybackService : MediaSessionService() {
      */
     private var finishOnPause = false
 
+    /**
+     * Cierto mientras se rehace la fuente por un cambio de sonido.
+     *
+     * Ese cambio hace que el reproductor deje de reproducir un instante, y sin esta
+     * bandera el oyente de estado lo tomaria por una pausa: congelaria el
+     * temporizador y volveria a arrancarlo, dando un tiron a la cuenta atras.
+     */
+    private var changingSound = false
+
     override fun onCreate() {
         super.onCreate()
         noise = StereoNoiseSource(currentType, sampleRate = SAMPLE_RATE)
@@ -173,6 +182,7 @@ class PlaybackService : MediaSessionService() {
 
     private val playerListener = object : Player.Listener {
         override fun onIsPlayingChanged(isPlaying: Boolean) {
+            if (changingSound) return
             if (isPlaying) {
                 finishOnPause = false
                 timer.resume()
@@ -219,10 +229,27 @@ class PlaybackService : MediaSessionService() {
         if (type == currentType) return
         currentType = type
         scope.launch { preferences.setLastSound(type) }
-        // The generator crossfades internally, so the player is never told anything
-        // changed — no new source, no discarded buffer, no gap. Only the title of the
-        // notification is replaced.
+
+        // Cambiar de sonido rehace la fuente, igual que al abrir la app.
+        //
+        // El crossfade lo produce el generador, que trabaja por delante de lo que
+        // suena, asi que el audio ya encolado es ruido del sonido anterior y hay que
+        // tirarlo entero: con el buffer por defecto se midieron 52 segundos, y el
+        // sonido cambiaba casi un minuto despues de tocar el boton. Un `seekTo` no
+        // basta —vacia menos de lo que parece—, asi que se reconstruye la fuente y se
+        // prepara de nuevo, que es exactamente lo que hace un arranque, y un arranque
+        // suena en 200 ms.
+        //
+        // El generador NO se reinicia: vive fuera de la fuente, asi que la transicion
+        // que acaba de empezar continua donde estaba y lo primero que se oye es el
+        // crossfade, no un salto.
+        val wasPlaying = exoPlayer.isPlaying
+        changingSound = true
         noise.crossfadeTo(type)
+        exoPlayer.setMediaSource(NoisePlayer.sourceFor(type, noise, this))
+        exoPlayer.prepare()
+        if (wasPlaying) exoPlayer.play()
+        changingSound = false
         player.replaceMediaItem(0, NoisePlayer.mediaItemFor(type, this))
         publishState()
     }
@@ -319,6 +346,38 @@ class PlaybackService : MediaSessionService() {
         session?.setCustomLayout(customLayout())
     }
 
+    /**
+     * Lo que esta app sabe hacer de verdad, y nada más.
+     *
+     * Por defecto una sesión de medios anuncia veinte capacidades —saltar de pista,
+     * rebobinar, avanzar, buscar una posición, cambiar la velocidad, aleatorio,
+     * repetición— y Android dibuja botones a partir de ellas. Aquí ninguna de esas
+     * tiene sentido: no hay lista de pistas que recorrer y el ruido no tiene
+     * principio ni final al que saltar. El resultado eran unas flechas en la
+     * notificación que no hacían absolutamente nada al pulsarlas, y una barra de
+     * posición que avanzaba sin significar nada.
+     *
+     * Anunciar solo lo que se cumple es lo correcto, y además deja la notificación
+     * con lo único que hace falta: pausar.
+     */
+    private fun availablePlayerCommands(): Player.Commands =
+        MediaSession.ConnectionResult.DEFAULT_PLAYER_COMMANDS.buildUpon()
+            .remove(Player.COMMAND_SEEK_TO_PREVIOUS)
+            .remove(Player.COMMAND_SEEK_TO_PREVIOUS_MEDIA_ITEM)
+            .remove(Player.COMMAND_SEEK_TO_NEXT)
+            .remove(Player.COMMAND_SEEK_TO_NEXT_MEDIA_ITEM)
+            .remove(Player.COMMAND_SEEK_BACK)
+            .remove(Player.COMMAND_SEEK_FORWARD)
+            .remove(Player.COMMAND_SEEK_IN_CURRENT_MEDIA_ITEM)
+            .remove(Player.COMMAND_SEEK_TO_MEDIA_ITEM)
+            .remove(Player.COMMAND_SEEK_TO_DEFAULT_POSITION)
+            .remove(Player.COMMAND_SET_SHUFFLE_MODE)
+            .remove(Player.COMMAND_SET_REPEAT_MODE)
+            .remove(Player.COMMAND_SET_SPEED_AND_PITCH)
+            .remove(Player.COMMAND_SET_MEDIA_ITEM)
+            .remove(Player.COMMAND_CHANGE_MEDIA_ITEMS)
+            .build()
+
     /** The extra button in the notification, only while there is a timer to extend. */
     private fun customLayout(): ImmutableList<CommandButton> {
         if (!timer.isSet) return ImmutableList.of()
@@ -338,14 +397,18 @@ class PlaybackService : MediaSessionService() {
             session: MediaSession,
             controller: MediaSession.ControllerInfo
         ): MediaSession.ConnectionResult {
-            // The app's own controller needs the custom commands; Media3 1.11 no
-            // longer hands session data to untrusted controllers by default, which is
-            // the behaviour we want for everyone else.
-            val available = MediaSession.ConnectionResult.DEFAULT_SESSION_AND_LIBRARY_COMMANDS
+            // Los comandos propios de la app; Media3 1.11 ya no entrega datos de
+            // sesión a controladores no confiables por defecto, que es justo el
+            // comportamiento que queremos para los demás.
+            val sessionCommands = MediaSession.ConnectionResult.DEFAULT_SESSION_COMMANDS
                 .buildUpon()
-            PlaybackCommands.all.forEach { available.add(it) }
+                // Valorar la «canción» tampoco significa nada aquí.
+                .remove(SessionCommand.COMMAND_CODE_SESSION_SET_RATING)
+            PlaybackCommands.all.forEach { sessionCommands.add(it) }
+
             return MediaSession.ConnectionResult.AcceptedResultBuilder(session)
-                .setAvailableSessionCommands(available.build())
+                .setAvailableSessionCommands(sessionCommands.build())
+                .setAvailablePlayerCommands(availablePlayerCommands())
                 .setCustomLayout(customLayout())
                 .build()
         }

@@ -10,6 +10,7 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
+import androidx.media3.exoplayer.DefaultLoadControl
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import com.jjrapps.sleepnoise.R
@@ -24,8 +25,38 @@ import com.jjrapps.sleepnoise.domain.model.NoiseType
 @UnstableApi
 object NoisePlayer {
 
+    /**
+     * Cuánto audio se produce por adelantado.
+     *
+     * Por defecto ExoPlayer llena decenas de segundos, y aquí eso es un problema
+     * concreto: el crossfade entre sonidos lo hace el generador, que trabaja por
+     * delante de lo que suena, así que **el buffer es exactamente el retraso del
+     * cambio de sonido**. Medido en un dispositivo real: 52 segundos de audio
+     * encolado, y un cambio de sonido que se oía casi un minuto después de tocarlo.
+     *
+     * Un segundo es de sobra. La fuente es un generador local que produce mucho más
+     * rápido que el tiempo real, así que no hay riesgo de quedarse sin datos.
+     *
+     * Y no toca la batería: el ahorro viene del buffer del `AudioTrack` —el
+     * `FLAG_DEEP_BUFFER` que se ve en `dumpsys audio`—, que es otra cosa y sigue
+     * intacto. Este solo decide cuánto se genera por adelantado.
+     */
+    private fun loadControl() = DefaultLoadControl.Builder()
+        .setBufferDurationsMs(
+            /* minBufferMs = */ 1_000,
+            /* maxBufferMs = */ 1_500,
+            // 200 ms para empezar a sonar. Esto es lo que tarda un cambio de sonido
+            // en oirse, porque el cambio reconstruye la fuente: cuanto menos haga
+            // falta para arrancar, mas inmediato se siente.
+            /* bufferForPlaybackMs = */ 200,
+            /* bufferForPlaybackAfterRebufferMs = */ 500
+        )
+        .setBackBuffer(0, false)
+        .build()
+
     fun create(context: Context): ExoPlayer =
         ExoPlayer.Builder(context)
+            .setLoadControl(loadControl())
             .setAudioAttributes(
                 AudioAttributes.Builder()
                     // USAGE_MEDIA so the noise rides the media volume the user
