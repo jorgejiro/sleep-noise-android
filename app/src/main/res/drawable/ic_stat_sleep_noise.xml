@@ -8,5 +8,5 @@
     android:tint="?attr/colorControlNormal">
     <!-- Icono de la barra de estado: silueta, sin fondo y sin grano. A 24 dp el
          grano no existe, y el sistema tinta esta capa. -->
-    <path android:fillColor="#FFFFFF" android:pathData="M12.68 2.02 A10.00 10.00 0 1 0 21.02 16.32 A8.33 8.33 0 1 1 12.68 2.02 Z"/>
+    <path android:fillColor="#FFFFFF" android:pathData="M12.7 2.0 A10.0 10.0 0 1 0 21.0 16.3 A8.3 8.3 0 1 1 12.7 2.0 Z"/>
 </vector>

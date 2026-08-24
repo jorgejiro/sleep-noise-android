@@ -36,8 +36,10 @@ pequeño se compacta en un contorno ligeramente irregular. Es la misma marca con
   notificación de 24 dp, que es un dibujo aparte —a 24 dp el grano no existe— y el que más se verá:
   estará en la barra de estado toda la noche mientras suena el ruido.
 - **El grano va como puntos vectoriales, no como un filtro.** Un `VectorDrawable` de Android no
-  soporta filtros SVG, así que `feTurbulence` no era una opción. Los 230 puntos van en un solo `path`
-  con 230 subpaths, que es más barato de inflar que 230 elementos.
+  soporta filtros SVG, así que `feTurbulence` no era una opción. Los 230 puntos van como subpaths
+  repartidos en **seis** `path`: en uno solo daban un `pathData` de casi 13.000 caracteres y lint lo
+  marcaba con razón —un path muy largo es caro de parsear—, y un `path` por círculo serían 230
+  elementos. Seis es el punto intermedio en el que ninguno pasa el umbral.
 - **Los assets se generan, no se editan.** `scripts/generar-iconos.py` calcula el creciente por
   intersección de circunferencias y siembra el grano con un PRNG determinista, para que el mismo grano
   salga en cada regeneración: con un generador aleatorio, el icono cambiaría solo entre commits.

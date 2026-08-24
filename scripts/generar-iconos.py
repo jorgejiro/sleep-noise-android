@@ -65,7 +65,7 @@ def crescent_path(scale=1.0, ox=0.0, oy=0.0):
         return (p[0] * scale + ox, p[1] * scale + oy)
     a, b = t(i2), t(i1)
     R, r2 = m["R"] * scale, m["r2"] * scale
-    return ("M%.2f %.2f A%.2f %.2f 0 1 0 %.2f %.2f A%.2f %.2f 0 1 1 %.2f %.2f Z"
+    return ("M%.1f %.1f A%.1f %.1f 0 1 0 %.1f %.1f A%.1f %.1f 0 1 1 %.1f %.1f Z"
             % (a[0], a[1], R, R, b[0], b[1], r2, r2, a[0], a[1]))
 
 
@@ -203,13 +203,30 @@ def cell(label, inner):
 
 # ------------------------------------------------------- VectorDrawable (XML)
 def dots_pathdata(dots):
-    """Un circulo como subpath: dos arcos. Todos los puntos van en UN path, que
-    es mas barato de inflar que 230 elementos."""
+    """Un circulo como subpath: dos arcos.
+
+    Un decimal y no dos: en un lienzo de 108 dp eso es 0,1 dp de precision, por
+    debajo de lo que cualquier pantalla puede pintar."""
     out = []
     for x, y, r in dots:
-        out.append("M%.2f,%.2f a%.2f,%.2f 0 1,0 %.2f,0 a%.2f,%.2f 0 1,0 %.2f,0 Z"
+        out.append("M%.1f,%.1f a%.1f,%.1f 0 1,0 %.1f,0 a%.1f,%.1f 0 1,0 %.1f,0 Z"
                    % (x - r, y, r, r, 2 * r, r, r, -2 * r))
     return " ".join(out)
+
+
+def dots_paths(dots, fill, chunks):
+    """Los puntos repartidos en varios <path>.
+
+    Todos en uno daba un pathData de 12.879 caracteres y lint lo marcaba con razon:
+    un path muy largo es caro de parsear. Repartirlo es exactamente lo que
+    recomienda, y son unos pocos elementos en vez de los 230 que habria con un
+    circulo por path."""
+    size = -(-len(dots) // chunks)   # techo, para no dejar un trozo vacio
+    out = []
+    for i in range(0, len(dots), size):
+        out.append('    <path\n        android:fillColor="%s"\n        android:pathData="%s"/>'
+                   % (fill, dots_pathdata(dots[i:i + size])))
+    return "\n".join(out)
 
 
 VEC_HEAD = ('<?xml version="1.0" encoding="utf-8"?>\n'
@@ -243,12 +260,11 @@ VEC_HEAD = ('<?xml version="1.0" encoding="utf-8"?>\n'
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <!-- %d puntos de grano dentro del creciente, en un solo path. -->
-    <path
-        android:fillColor="%s"
-        android:pathData="%s"/>
+    <!-- %d puntos de grano dentro del creciente, repartidos en varios path para
+         que ninguno sea tan largo que lint lo marque por rendimiento. -->
+%s
 </vector>
-""" % (len(GRAIN), ACCENT, dots_pathdata(GRAIN)))
+""" % (len(GRAIN), dots_paths(GRAIN, ACCENT, 6)))
 
 (VEC / "ic_launcher_monochrome.xml").write_text(VEC_HEAD +
 """<vector xmlns:android="http://schemas.android.com/apk/res/android"
@@ -259,9 +275,9 @@ VEC_HEAD = ('<?xml version="1.0" encoding="utf-8"?>\n'
     <!-- El grano fino desaparece en una sola tinta: aqui el creciente es solido
          y la textura vive en %d puntos gruesos pegados al borde exterior. -->
     <path android:fillColor="#FFFFFF" android:pathData="%s"/>
-    <path android:fillColor="#FFFFFF" android:pathData="%s"/>
+%s
 </vector>
-""" % (len(RIM), crescent_path(), dots_pathdata(RIM)))
+""" % (len(RIM), crescent_path(), dots_paths(RIM, "#FFFFFF", 2)))
 
 (VEC / "ic_stat_sleep_noise.xml").write_text(VEC_HEAD +
 """<vector xmlns:android="http://schemas.android.com/apk/res/android"

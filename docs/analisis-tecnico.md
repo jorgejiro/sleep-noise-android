@@ -158,20 +158,20 @@ Alineado con [Bebe Agua](https://github.com/jorgejiro) salvo donde el dominio pi
 
 | Capa | Decisión | Nota |
 |---|---|---|
-| Lenguaje | Kotlin 2.3.21 | Igual que Bebe Agua |
+| Lenguaje | Kotlin 2.4.10 | |
 | UI | Jetpack Compose, BOM **2026.08.00** | Trae Compose 1.12.0 estable |
 | Material | **material3 1.5.0-alpha26** (override sobre la BOM) | Material 3 Expressive. Ver aviso abajo |
 | Audio | **Media3 1.11.0** (`media3-exoplayer`, `media3-session`, `media3-ui-compose`) | Estable desde julio de 2026 |
 | `minSdk` | 31 (Android 12) | Coherente con Bebe Agua |
 | `compileSdk` | **37** | Lo exigen la Compose BOM 2026.08 y `material3` 1.5.0-alpha. Ver ADR 005 |
 | `targetSdk` | 36 (Android 16) | Edge-to-edge obligatorio, predictive back |
-| Build | AGP 9.3.1, Gradle 9.5.0, version catalog (`libs.versions.toml`) | Igual |
+| Build | AGP 9.3.2, Gradle 9.7.1, version catalog (`libs.versions.toml`) | |
 | Arquitectura | MVVM + UDF, capas `ui` / `domain` / `data` | Igual |
-| DI | Hilt 2.59.2 + KSP (nunca kapt) | `@AndroidEntryPoint` en el servicio |
+| DI | Hilt 2.60.1 + KSP 2.3.11 (nunca kapt) | `@AndroidEntryPoint` en el servicio |
 | Persistencia | **Solo DataStore Preferences 1.1.4** | **Sin Room**: no hay historial que guardar, solo cuatro preferencias |
 | Navegación | Navigation Compose 2.9.0 | Tres destinos |
-| Concurrencia | Coroutines 1.10.2 + Flow | Igual |
-| Tests | JUnit 4 + MockK + Turbine + Compose UI Test | La síntesis de ruido se testea en JVM puro |
+| Concurrencia | Coroutines 1.11.0 + Flow | |
+| Tests | JUnit 4 + MockK 1.14.11 + Turbine 1.2.1 + Compose UI Test | La síntesis de ruido se testea en JVM puro |
 | Logs | Timber 5.0.1, solo en debug | Igual |
 | Backup | `android:allowBackup="false"` | Igual |
 

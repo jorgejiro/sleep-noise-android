@@ -1,25 +1,28 @@
 [versions]
-agp = "9.3.1"
-kotlin = "2.3.21"
-ksp = "2.3.7"
+agp = "9.3.2"
+kotlin = "2.4.10"
+ksp = "2.3.11"
 composeBom = "2026.08.00"
-# Material 3 Expressive vive en la rama 1.5.0-alpha: se fija por encima de la BOM
-# a proposito. Ver CLAUDE.md, "Aviso sobre Material 3 Expressive".
+# La UNICA dependencia que no esta en su ultima version estable, a proposito.
+# La estable es 1.4.0 y NO trae Material 3 Expressive: MaterialExpressiveTheme,
+# las formas morphing y el slider ondulado solo existen en la rama 1.5.0-alpha,
+# y toda la direccion visual depende de ellos (ADR 002). Bajar a 1.4.0 no es
+# "actualizar": es renunciar a Expressive. Se fija por encima de la BOM.
 material3 = "1.5.0-alpha26"
 appcompat = "1.8.0"
 coreKtx = "1.19.0"
 activityCompose = "1.13.0"
 lifecycle = "2.11.0"
 navigation = "2.9.8"
-hilt = "2.59.2"
+hilt = "2.60.1"
 hiltNavigationCompose = "1.4.0"
-coroutines = "1.10.2"
+coroutines = "1.11.0"
 timber = "5.0.1"
 junit = "4.13.2"
 androidxJunit = "1.3.0"
 espressoCore = "3.7.0"
-mockk = "1.13.9"
-turbine = "1.2.0"
+mockk = "1.14.11"
+turbine = "1.2.1"
 
 [libraries]
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }

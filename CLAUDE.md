@@ -55,7 +55,7 @@ tile de ajustes rápidos, Wear OS, alarma de despertador.
 
 | Capa | Decisión |
 |---|---|
-| Lenguaje | Kotlin **2.3.21** |
+| Lenguaje | Kotlin **2.4.10** |
 | UI | Jetpack Compose con BOM **2026.08.00** |
 | Material | **Material 3 Expressive** — `androidx.compose.material3` **1.5.0-alpha26**, fijado por encima de la BOM |
 | Tema | **Oscuro único**, cálido. **Sin modo claro y sin dynamic color** (ADR 002). Tokens en `docs/especificacion-release-1.0.md` §3.1 |
@@ -64,17 +64,17 @@ tile de ajustes rápidos, Wear OS, alarma de despertador.
 | `minSdk` | 31 (Android 12) |
 | `compileSdk` | **37** — lo exigen la Compose BOM 2026.08 y `material3` 1.5.0-alpha. Ver ADR 005 |
 | `targetSdk` | 36 (Android 16) |
-| Build | Gradle Kotlin DSL + version catalog (`libs.versions.toml`), wrapper **9.5.0** |
-| AGP | **9.3.1** |
-| KSP | **2.3.7** (para Hilt; **no usar kapt**) |
+| Build | Gradle Kotlin DSL + version catalog (`libs.versions.toml`), wrapper **9.7.1** |
+| AGP | **9.3.2** |
+| KSP | **2.3.11** (para Hilt; **no usar kapt**) |
 | Arquitectura | MVVM + UDF, capas `ui` / `domain` / `data` |
-| DI | Hilt **2.59.2** |
+| DI | Hilt **2.60.1** |
 | Persistencia | **Solo DataStore Preferences 1.1.4**. **Sin Room**: no hay historial, solo preferencias |
 | Navegación | Navigation Compose **2.9.0** |
 | Background | **`MediaSessionService` de Media3** como foreground service `mediaPlayback`. **Sin `AlarmManager`** ni `WorkManager` |
-| Concurrencia | Coroutines **1.10.2** + Flow |
+| Concurrencia | Coroutines **1.11.0** + Flow |
 | i18n | `values/` en inglés (base y fallback) + `values-es/`; `locale_config.xml`; cambio en runtime con `AppCompatDelegate.setApplicationLocales` |
-| Tests | JUnit 4 + MockK + Turbine + Compose UI Test |
+| Tests | JUnit 4 + MockK **1.14.11** + Turbine **1.2.1** + Compose UI Test |
 | Logs | Timber **5.0.1**, solo en debug |
 | Backup | `android:allowBackup="false"` |
 
