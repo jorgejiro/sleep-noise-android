@@ -6,11 +6,40 @@
     <string name="sound_brown_short">Marrón</string>
 
     <string name="timer_title">Temporizador</string>
+    <string name="player_volume_label">Volumen %1$d</string>
+    <string name="timer_minutes_only">%1$d min</string>
+    <string name="timer_hours_only">%1$d h</string>
+    <string name="timer_hours_minutes">%1$d h %2$d min</string>
+    <string name="timer_finishing">Terminando</string>
+    <string name="a11y_play">Reproducir</string>
+    <string name="a11y_pause">Pausar</string>
+    <string name="a11y_volume_ring">Volumen. Arrastra el aro, o usa el deslizador de abajo</string>
+    <string name="timer_extend">+%1$d min</string>
     <string name="timer_none">Sin temporizador</string>
 
     <string name="settings_title">Ajustes</string>
     <string name="changelog_title">Novedades</string>
 
+    <string name="notification_channel_name">Reproducción</string>
+
+    <string name="settings_section_playback">Reproducción</string>
+    <string name="settings_section_about">Acerca de</string>
+    <string name="settings_autoplay">Reproducir al abrir la app</string>
+    <string name="settings_autoplay_subtitle">Empieza con el último sonido que escuchaste</string>
+    <string name="settings_language">Idioma</string>
+    <string name="settings_language_auto">Automático (sistema)</string>
+    <string name="settings_version">Versión</string>
+    <string name="settings_feedback">Enviar comentarios</string>
+    <string name="feedback_subject">%1$s %2$s (%3$d) — comentarios</string>
+    <string name="action_close">Cerrar</string>
     <string name="a11y_open_settings">Abrir ajustes</string>
     <string name="a11y_back">Atrás</string>
+
+    <string-array name="changelog_1_0">
+        <item>Ruido blanco y ruido marrón, generados en tu dispositivo: sin bucle que se note ni artefactos de compresión.</item>
+        <item>Suena al abrir la app, con el último sonido que escuchaste.</item>
+        <item>Temporizador de 15 a 120 minutos, con apagado progresivo en el último minuto.</item>
+        <item>Control desde la notificación, con la app cerrada y la pantalla apagada.</item>
+        <item>Español e inglés.</item>
+    </string-array>
 </resources>

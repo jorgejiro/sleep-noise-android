@@ -2,6 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- La reproduccion vive en un servicio en primer plano porque tiene que seguir
+         sonando con la app cerrada y la pantalla apagada toda la noche. POST_NOTIFICATIONS
+         no es decorativo: la notificacion es la unica forma de pausar sin abrir la app.
+         Lo que NO se declara: INTERNET, SCHEDULE_EXACT_ALARM, WAKE_LOCK (lo gestiona
+         Media3) ni nada de almacenamiento. -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <application
         android:name=".SleepNoiseApplication"
         android:allowBackup="false"
@@ -23,6 +32,29 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- exported porque el sistema hace bind al servicio para reanudar la
+             reproduccion desde sus propios controles de medios y desde los botones de
+             unos auriculares. Lint avisa de que un servicio exported no exige permiso,
+             y se deja el aviso a la vista: es la forma que Google documenta para un
+             MediaSessionService, y la sesion no expone nada mas que play, pausa y
+             volumen. -->
+        <service
+            android:name=".playback.PlaybackService"
+            android:exported="true"
+            android:foregroundServiceType="mediaPlayback">
+            <intent-filter>
+                <action android:name="androidx.media3.session.MediaSessionService" />
+            </intent-filter>
+        </service>
+
+        <receiver
+            android:name="androidx.media3.session.MediaButtonReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
+        </receiver>
 
     </application>
 

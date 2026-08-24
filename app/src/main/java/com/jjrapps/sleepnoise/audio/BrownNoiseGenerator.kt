@@ -74,6 +74,17 @@ class BrownNoiseGenerator(
         if (measured <= 0.0) analytic else (analytic * (targetRms / measured)).toFloat()
     }
 
+    init {
+        // Both filters start at zero, so the first fraction of a second is a
+        // transient: the level ramps up from nothing and the DC blocker has not
+        // settled, which shows up as an offset around 1e-3. Inaudible on its own —
+        // the app fades in over 1,5 s anyway — but it lands in the middle of a
+        // crossfade when the user switches sound, where it *is* a dent in the level.
+        // So the generator is warmed up before anyone can read from it, and starts
+        // settled.
+        warmUp()
+    }
+
     override fun generate(out: FloatArray, count: Int) {
         renderRaw(out, makeUpGain, count)
         for (i in 0 until count) out[i] = softLimit(out[i])
@@ -82,6 +93,20 @@ class BrownNoiseGenerator(
     override fun reset() {
         white.reset()
         resetFilters()
+        // Reset has to land in the same settled state the constructor leaves, or
+        // "reset" and "new" would sound different.
+        warmUp()
+    }
+
+    /** Runs the chain for a moment and throws the output away. */
+    private fun warmUp() {
+        val discard = FloatArray(SCRATCH_SIZE)
+        var done = 0
+        while (done < WARMUP_SAMPLES) {
+            val block = minOf(SCRATCH_SIZE, WARMUP_SAMPLES - done)
+            renderRaw(discard, makeUpGain, block)
+            done += block
+        }
     }
 
     /**
@@ -129,6 +154,12 @@ class BrownNoiseGenerator(
 
         /** Two seconds at 48 kHz: enough for a stable RMS, cheap enough to not notice. */
         const val CALIBRATION_SAMPLES = 96_000
+
+        /**
+         * Half a second, which is about thirty time constants of the 16 Hz corner:
+         * long past where either filter is still moving.
+         */
+        const val WARMUP_SAMPLES = 24_000
     }
 }
 

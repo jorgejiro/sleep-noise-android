@@ -2,10 +2,15 @@
 
 Guía de trabajo para este repositorio. Léela entera antes de tocar nada.
 
-> **Estado del proyecto: H0 y H1 hechos.** La app arranca con el tema, la tipografía, el icono, la
-> navegación y la i18n montadas, y el motor de ruido está escrito y medido: 25 tests en la JVM,
-> pendiente de -5,91 dB/octava en el marrón y 0,00 en el blanco. Lo siguiente es **H2, el puente a
-> Media3**, que es donde esto empieza a sonar.
+> **Estado del proyecto: H0 a H7 hechos, H8 a medias.** La app suena: ruido sintetizado en el
+> dispositivo, servicio en primer plano que sobrevive a cerrar la app y apagar la pantalla,
+> notificación de control, aro y slider de volumen, cambio de sonido con crossfade de igual potencia,
+> temporizador con apagado progresivo, ajustes, novedades y las dos lenguas. 59 tests en verde y el
+> APK de release minificado verificado en el emulador.
+>
+> **Lo que falta para publicar**: el recorrido completo con TalkBack, la sesión de resistencia de
+> ocho horas con el build de release, las filas de §7 que necesitan hardware real (llamada entrante,
+> auriculares) y todo H9.
 >
 > La especificación completa está en `docs/especificacion-release-1.0.md` y la publicación en Play
 > preparada por escrito (§7 bis): textos de la ficha, notas de la versión, política de privacidad y
@@ -33,14 +38,14 @@ pero solo su núcleo: escuchar un ruido y poder cambiarlo por otro.
 
 | # | Funcionalidad | Estado |
 |---|---|---|
-| F1 | Ruido blanco (gaussiano) y ruido marrón, en bucle indefinido | 🟨 Motor hecho (H1); suena en H2 |
-| F2 | Cambio de sonido en caliente, con crossfade | ⬜ Pendiente |
-| F3 | Al abrir la app suena el último sonido escuchado (por defecto, marrón) | ⬜ Pendiente |
-| F4 | Volumen a nivel medio al arrancar, con slider en la pantalla principal | ⬜ Pendiente |
-| F5 | Notificación `MediaStyle` para pausar y parar | ⬜ Pendiente |
-| F6 | Temporizador de apagado con fade out | ⬜ Pendiente |
-| F7 | Ajustes: changelog, versión, feedback por email, idioma | ⬜ Pendiente |
-| F8 | Inglés y español, con fallback a inglés y cambio desde Ajustes | ⬜ Pendiente |
+| F1 | Ruido blanco (gaussiano) y ruido marrón, en bucle indefinido | ✅ Hecho |
+| F2 | Cambio de sonido en caliente, con crossfade | ✅ Hecho, en el generador y no en el player |
+| F3 | Al abrir la app suena el último sonido escuchado (por defecto, marrón) | ✅ Hecho |
+| F4 | Volumen a nivel medio al arrancar, con slider en la pantalla principal | ✅ Hecho, aro y slider |
+| F5 | Notificación `MediaStyle` para pausar y parar | ✅ Hecho |
+| F6 | Temporizador de apagado con fade out | ✅ Hecho |
+| F7 | Ajustes: changelog, versión, feedback por email, idioma | ✅ Hecho |
+| F8 | Inglés y español, con fallback a inglés y cambio desde Ajustes | ✅ Hecho |
 
 Los requisitos detallados, con sus criterios de aceptación, están en
 `docs/especificacion-release-1.0.md` §5. Esta tabla es solo el mapa.
