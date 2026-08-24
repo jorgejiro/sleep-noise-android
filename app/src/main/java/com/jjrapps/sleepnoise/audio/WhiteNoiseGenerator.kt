@@ -28,7 +28,7 @@ class WhiteNoiseGenerator(
         for (i in 0 until count) {
             // A standard normal has unit variance, so scaling by the target RMS
             // *is* the level: no measure-and-correct pass needed.
-            out[i] = clampToUnit((nextGaussian() * targetRms).toFloat())
+            out[i] = softLimit((nextGaussian() * targetRms).toFloat())
         }
     }
 
@@ -69,13 +69,7 @@ class WhiteNoiseGenerator(
     }
 }
 
-/**
- * Guards the format boundary, not the ear: a Gaussian sample has no upper bound,
- * so at -18 dBFS RMS reaching full scale takes about eight standard deviations.
- * That happens roughly once in 10^15 samples — once in a few thousand years at
- * 48 kHz — but PCM has no room for it, and an overflow there would wrap around
- * into an audible click rather than just clip.
- */
+/** Hard boundary for anything that still has to fit in PCM. */
 internal fun clampToUnit(value: Float): Float = when {
     value > 1f -> 1f
     value < -1f -> -1f

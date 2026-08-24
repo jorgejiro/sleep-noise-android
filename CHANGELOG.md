@@ -17,12 +17,16 @@ Primera versión.
 
 ### Añadido
 
-- Ruido blanco gaussiano y ruido marrón, sintetizados en el dispositivo en tiempo real, sin ficheros
-  de audio empaquetados.
+- Cuatro ruidos sintetizados en el dispositivo en tiempo real, sin ficheros de audio empaquetados:
+  blanco gaussiano, rosa, marrón y un **enmascarador** con forma pensada para tapar conversaciones
+  —plano hasta 800 Hz y cayendo después—, que pone el 71 % de su energía en la banda de la voz frente
+  al 8,6 % del marrón (ADR 006).
 - Reproducción en bucle indefinido en un servicio en primer plano con `MediaSession`, que sigue
   sonando con la pantalla apagada, la app en segundo plano y la app fuera de recientes.
-- Arranque automático al abrir la app con el último sonido escuchado; ruido marrón a volumen 50 tras
-  la primera instalación.
+- Arranque automático al abrir la app con el último sonido escuchado; el enmascarador a volumen 50
+  tras la primera instalación.
+- Nivel de salida a -12 dBFS RMS, 6 dB más de lo que daba la primera versión del motor, con limitador
+  suave en los cuatro generadores.
 - Aro de volumen arrastrable con slider convencional de apoyo, sobre curva perceptual.
 - Cambio de sonido en caliente con crossfade de 800 ms.
 - Temporizador de apagado con presets de 15 a 120 minutos y valor personalizado de 5 a 600, con fade

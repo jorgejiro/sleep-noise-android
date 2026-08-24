@@ -38,9 +38,9 @@ pero solo su núcleo: escuchar un ruido y poder cambiarlo por otro.
 
 | # | Funcionalidad | Estado |
 |---|---|---|
-| F1 | Ruido blanco (gaussiano) y ruido marrón, en bucle indefinido | ✅ Hecho |
+| F1 | Cuatro ruidos —blanco, rosa, marrón y enmascarador— en bucle indefinido | ✅ Hecho |
 | F2 | Cambio de sonido en caliente, con crossfade | ✅ Hecho, en el generador y no en el player |
-| F3 | Al abrir la app suena el último sonido escuchado (por defecto, marrón) | ✅ Hecho |
+| F3 | Al abrir la app suena el último sonido escuchado (por defecto, el enmascarador) | ✅ Hecho |
 | F4 | Volumen a nivel medio al arrancar, con slider en la pantalla principal | ✅ Hecho, aro y slider |
 | F5 | Notificación `MediaStyle` para pausar y parar | ✅ Hecho |
 | F6 | Temporizador de apagado con fade out | ✅ Hecho |
@@ -50,7 +50,7 @@ pero solo su núcleo: escuchar un ruido y poder cambiarlo por otro.
 Los requisitos detallados, con sus criterios de aceptación, están en
 `docs/especificacion-release-1.0.md` §5. Esta tabla es solo el mapa.
 
-**Fuera de la v1**: ruido rosa/gris, sonidos naturales, mezclas simultáneas, ecualizador, widget,
+**Fuera de la v1**: ruido gris, sonidos naturales, mezclas simultáneas, ecualizador, widget,
 tile de ajustes rápidos, Wear OS, alarma de despertador.
 
 ---
@@ -123,6 +123,13 @@ por minuto, y cualquier bucle acaba siendo detectable por el oído.
 
 Reglas:
 
+- **El nivel de salida es -12 dBFS RMS y no se sube más** (ADR 006). El tope no es estético: por
+  encima, los picos gaussianos chocan con el techo tantas veces por segundo que el limitador se oye.
+  Está medido en `NoiseLevelTest`, que falla si algún sonido pasa de 200 muestras limitadas por
+  segundo.
+- **El enmascarador no es un color, es una forma con un trabajo**: plano hasta 800 Hz y cayendo
+  después, para poner la energía donde está la voz. Si alguna vez se toca su filtro, el test que
+  importa es el que mide su energía en la banda de 250 Hz a 4 kHz, no el que mira su pendiente.
 - La síntesis vive en `audio/` y es **matemática pura, sin dependencias de Android**. Así se testea en
   JVM: RMS, offset de DC, ausencia de clipping y pendiente espectral con FFT.
 - Se conecta a ExoPlayer mediante un `DataSource` propio que sirve cabecera WAV más PCM sintetizado en

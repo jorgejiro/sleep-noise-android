@@ -29,9 +29,9 @@ Principios:
 
 | # | Funcionalidad | Detalle |
 |---|---|---|
-| F1 | Reproducción de ruido | Dos sonidos: **ruido blanco** (gaussiano plano) y **ruido marrón**. En bucle indefinido. |
+| F1 | Reproducción de ruido | ~~Dos sonidos~~ → **cuatro**: blanco, rosa, marrón y enmascarador (ADR 006). En bucle indefinido. |
 | F2 | Cambio de sonido en caliente | Sin cortes audibles: crossfade corto entre el sonido saliente y el entrante. |
-| F3 | Arranque automático | Al abrir la app se reproduce **el último sonido escuchado**; tras la primera instalación, **ruido marrón**. |
+| F3 | Arranque automático | Al abrir la app se reproduce **el último sonido escuchado**; tras instalar, ~~marrón~~ → el **enmascarador** (ADR 006). |
 | F4 | Volumen | Arranca a nivel medio (0.5 del volumen interno de la app, curva perceptual). Slider en la pantalla principal. |
 | F5 | Notificación de control | `MediaStyle` con play/pausa (+ stop y estado del temporizador). Sobrevive a app en background y pantalla apagada. |
 | F6 | Temporizador de apagado | Presets (15/30/45/60/90 min + personalizado) con **fade out** en el último minuto. Cuenta atrás visible en app y notificación. |

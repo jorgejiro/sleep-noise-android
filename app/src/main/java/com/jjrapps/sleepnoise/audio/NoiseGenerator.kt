@@ -23,13 +23,20 @@ interface NoiseGenerator {
 }
 
 /**
- * The level every generator aims for: -18 dBFS RMS.
+ * The level every generator aims for: -12 dBFS RMS.
  *
- * Low on purpose. It leaves 18 dB of headroom for the peaks of a Gaussian signal,
- * which are unbounded in principle, and it means the app's own volume control has
- * somewhere to go rather than starting at the ceiling.
+ * Raised from -18 dBFS, and the reason is one of the app's real uses: covering the
+ * noise of a room you cannot leave, through earplugs and headphones. At -18 the app
+ * was giving away 6 dB it had no reason to keep — the measured peaks sat 4 dB below
+ * full scale and the rest was unused headroom.
+ *
+ * -12 is where the arithmetic says to stop. A Gaussian signal has no maximum, so the
+ * choice is really about how often a sample runs into the ceiling: at -14 dBFS that
+ * is once a second, at -12 about thirty times, and at -10 it is several hundred and
+ * starts to be audible as a crackle. Thirty soft-limited peaks a second cannot be
+ * heard; the limiter is in [softLimit] and every generator now goes through it.
  */
-const val TARGET_RMS: Float = 0.12589254f  // 10^(-18/20)
+const val TARGET_RMS: Float = 0.25118864f  // 10^(-12/20)
 
 /** The only sample rate the app uses. 48 kHz is what modern Android audio runs at. */
 const val SAMPLE_RATE: Int = 48_000

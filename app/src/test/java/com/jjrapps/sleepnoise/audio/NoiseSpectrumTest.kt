@@ -94,6 +94,76 @@ class NoiseSpectrumTest {
     }
 
     @Test
+    fun `pink noise falls three decibels per octave`() {
+        val spectrum = SpectrumAnalysis.powerSpectrumDb(render(NoiseType.Pink), fftSize)
+        val slope = SpectrumAnalysis.slopeDbPerOctave(
+            spectrum, SAMPLE_RATE, fftSize, fromHz = 100.0, toHz = 10_000.0
+        )
+        report("rosa, pendiente 100 Hz - 10 kHz", "%.2f dB/octava".format(slope))
+        // Kellett's approximation is good to about a tenth of a dB across the band;
+        // this tolerance is for the estimator, not for the filter.
+        assertEquals("pink noise should fall 3 dB/octave, measured $slope", -3.0, slope, 0.5)
+    }
+
+    @Test
+    fun `the masking noise is flat where speech is and falls above it`() {
+        val spectrum = SpectrumAnalysis.powerSpectrumDb(render(NoiseType.Masking), fftSize)
+        val below = SpectrumAnalysis.slopeDbPerOctave(
+            spectrum, SAMPLE_RATE, fftSize, fromHz = 120.0, toHz = 500.0, minBins = 5
+        )
+        val above = SpectrumAnalysis.slopeDbPerOctave(
+            spectrum, SAMPLE_RATE, fftSize, fromHz = 2_000.0, toHz = 12_000.0
+        )
+        report("máscara, pendiente bajo 500 Hz", "%.2f dB/octava".format(below))
+        report("máscara, pendiente sobre 2 kHz", "%.2f dB/octava".format(above))
+        // The shape is the product: a plateau under the corner so the energy lands
+        // where speech is, and a fall above it so the sound is not a hiss.
+        assertEquals("should be flat below the corner, measured $below", 0.0, below, 1.2)
+        assertEquals("should fall about 6 dB/octave above, measured $above", -6.0, above, 1.2)
+    }
+
+    @Test
+    fun `each sound covers speech better than the one before it`() {
+        // The reason the two new sounds exist. Measured as the share of energy landing
+        // in 250 Hz - 4 kHz, where a conversation lives: brown noise puts almost
+        // nothing there, and the masking noise is shaped to put most of it.
+        val shares = NoiseType.entries.associateWith { type ->
+            speechShare(SpectrumAnalysis.powerSpectrumDb(render(type), fftSize))
+        }
+        shares.forEach { (type, share) ->
+            report("$type, energía en la voz", "%.1f %%".format(share * 100))
+        }
+        assertTrue("brown should be the worst", shares.getValue(NoiseType.Brown) < 0.15)
+        assertTrue(
+            "pink should beat white",
+            shares.getValue(NoiseType.Pink) > shares.getValue(NoiseType.White)
+        )
+        assertTrue(
+            "the masking noise should beat pink, or it has no reason to exist",
+            shares.getValue(NoiseType.Masking) > shares.getValue(NoiseType.Pink)
+        )
+        assertTrue(
+            "the masking noise should put most of its energy in the speech band",
+            shares.getValue(NoiseType.Masking) > 0.55
+        )
+    }
+
+    /** Share of total energy falling between 250 Hz and 4 kHz. */
+    private fun speechShare(spectrumDb: DoubleArray): Double {
+        val binHz = SAMPLE_RATE.toDouble() / fftSize
+        var speech = 0.0
+        var total = 0.0
+        for (bin in 1 until spectrumDb.size) {
+            val hz = bin * binHz
+            if (hz < 20.0 || hz > 16_000.0) continue
+            val power = Math.pow(10.0, spectrumDb[bin] / 10.0)
+            total += power
+            if (hz in 250.0..4_000.0) speech += power
+        }
+        return speech / total
+    }
+
+    @Test
     fun `white channels are independent, measured tightly`() {
         val (left, right) = channels(NoiseType.White, frames = 240_000)
         val r = correlation(left, right)

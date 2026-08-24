@@ -11,12 +11,17 @@ NAME_EN = "Sleep Noise: white noise sleep"
 NAME_ES_ALT = "Sleep Noise"
 NAME_EN_ALT = "Sleep Noise"
 
-SHORT_ES = "Ruido blanco y marrón para dormir. Suena al abrir y se apaga solo."
-SHORT_EN = "White and brown noise for sleep. Plays when you open it, stops on a timer."
+SHORT_ES = "Ruido para dormir o para tapar el ruido de alrededor. Suena al abrir."
+SHORT_EN = "Noise to sleep, or to cover the room around you. Plays when you open it."
 
-FULL_ES = """Sleep Noise reproduce ruido blanco o ruido marrón para dormir. Se abre y suena: no hay que pulsar nada.
+FULL_ES = """Sleep Noise genera ruido para dormir, y para tapar el ruido de alrededor cuando no puedes irte de donde estás. Se abre y suena: no hay que pulsar nada.
 
-Solo dos sonidos, y es a propósito. No hay catálogo que recorrer ni mezclas que configurar a las dos de la mañana. Ruido blanco cuando quieres tapar voces y ruidos agudos, ruido marrón cuando prefieres algo más grave y envolvente, parecido a la lluvia lejana o al mar de fondo.
+Cuatro sonidos, y ni uno más. No hay catálogo que recorrer ni mezclas que configurar a las dos de la mañana: cada uno hace algo distinto.
+
+• Enmascarador, el que viene puesto. Su forma está pensada para tapar conversaciones: pone el 71 % de su energía en la banda de frecuencias donde vive la voz, frente al 9 % del ruido marrón. Es el que quieres con auriculares en un sitio con gente.
+• Rosa, el equilibrado. El que el oído percibe como más natural, porque reparte la misma energía en cada octava.
+• Blanco, plano en todo el espectro. Tapa bien los ruidos agudos y secos.
+• Marrón, grave y envolvente, parecido a la lluvia lejana o al mar de fondo. El más cómodo para dormir, aunque el que menos tapa una conversación.
 
 El ruido no está grabado: se genera en tu teléfono, muestra a muestra, mientras lo escuchas. Eso significa que no hay un bucle que se repita y que acabes notando, y tampoco la textura metálica que deja el audio comprimido cuando intenta comprimir algo que no tiene estructura. Suena limpio la primera hora y la octava.
 
@@ -32,7 +37,7 @@ Sin cuentas, sin nube, sin anuncios y sin seguimiento. La app no usa internet en
 
 Qué incluye:
 
-• Ruido blanco y ruido marrón, generados en el dispositivo.
+• Cuatro ruidos generados en el dispositivo: enmascarador, rosa, blanco y marrón.
 • Suena al abrir la app, con el último sonido que escuchaste.
 • Temporizador con apagado progresivo, y opción de añadir quince minutos.
 • Control desde la notificación y desde los auriculares; al pausar, la notificación se cierra sola.
@@ -41,9 +46,14 @@ Qué incluye:
 • Español e inglés.
 • Sin internet, sin cuentas, sin anuncios, sin seguimiento."""
 
-FULL_EN = """Sleep Noise plays white noise or brown noise to help you sleep. Open it and it plays — there is nothing to press.
+FULL_EN = """Sleep Noise generates noise to help you sleep, and to cover the room around you when you cannot leave it. Open it and it plays — there is nothing to press.
 
-Two sounds only, and that is on purpose. No catalogue to scroll through, no mix to configure at two in the morning. White noise when you want to cover voices and sharp sounds, brown noise when you prefer something deeper and more enveloping, closer to distant rain or the sea in the background.
+Four sounds, and not one more. No catalogue to scroll through, no mix to configure at two in the morning: each one does something different.
+
+• Masking, the one it starts with. Its shape is built to cover conversation: it puts 71 % of its energy in the band where speech lives, against brown noise's 9 %. This is the one you want with headphones on in a room full of people.
+• Pink, the balanced one. The one hearing perceives as most natural, because it spreads equal energy across every octave.
+• White, flat across the spectrum. Good at covering sharp, sudden sounds.
+• Brown, deep and enveloping, closer to distant rain or the sea in the background. The most comfortable for sleeping, and the least able to cover a conversation.
 
 The noise is not a recording: it is generated on your phone, sample by sample, as you listen. That means there is no loop that repeats until you start noticing it, and none of the metallic texture that compressed audio leaves behind when it tries to compress something with no structure in it. It sounds as clean in the eighth hour as in the first.
 
@@ -59,7 +69,7 @@ No accounts, no cloud, no ads and no tracking. The app never uses the internet: 
 
 What you get:
 
-• White noise and brown noise, generated on your device.
+• Four noises generated on your device: masking, pink, white and brown.
 • Plays as soon as you open the app, with the last sound you were listening to.
 • Sleep timer with a gradual fade out, and a button to add fifteen minutes.
 • Control from the notification and from your headphones; pausing clears the notification away.
@@ -73,7 +83,7 @@ PROMO_EN = "White and brown noise generated on your phone. Plays on open. Stops 
 
 NOTES_ES = """Primera versión de Sleep Noise.
 
-• Ruido blanco y ruido marrón para dormir, generados en tu teléfono en lugar de reproducirse desde un fichero: no hay bucle que se note ni artefactos de compresión.
+• Cuatro ruidos generados en tu teléfono, no reproducidos desde un fichero: sin bucle que se note ni artefactos de compresión. Uno de ellos está pensado para tapar conversaciones.
 • Suena al abrir la app, con el último sonido que escuchaste.
 • Temporizador de 15 a 120 minutos, con apagado progresivo.
 • Control desde la notificación, con la app cerrada. Al pausar se cierra sola.
@@ -82,7 +92,7 @@ Sin cuentas, sin nube, sin anuncios y sin seguimiento."""
 
 NOTES_EN = """The first version of Sleep Noise.
 
-• White noise and brown noise for sleeping, generated on your phone instead of played from a file: no loop you can notice, no compression artefacts.
+• Four noises generated on your phone, not played from a file: no loop you can notice, no compression artefacts. One of them is shaped to cover conversation.
 • Plays as soon as you open the app, with the last sound you were listening to.
 • Sleep timer from 15 to 120 minutes, with a gradual fade out.
 • Control it from the notification, with the app closed. Pausing clears it away.
@@ -193,8 +203,8 @@ Límite: 80 caracteres.
 Límite: 4000 caracteres.
 
 Las tres cosas que este texto dice **a propósito**, porque son las que evitan una valoración de una
-estrella el primer día: que hay **solo dos sonidos**, que el ruido está **generado y no grabado**, y
-que la interfaz es **oscura siempre**.
+estrella el primer día: que hay **cuatro sonidos y ni uno más**, que el ruido está **generado y no
+grabado**, y que la interfaz es **oscura siempre**.
 
 ### es-ES (@@full_es_n@@ caracteres)
 
@@ -233,7 +243,7 @@ El orden importa: en Play se ven las dos primeras sin desplazarse.
 
 | # | Escena | Por qué está aquí |
 |---|---|---|
-| 1 | Pantalla principal sonando, ruido marrón | Es la app entera en una imagen |
+| 1 | Pantalla principal sonando, el enmascarador | Es la app entera en una imagen, con el sonido que viene puesto |
 | 2 | Temporizador abierto con los presets | La segunda razón por la que alguien instala esto |
 | 3 | Pantalla principal con el temporizador corriendo | Enseña el estado en uso, no en reposo |
 | 4 | Notificación de control en la sombra | Que se puede pausar sin abrir la app |

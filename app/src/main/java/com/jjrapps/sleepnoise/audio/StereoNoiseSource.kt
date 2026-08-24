@@ -145,5 +145,7 @@ fun createGenerator(
     sampleRate: Int = SAMPLE_RATE
 ): NoiseGenerator = when (type) {
     NoiseType.White -> WhiteNoiseGenerator(seed)
+    NoiseType.Pink -> PinkNoiseGenerator(seed, sampleRate)
     NoiseType.Brown -> BrownNoiseGenerator(seed, sampleRate)
+    NoiseType.Masking -> MaskingNoiseGenerator(seed, sampleRate)
 }

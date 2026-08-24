@@ -120,6 +120,24 @@ class NoiseLevelTest {
     }
 
     @Test
+    fun `the limiter barely works, which is the price of the extra six decibels`() {
+        // Raising the level from -18 to -12 dBFS means Gaussian peaks now reach the
+        // ceiling sometimes. The arithmetic says about thirty samples a second, and
+        // thirty soft-limited peaks a second cannot be heard — but "cannot be heard"
+        // is a claim worth measuring rather than repeating.
+        for (type in NoiseType.entries) {
+            val signal = render(type)
+            val limited = signal.count { abs(it) > 0.85f }
+            val perSecond = limited.toDouble() / (signal.size.toDouble() / SAMPLE_RATE)
+            report("$type, muestras limitadas", "%.0f por segundo".format(perSecond))
+            assertTrue(
+                "$type limits $perSecond samples a second, which would be audible",
+                perSecond < 200
+            )
+        }
+    }
+
+    @Test
     fun `a generator is reproducible after reset`() {
         val generator = createGenerator(NoiseType.Brown)
         val first = FloatArray(4096)

@@ -5,6 +5,10 @@
     <string name="sound_white_short">Blanco</string>
     <string name="sound_brown_short">Marrón</string>
 
+    <string name="sound_pink_name">Ruido rosa</string>
+    <string name="sound_masking_name">Ruido enmascarador</string>
+    <string name="sound_pink_short">Rosa</string>
+    <string name="sound_masking_short">Máscara</string>
     <string name="timer_title">Temporizador</string>
     <string name="player_volume_label">Volumen %1$d</string>
     <string name="timer_minutes_only">%1$d min</string>
@@ -36,7 +40,8 @@
     <string name="a11y_back">Atrás</string>
 
     <string-array name="changelog_1_0">
-        <item>Ruido blanco y ruido marrón, generados en tu dispositivo: sin bucle que se note ni artefactos de compresión.</item>
+        <item>Cuatro ruidos generados en tu dispositivo —enmascarador, rosa, blanco y marrón—, sin bucle que se note ni artefactos de compresión.</item>
+        <item>El enmascarador tiene la forma pensada para tapar conversaciones: el 71 % de su energía está donde vive la voz, frente al 9 % del marrón.</item>
         <item>Suena al abrir la app, con el último sonido que escuchaste.</item>
         <item>Temporizador de 15 a 120 minutos, con apagado progresivo en el último minuto.</item>
         <item>Control desde la notificación, con la app cerrada y la pantalla apagada. Al pausar, la sesión termina y la notificación se cierra sola.</item>

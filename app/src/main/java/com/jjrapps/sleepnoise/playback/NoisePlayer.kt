@@ -62,7 +62,9 @@ object NoisePlayer {
     fun titleFor(type: NoiseType, context: Context): String = context.getString(
         when (type) {
             NoiseType.White -> R.string.sound_white_name
+            NoiseType.Pink -> R.string.sound_pink_name
             NoiseType.Brown -> R.string.sound_brown_name
+            NoiseType.Masking -> R.string.sound_masking_name
         }
     )
 

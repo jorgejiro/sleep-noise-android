@@ -9,6 +9,10 @@
     <string name="sound_white_short">White</string>
     <string name="sound_brown_short">Brown</string>
 
+    <string name="sound_pink_name">Pink noise</string>
+    <string name="sound_masking_name">Masking noise</string>
+    <string name="sound_pink_short">Pink</string>
+    <string name="sound_masking_short">Masking</string>
     <string name="timer_title">Sleep timer</string>
     <string name="player_volume_label">Volume %1$d</string>
     <string name="timer_minutes_only">%1$d min</string>
@@ -43,7 +47,8 @@
     <string name="a11y_back">Back</string>
 
     <string-array name="changelog_1_0">
-        <item>White noise and brown noise, generated on your device: no loop you can notice, no compression artefacts.</item>
+        <item>Four noises generated on your device — masking, pink, white and brown — with no loop you can notice and no compression artefacts.</item>
+        <item>The masking noise is shaped to cover conversation: 71 % of its energy sits where speech does, against brown noise\'s 9 %.</item>
         <item>Plays as soon as you open the app, with the last sound you were listening to.</item>
         <item>Sleep timer from 15 to 120 minutes, with a gradual fade out over the last minute.</item>
         <item>Control it from the notification, with the app closed and the screen off. Pausing ends the session and clears the notification away.</item>

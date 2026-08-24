@@ -33,9 +33,9 @@ Cualquier funcionalidad que no sirva a ese momento se queda fuera.
 
 | Bloque | Contenido |
 |---|---|
-| Sonidos | Dos: ruido blanco y ruido marrón, sintetizados en el dispositivo |
+| Sonidos | Cuatro: blanco, rosa, marrón y enmascarador, sintetizados en el dispositivo |
 | Reproducción | Bucle indefinido, en segundo plano, con la pantalla apagada, durante horas |
-| Arranque | Automático al abrir la app, con el último sonido escuchado |
+| Arranque | Automático al abrir la app, con el último sonido escuchado; enmascarador tras instalar |
 | Volumen | Aro arrastrable + slider convencional, con curva perceptual |
 | Temporizador | Presets y valor personalizado, con fade out final |
 | Notificación | `MediaStyle` con pausa, parar y +15 min |
@@ -45,7 +45,7 @@ Cualquier funcionalidad que no sirva a ese momento se queda fuera.
 
 ### 2.2 No entra (y no se discute durante la 1.0)
 
-Ruido rosa y gris · sonidos naturales o grabados · mezcla de varios sonidos · ecualizador ·
+Ruido gris · sonidos naturales o grabados · mezcla de varios sonidos · ecualizador ·
 modo claro · dynamic color · widget de escritorio · tile de ajustes rápidos · Wear OS · Android Auto ·
 alarma de despertador · estadísticas de sueño · copia de seguridad en la nube · analítica ·
 onboarding con pantallas de bienvenida · valoración in-app.
@@ -144,7 +144,7 @@ Predictive back activo en todas.
 
 De arriba abajo: marca «SLEEP NOISE» e icono de ajustes · aro de volumen de 264 dp con el botón de
 play/pausa de 100 dp en el centro · nombre del sonido a 34 sp · línea de volumen («VOLUMEN 50») ·
-**slider de volumen** · dos píldoras de sonido (Blanco / Marrón) · separador · fila de temporizador
+**slider de volumen** · cuatro píldoras de sonido en rejilla 2×2 · separador · fila de temporizador
 con su estado y un chevron.
 
 El slider es la corrección acordada sobre el mockup: el aro es un atajo, el slider es el camino
@@ -180,8 +180,9 @@ Cada requisito tiene un identificador estable. Los criterios de aceptación son 
 **RF-01 · Arranque automático.** Al abrir la app se reproduce el último sonido escuchado, al último
 volumen usado, sin que el usuario pulse nada.
 
-- *Dado* que es la primera vez que se abre tras instalar, *cuando* se abre, *entonces* suena **ruido
-  marrón** a **volumen 50** con un fade in de 1,5 s.
+- *Dado* que es la primera vez que se abre tras instalar, *cuando* se abre, *entonces* suena el
+  **ruido enmascarador** a **volumen 50** con un fade in de 1,5 s. Es el que sirve para el uso más
+  exigente —tapar una habitación con gente— y el marrón está a un toque para dormir (ADR 006).
 - *Dado* que la última vez se escuchó ruido blanco a volumen 70, *cuando* se abre, *entonces* suena
   ruido blanco a volumen 70.
 - *Dado* que el ruido **ya está sonando** en segundo plano, *cuando* se abre la app, *entonces* no se
@@ -195,7 +196,8 @@ temporizador o el sistema.
 - *Dado* un sonido en reproducción, *cuando* pasan 8 horas, *entonces* sigue sonando sin cortes,
   saltos ni cambios de nivel.
 
-**RF-03 · Cambio de sonido.** Se puede cambiar de sonido durante la reproducción.
+**RF-03 · Cambio de sonido.** Se puede cambiar entre los cuatro durante la reproducción, en una
+rejilla de 2×2.
 
 - *Dado* que suena ruido marrón, *cuando* se pulsa «Blanco», *entonces* el audio cruza al ruido
   blanco en 800 ms sin silencio intermedio ni chasquido, y el nombre en pantalla cambia con él.
@@ -321,7 +323,7 @@ Cada uno con su forma de medirlo. Un requisito no funcional sin método de medid
 | RNF-03 | Tiempo hasta el primer sonido | < 800 ms desde el toque en el icono, arranque en frío | `adb shell am start -W` más marca temporal del primer buffer |
 | RNF-04 | Tamaño de descarga | < 4 MB el AAB firmado | Informe de tamaño de Play Console |
 | RNF-05 | CPU en reproducción | < 3 % de un núcleo con la pantalla apagada | `adb shell top -m 5` durante 10 min |
-| RNF-06 | Calidad de audio | Sin chasquidos en arranque, pausa ni cambio de sonido; sin clipping; deriva de DC < 0,001 | Tests JVM del generador + escucha con auriculares de estudio |
+| RNF-06 | Calidad de audio | Sin chasquidos en arranque, pausa ni cambio de sonido; deriva de DC < 0,001; menos de 200 muestras limitadas por segundo | Tests JVM del generador + escucha con auriculares de estudio |
 | RNF-07 | Fluidez de la UI | Ningún frame por encima de 16 ms en P1 con el halo animando | Macrobenchmark o `adb shell dumpsys gfxinfo` |
 | RNF-08 | Accesibilidad | Recorrido completo con TalkBack; targets ≥ 48 dp; texto legible al 200 % | Accessibility Scanner + recorrido manual con TalkBack |
 | RNF-09 | Privacidad | La app no declara `INTERNET` y no recoge ningún dato | Revisión del manifest fusionado (`app/build/outputs/logs`) |
@@ -358,7 +360,7 @@ Todo en DataStore Preferences. **Sin base de datos**: no hay nada que historiar.
 
 | Clave | Tipo | Valor inicial | Notas |
 |---|---|---|---|
-| `last_sound` | String | `"brown"` | `"brown"` o `"white"` |
+| `last_sound` | String | `"masking"` | `"white"`, `"pink"`, `"brown"` o `"masking"` |
 | `volume` | Int | `50` | 0–100 |
 | `timer_minutes` | Int | `60` | Último preset usado. `0` = sin temporizador |
 | `autoplay_on_open` | Boolean | `true` | RF-13 |
@@ -502,8 +504,8 @@ Si se edita un texto, se edita en el script y se vuelve a pasar. Editar el markd
 conteos mintiendo, que es peor que no tenerlos.
 
 Las tres cosas que la descripción larga dice **a propósito**, porque son las que evitan una valoración
-de una estrella el primer día: que hay **solo dos sonidos**, que el ruido está **generado y no
-grabado**, y que la interfaz es **oscura siempre**.
+de una estrella el primer día: que hay **cuatro sonidos y ni uno más**, que el ruido está **generado
+y no grabado**, y que la interfaz es **oscura siempre**.
 
 ### 13.3 Capturas
 
@@ -545,7 +547,8 @@ la pantalla de Novedades es para quien ya tiene la app, y las notas de Play son 
 |---|---|---|
 | Fabricantes que matan el servicio | El ruido se corta a mitad de la noche y la app parece rota | Wake mode, notificación permanente, y detección del corte para sugerir excluir la app del ahorro de batería |
 | `material3` en alpha | Una subida de versión rompe la UI | Fijar versión exacta, revisar el changelog de la librería antes de subirla, no subir durante H9 |
-| Valoraciones por «solo dos sonidos» | Media de estrellas baja desde el primer día | Decirlo en la descripción corta, no solo en la larga |
+| Valoraciones por «solo cuatro sonidos» | Media de estrellas baja desde el primer día | Decirlo en la descripción corta, y explicar que cada uno hace algo distinto en vez de ser un catálogo |
+| Volumen alto durante horas | Riesgo auditivo acumulado, sobre todo con tapones puestos | El nivel sube 6 dB (ADR 006); el volumen del sistema sigue mandando por encima del de la app, y el usuario decide |
 | El fade out del temporizador molesta | Alguien lo percibe como que la app «se muere» | 60 s es largo y es lineal en dB; si aparece la queja, hacerlo configurable en la 1.1 |
 | El aro de volumen no se descubre | El usuario no sabe cambiar el volumen | Ya mitigado: el slider convencional debajo (§4, P1) |
 | Consumo de batería por encima del objetivo | Desinstalaciones y reseñas negativas | Buffer grande en el `AudioTrack`, medida obligatoria en H3 y H8, y si RNF-02 no se cumple, evaluar volver a un bucle pregrabado antes de publicar |

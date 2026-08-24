@@ -57,6 +57,9 @@ import com.jjrapps.sleepnoise.R
 import com.jjrapps.sleepnoise.domain.model.NoiseType
 import com.jjrapps.sleepnoise.playback.PlaybackState
 import com.jjrapps.sleepnoise.ui.common.animationsEnabled
+import com.jjrapps.sleepnoise.ui.common.iconRes
+import com.jjrapps.sleepnoise.ui.common.nameRes
+import com.jjrapps.sleepnoise.ui.common.shortNameRes
 import com.jjrapps.sleepnoise.ui.common.formatRemaining
 import com.jjrapps.sleepnoise.ui.theme.SleepNoiseColors
 import com.jjrapps.sleepnoise.ui.theme.SleepNoiseTheme
@@ -136,10 +139,7 @@ private fun PlayerContent(
 
             Spacer(Modifier.height(30.dp))
             Text(
-                text = stringResource(
-                    if (state.noise == NoiseType.White) R.string.sound_white_name
-                    else R.string.sound_brown_name
-                ),
+                text = stringResource(state.noise.nameRes()),
                 style = MaterialTheme.typography.displaySmall,
                 color = SleepNoiseColors.OnBackground,
                 textAlign = TextAlign.Center
@@ -168,22 +168,25 @@ private fun PlayerContent(
                 .padding(bottom = 6.dp)
         )
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            NoisePill(
-                type = NoiseType.White,
-                selected = state.noise == NoiseType.White,
-                onClick = { onSelectNoise(NoiseType.White) },
-                modifier = Modifier.weight(1f)
-            )
-            NoisePill(
-                type = NoiseType.Brown,
-                selected = state.noise == NoiseType.Brown,
-                onClick = { onSelectNoise(NoiseType.Brown) },
-                modifier = Modifier.weight(1f)
-            )
+        // Two by two rather than a row of four: at 390 dp a fourth pill leaves room
+        // for about five characters, and "Enmascarador" is not five characters. The
+        // grid also keeps every target well past 48 dp.
+        Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            NoiseType.entries.chunked(2).forEach { pair ->
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    pair.forEach { type ->
+                        NoisePill(
+                            type = type,
+                            selected = state.noise == type,
+                            onClick = { onSelectNoise(type) },
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+                }
+            }
         }
 
         Spacer(Modifier.height(14.dp))
@@ -300,9 +303,7 @@ private fun NoisePill(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
-            painter = painterResource(
-                if (type == NoiseType.White) R.drawable.ic_noise_white else R.drawable.ic_noise_brown
-            ),
+            painter = painterResource(type.iconRes()),
             contentDescription = null,
             tint = ink,
             modifier = Modifier
@@ -310,12 +311,10 @@ private fun NoisePill(
                 .size(17.dp)
         )
         Text(
-            text = stringResource(
-                if (type == NoiseType.White) R.string.sound_white_short
-                else R.string.sound_brown_short
-            ),
+            text = stringResource(type.shortNameRes()),
             style = MaterialTheme.typography.bodyLarge,
-            color = ink
+            color = ink,
+            maxLines = 1
         )
     }
 }
