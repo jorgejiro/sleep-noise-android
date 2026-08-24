@@ -235,7 +235,21 @@
 <tr><td>Marca</td><td>11 sp</td><td>400</td><td>«SLEEP NOISE», <code>letterSpacing</code> 0.22em</td></tr>
 </tbody></table></div>
 <p>Todos los tamaños en <code>sp</code>, escalables hasta el 200 % del sistema sin que se corte texto.</p>
-<h3 id="3-3-forma-y-movimiento">3.3 Forma y movimiento</h3>
+<h3 id="3-3-icono">3.3 Icono</h3>
+<p><strong>«Luna de grano»</strong> (ADR 004): un creciente compuesto de 230 puntos de grano ámbar sobre el fondo oscuro cálido. Cuatro piezas, no una:</p>
+<div class="tw"><table>
+<thead><tr><th>Pieza</th><th>Fichero</th><th>Notas</th></tr></thead>
+<tbody>
+<tr><td>Icono adaptativo</td><td><code>ic_launcher.xml</code></td><td>Referencia a las tres capas siguientes</td></tr>
+<tr><td>Fondo</td><td><code>ic_launcher_background.xml</code></td><td>Viñeteado radial cálido, a sangre en los 108 dp</td></tr>
+<tr><td>Primer plano</td><td><code>ic_launcher_foreground.xml</code></td><td>El grano, 230 puntos en un solo <code>path</code></td></tr>
+<tr><td>Monocromo</td><td><code>ic_launcher_monochrome.xml</code></td><td>Creciente sólido con 74 puntos gruesos en el borde</td></tr>
+<tr><td>Notificación</td><td><code>ic_stat_sleep_noise.xml</code></td><td>24 dp, silueta sin grano ni fondo, tintada por el sistema</td></tr>
+<tr><td>Ficha de Play</td><td><code>play-icon-512.svg</code></td><td>Origen del PNG de 512 × 512, sin máscara</td></tr>
+</tbody></table></div>
+<p>Todo se genera con <code>scripts/generar-iconos.py</code> y <strong>no se edita a mano</strong>: el grano viene de un PRNG determinista para que no cambie entre regeneraciones, y el creciente se calcula por intersección de circunferencias. Los assets viven en <code>docs/design/icono/vector/</code> hasta que exista <code>app/src/main/res/</code>.</p>
+<p>El grano va como puntos vectoriales porque un <code>VectorDrawable</code> de Android no soporta filtros SVG.</p>
+<h3 id="3-4-forma-y-movimiento">3.4 Forma y movimiento</h3>
 <ul>
 <li>Radios: 20 dp en píldoras de sonido, 24 dp en hojas modales, círculo completo en el aro y el botón.</li>
 <li><strong>Halo que respira</strong>: ciclo de 9 s, escala 1 → 1.09, opacidad 0.55 → 0.9. Se detiene cuando la app pasa a segundo plano y cuando <code>Settings.Global.ANIMATOR_DURATION_SCALE</code> es 0.</li>
@@ -436,7 +450,7 @@
 <tr><td><strong><span class="rid">H5</span></strong></td><td>Persistencia y arranque</td><td>DataStore con las siete claves, arranque automático (<span class="rid">RF-01</span>) con sus cuatro casos</td><td>Los cuatro criterios de <span class="rid">RF-01</span> comprobados en dispositivo</td></tr>
 <tr><td><strong><span class="rid">H6</span></strong></td><td>Temporizador</td><td>Hoja P2, cuenta atrás, fade out, +15 min, cancelar, congelar al pausar</td><td><span class="rid">RF-06</span> a <span class="rid">RF-08</span> comprobados, incluido el caso de pausa manual a mitad de cuenta</td></tr>
 <tr><td><strong><span class="rid">H7</span></strong></td><td>Ajustes y novedades</td><td>P3 y P4 completas, changelog con su catálogo, feedback por correo, selector de idioma</td><td>Cambio de idioma en caliente correcto, incluida la notificación; correo se abre con el asunto bien formado</td></tr>
-<tr><td><strong><span class="rid">H8</span></strong></td><td>Pulido</td><td>R8 y reglas de proguard, icono adaptativo, edge-to-edge, TalkBack completo, revisión de contrastes, splash</td><td>Accessibility Scanner sin hallazgos críticos; build de release funciona con minify</td></tr>
+<tr><td><strong><span class="rid">H8</span></strong></td><td>Pulido</td><td>R8 y reglas de proguard, <strong>copiar los assets del icono</strong> a <code>res/</code> y rasterizar el PNG de Play, edge-to-edge, TalkBack completo, revisión de contrastes, splash</td><td>Accessibility Scanner sin hallazgos críticos; build de release con minify; icono comprobado en un dispositivo real y en la barra de estado</td></tr>
 <tr><td><strong><span class="rid">H9</span></strong></td><td>Publicación</td><td>Firma, pipeline de capturas (6 escenas × 2 idiomas × 3 formatos), publicar la política de privacidad, rellenar la ficha con los textos ya escritos, declaración de servicio en primer plano, test interno</td><td>§13 completo, <code>revisar.py</code> en verde y la release aceptada en Play Console</td></tr>
 </tbody></table></div>
 <p>Dependencias duras: <span class="rid">H1</span> antes de <span class="rid">H2</span>, <span class="rid">H2</span> antes de <span class="rid">H3</span>, <span class="rid">H3</span> antes de <span class="rid">H4</span> (la UI habla con el servicio, no con el reproductor). <span class="rid">H5</span>, <span class="rid">H6</span> y <span class="rid">H7</span> son independientes entre sí una vez cerrado <span class="rid">H4</span>.</p>
@@ -454,7 +468,9 @@
 <tr><td>Checklist de publicación y recorrido manual</td><td><code>docs/play-store-publication-texts.md</code></td><td><strong>Escrito</strong></td></tr>
 <tr><td>Pipeline de capturas</td><td><code>docs/store-assets/generar-capturas/README.md</code></td><td><strong>Diseñado</strong>, scripts pendientes de <span class="rid">H9</span></td></tr>
 <tr><td>Capturas (36 imágenes)</td><td><code>docs/store-assets/capturas/</code></td><td>Pendiente de <span class="rid">H9</span></td></tr>
-<tr><td>Icono 512×512 y gráfico de cabecera 1024×500</td><td>—</td><td>Pendiente de <span class="rid">H8</span></td></tr>
+<tr><td>Icono de la app, las cuatro piezas</td><td><code>docs/design/icono/vector/</code></td><td><strong>Hecho</strong> (ADR 004), pendiente de copiar a <code>res/</code> en <span class="rid">H8</span></td></tr>
+<tr><td>Icono 512×512 de la ficha</td><td><code>docs/design/icono/play-icon-512.svg</code></td><td><strong>Diseñado</strong>, pendiente de rasterizar a PNG</td></tr>
+<tr><td>Gráfico de cabecera 1024×500</td><td>—</td><td>Pendiente de <span class="rid">H8</span></td></tr>
 </tbody></table></div>
 <h3 id="13-1-firma-y-build">13.1 Firma y build</h3>
 <ul>

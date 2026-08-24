@@ -21,6 +21,7 @@ Fase 0: análisis, dirección visual y especificación de la 1.0 cerrados. Sin c
 - [Análisis técnico y plan de implementación](docs/analisis-tecnico.md)
 - [Guía de trabajo del repositorio](CLAUDE.md)
 - [Decisiones de arquitectura (ADR)](docs/decisions/)
+- [Icono de la app](docs/design/icono/)
 - [Textos de la ficha de Google Play](docs/play-store-publication-texts.md)
 - [Notas de la versión para Play](docs/play-release-notes.md)
 - [Política de privacidad](docs/privacy-policy/sleep-noise.html)

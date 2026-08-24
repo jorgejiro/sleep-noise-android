@@ -164,7 +164,13 @@ Dirección **«Noche profunda»** (ADR 002). Lo que no se toca sin un ADR nuevo:
 - Los valores exactos de color, tipografía, radios y movimiento están en
   `docs/especificacion-release-1.0.md` §3. No inventes estilos: ábrelo.
 
-El mockup aprobado de la pantalla principal es `docs/design/Main.dc.html`. Las direcciones B, C y D
+- **El icono es «Luna de grano»** (ADR 004): un creciente de 230 puntos de grano ámbar. Son **cuatro
+  piezas** —fondo, primer plano, monocromo y el icono de notificación de 24 dp, que es un dibujo
+  aparte—, y **se generan con `scripts/generar-iconos.py`, no se editan a mano**: el grano sale de un
+  PRNG determinista y un XML retocado se perdería en la siguiente pasada.
+
+El mockup aprobado de la pantalla principal es `docs/design/Main.dc.html` y el del icono
+`docs/design/icono/Main.dc.html`. Las direcciones de UI B, C y D y las otras tres propuestas de icono
 quedaron descartadas de forma definitiva y no se retoman.
 
 ---
@@ -254,6 +260,7 @@ Todo lo que no es código y hace falta para publicar está escrito ya. En H9 se 
 | Los dos anteriores se **generan**, no se editan | `scripts/generar-textos-ficha.py` |
 | Política de privacidad bilingüe | `docs/privacy-policy/sleep-noise.html` |
 | Pipeline de capturas: 6 escenas × 2 idiomas × 3 formatos | `docs/store-assets/generar-capturas/README.md` |
+| Icono en sus cuatro piezas, y el 512 de la ficha | `docs/design/icono/`, generado por `scripts/generar-iconos.py` |
 | Changelog interno | `CHANGELOG.md` |
 
 Dos trampas conocidas, ambas capaces de bloquear una release:

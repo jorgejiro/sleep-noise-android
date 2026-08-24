@@ -1,0 +1,9 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "title": "Icono · Luna de grano", "x": 0, "y": 0, "w": 470, "h": 640 }
+  ],
+  "annotations": [
+    { "id": "note-icono", "x": 550, "y": 0, "w": 400, "text": "ICONO APROBADO · LUNA DE GRANO\n\nElegido el 2026-08-24 entre cuatro propuestas. Las otras tres (el aro, la onda que se apaga, el campo de ruido) quedan descartadas.\n\nEl pendiente que traía esta propuesta era el monocromo: el grano fino desaparece en una sola tinta. Resuelto con un creciente solido y el borde exterior granulado, que conserva la textura en grande y se compacta en una luna en pequeno.\n\nAssets en docs/design/icono/vector/. Decision en docs/decisions/004." }
+  ],
+  "launch": { "view": "focused", "file": "Main.dc.html" }
+}

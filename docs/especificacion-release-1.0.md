@@ -92,7 +92,27 @@ Contraste verificado: `onBackground` sobre `background` ≥ 13:1; `onBackgroundM
 
 Todos los tamaños en `sp`, escalables hasta el 200 % del sistema sin que se corte texto.
 
-### 3.3 Forma y movimiento
+### 3.3 Icono
+
+**«Luna de grano»** (ADR 004): un creciente compuesto de 230 puntos de grano ámbar sobre el fondo
+oscuro cálido. Cuatro piezas, no una:
+
+| Pieza | Fichero | Notas |
+|---|---|---|
+| Icono adaptativo | `ic_launcher.xml` | Referencia a las tres capas siguientes |
+| Fondo | `ic_launcher_background.xml` | Viñeteado radial cálido, a sangre en los 108 dp |
+| Primer plano | `ic_launcher_foreground.xml` | El grano, 230 puntos en un solo `path` |
+| Monocromo | `ic_launcher_monochrome.xml` | Creciente sólido con 74 puntos gruesos en el borde |
+| Notificación | `ic_stat_sleep_noise.xml` | 24 dp, silueta sin grano ni fondo, tintada por el sistema |
+| Ficha de Play | `play-icon-512.svg` | Origen del PNG de 512 × 512, sin máscara |
+
+Todo se genera con `scripts/generar-iconos.py` y **no se edita a mano**: el grano viene de un PRNG
+determinista para que no cambie entre regeneraciones, y el creciente se calcula por intersección de
+circunferencias. Los assets viven en `docs/design/icono/vector/` hasta que exista `app/src/main/res/`.
+
+El grano va como puntos vectoriales porque un `VectorDrawable` de Android no soporta filtros SVG.
+
+### 3.4 Forma y movimiento
 
 - Radios: 20 dp en píldoras de sonido, 24 dp en hojas modales, círculo completo en el aro y el botón.
 - **Halo que respira**: ciclo de 9 s, escala 1 → 1.09, opacidad 0.55 → 0.9. Se detiene cuando la
@@ -411,7 +431,7 @@ El orden no es negociable en las dependencias marcadas.
 | **H5** | Persistencia y arranque | DataStore con las siete claves, arranque automático (RF-01) con sus cuatro casos | Los cuatro criterios de RF-01 comprobados en dispositivo |
 | **H6** | Temporizador | Hoja P2, cuenta atrás, fade out, +15 min, cancelar, congelar al pausar | RF-06 a RF-08 comprobados, incluido el caso de pausa manual a mitad de cuenta |
 | **H7** | Ajustes y novedades | P3 y P4 completas, changelog con su catálogo, feedback por correo, selector de idioma | Cambio de idioma en caliente correcto, incluida la notificación; correo se abre con el asunto bien formado |
-| **H8** | Pulido | R8 y reglas de proguard, icono adaptativo, edge-to-edge, TalkBack completo, revisión de contrastes, splash | Accessibility Scanner sin hallazgos críticos; build de release funciona con minify |
+| **H8** | Pulido | R8 y reglas de proguard, **copiar los assets del icono** a `res/` y rasterizar el PNG de Play, edge-to-edge, TalkBack completo, revisión de contrastes, splash | Accessibility Scanner sin hallazgos críticos; build de release con minify; icono comprobado en un dispositivo real y en la barra de estado |
 | **H9** | Publicación | Firma, pipeline de capturas (6 escenas × 2 idiomas × 3 formatos), publicar la política de privacidad, rellenar la ficha con los textos ya escritos, declaración de servicio en primer plano, test interno | §13 completo, `revisar.py` en verde y la release aceptada en Play Console |
 
 Dependencias duras: H1 antes de H2, H2 antes de H3, H3 antes de H4 (la UI habla con el servicio, no
@@ -437,7 +457,9 @@ está ya escrito**: lo que queda para H9 es ejecutarlo, no redactarlo.
 | Checklist de publicación y recorrido manual | `docs/play-store-publication-texts.md` | **Escrito** |
 | Pipeline de capturas | `docs/store-assets/generar-capturas/README.md` | **Diseñado**, scripts pendientes de H9 |
 | Capturas (36 imágenes) | `docs/store-assets/capturas/` | Pendiente de H9 |
-| Icono 512×512 y gráfico de cabecera 1024×500 | — | Pendiente de H8 |
+| Icono de la app, las cuatro piezas | `docs/design/icono/vector/` | **Hecho** (ADR 004), pendiente de copiar a `res/` en H8 |
+| Icono 512×512 de la ficha | `docs/design/icono/play-icon-512.svg` | **Diseñado**, pendiente de rasterizar a PNG |
+| Gráfico de cabecera 1024×500 | — | Pendiente de H8 |
 
 ### 13.1 Firma y build
 
