@@ -39,7 +39,7 @@
         <item>Ruido blanco y ruido marrón, generados en tu dispositivo: sin bucle que se note ni artefactos de compresión.</item>
         <item>Suena al abrir la app, con el último sonido que escuchaste.</item>
         <item>Temporizador de 15 a 120 minutos, con apagado progresivo en el último minuto.</item>
-        <item>Control desde la notificación, con la app cerrada y la pantalla apagada.</item>
+        <item>Control desde la notificación, con la app cerrada y la pantalla apagada. Al pausar, la sesión termina y la notificación se cierra sola.</item>
         <item>Español e inglés.</item>
     </string-array>
 </resources>

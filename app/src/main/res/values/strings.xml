@@ -46,7 +46,7 @@
         <item>White noise and brown noise, generated on your device: no loop you can notice, no compression artefacts.</item>
         <item>Plays as soon as you open the app, with the last sound you were listening to.</item>
         <item>Sleep timer from 15 to 120 minutes, with a gradual fade out over the last minute.</item>
-        <item>Control it from the notification, with the app closed and the screen off.</item>
+        <item>Control it from the notification, with the app closed and the screen off. Pausing ends the session and clears the notification away.</item>
         <item>English and Spanish.</item>
     </string-array>
 </resources>

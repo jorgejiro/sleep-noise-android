@@ -131,6 +131,12 @@ Reglas:
   un limitador suave. Sin eso, se va a clipping y se percibe mucho más flojo.
 - Estéreo con **dos generadores independientes**, uno por canal. Duplicar el mismo canal suena como un
   punto fijo en el centro de la cabeza.
+- **Pausar termina la sesión.** No es una interrupción: la notificación desaparece y el servicio sale
+  de primer plano, como cerrar la app. Vale igual para el temporizador cuando vence.
+  **Pero la pausa que impone el sistema —una llamada, otra app, unos auriculares desenchufados— no
+  termina nada**, o una llamada acabaría con el ruido de la noche. La diferencia está en de dónde
+  viene: la petición de un controlador pasa por `onPlayerCommandRequest`, y la del foco de audio no.
+  Si alguna vez hay que tocar esto, esa distinción es lo primero que hay que entender.
 - **Nunca parar el audio en seco.** Todo arranque, parada y cambio de sonido pasa por una rampa de
   volumen (`Fader`). Un corte abrupto despierta a quien se estaba durmiendo, y produce un clic audible.
 

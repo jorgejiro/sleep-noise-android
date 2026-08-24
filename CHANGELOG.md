@@ -27,7 +27,10 @@ Primera versión.
 - Cambio de sonido en caliente con crossfade de 800 ms.
 - Temporizador de apagado con presets de 15 a 120 minutos y valor personalizado de 5 a 600, con fade
   out durante el último minuto y opción de añadir 15 minutos.
-- Notificación `MediaStyle` con pausa, parar y ampliar el temporizador.
+- Notificación `MediaStyle` con pausa y ampliar el temporizador. **Pausar termina la sesión**: la
+  notificación desaparece y el servicio sale de primer plano, como cerrar la app. La pausa que impone
+  el sistema —una llamada, otra app, unos auriculares desenchufados— no cuenta como final y sí
+  reanuda.
 - Ajustes: reproducir al abrir, idioma, versión, novedades y envío de comentarios.
 - Inglés y español, con fallback a inglés para cualquier otro idioma del sistema y cambio desde los
   ajustes de la app.

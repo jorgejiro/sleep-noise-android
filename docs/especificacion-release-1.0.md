@@ -213,11 +213,19 @@ temporizador o el sistema.
 - El volumen de la app es independiente del volumen de multimedia del sistema. La app **nunca**
   modifica el volumen del sistema.
 
-**RF-05 · Play y pausa.** Un único botón, en el centro del aro.
+**RF-05 · Play y pausa.** Un único botón, en el centro del aro. **Pausar termina la sesión**: no es
+una interrupción, es el final. El usuario ha acabado de escuchar.
 
-- *Dado* que suena, *cuando* se pulsa, *entonces* se detiene con un fade out de 400 ms y el icono
-  pasa a play.
-- *Dado* que está en pausa, *cuando* se pulsa, *entonces* arranca con un fade in de 1,5 s.
+- *Dado* que suena, *cuando* se pulsa pausa —en la app o en la notificación—, *entonces* el sonido se
+  detiene con un fade out de 400 ms, **la notificación desaparece** y el servicio sale de primer
+  plano. Es como cerrar la app.
+- *Dado* que la sesión terminó así, *cuando* se abre la app otra vez, *entonces* vuelve a sonar el
+  último sonido, como en cualquier otro arranque (RF-01).
+- **La pausa que impone el sistema es otra cosa** y no termina la sesión: ver RF-11 y §7.
+
+> **Por qué no es un ajuste.** Si abrir la app es «empieza», pausar tiene que ser «he terminado»: es
+> el mismo gesto de cerrar. Ofrecerlo como opción sería preguntar algo que nadie quiere decidir, y
+> dejaría media app con un control colgado en la sombra toda la noche.
 
 ### 5.2 Temporizador
 
@@ -228,8 +236,9 @@ personalizado entre 5 y 600 minutos. El último valor usado se recuerda y aparec
 unidades legibles («1 h 26 min», no «01:26:04»).
 
 - *Dado* un temporizador de 30 min, *cuando* quedan 60 s, *entonces* empieza un fade out lineal en dB.
-- *Cuando* llega a cero, *entonces* el audio está en silencio, la reproducción se **pausa** (no se
-  para el servicio) y la notificación pasa a estado pausado sin temporizador.
+- *Cuando* llega a cero, *entonces* el audio está en silencio y **la sesión termina como si el usuario
+  hubiese pausado**: la notificación desaparece y el servicio sale de primer plano. Quien se ha
+  dormido no necesita un control esperándole en la sombra hasta la mañana.
 - *Dado* un temporizador activo, *cuando* el usuario pausa manualmente, *entonces* el temporizador se
   **congela**; al reanudar, continúa desde donde estaba.
 - *Dado* un temporizador activo, *cuando* el usuario cambia de sonido, *entonces* el temporizador
@@ -249,8 +258,11 @@ cancelar el temporizador.
   como texto secundario.
 - Acciones: **pausa/reanudar**, **parar** y, si hay temporizador activo, **+15 min**.
 - Canal `playback`, importancia baja, sin sonido ni vibración, no descartable mientras suena.
-- *Dado* el ruido sonando y la app cerrada, *cuando* se pulsa «parar» en la notificación, *entonces*
-  el audio se detiene con fade out, el servicio sale de foreground y la notificación desaparece.
+- *Dado* el ruido sonando y la app cerrada, *cuando* se pulsa pausa en la notificación, *entonces* el
+  audio se detiene con fade out, el servicio sale de primer plano y **la notificación desaparece**
+  (RF-05). No queda ningún control en la sombra.
+- *Dado* que el sistema pausa por su cuenta —una llamada, otra app, unos auriculares desenchufados—,
+  *entonces* la notificación **permanece**, porque eso es una interrupción y no un final.
 
 **RF-10 · Reproducción con la app en segundo plano.**
 
@@ -264,9 +276,12 @@ cancelar el temporizador.
 **RF-12 · Persistencia.** Sonido, volumen, último temporizador usado, «reproducir al abrir» e idioma
 sobreviven a cerrar la app, matar el proceso y reiniciar el teléfono.
 
-**RF-19 · Reanudación desde el sistema.** *Dado* que el ruido se paró, *cuando* el usuario le da a
-play en el control de medios del sistema o en unos auriculares Bluetooth, *entonces* vuelve a sonar
-el último sonido sin abrir la app.
+**RF-19 · Reanudación tras una interrupción.** *Dado* que el sistema pausó el ruido —una llamada,
+otra app— *cuando* la interrupción termina, *entonces* vuelve a sonar sin intervención.
+
+Lo que **no** hay es reanudación después de que el usuario pause: ahí la sesión se acaba y no queda
+sesión de medios que reanudar. Es la consecuencia deliberada de RF-05, y el camino de vuelta es
+abrir la app, que es de todas formas lo que alguien hace cuando quiere volver a dormirse.
 
 **RF-20 · Botones de auriculares.** Play/pausa responde al botón central de los auriculares. Las
 pistas siguiente/anterior no hacen nada (no hay lista).
@@ -322,8 +337,8 @@ La tabla de decisiones que evita discusiones más adelante. Cada fila es un test
 | Evento del sistema | Comportamiento |
 |---|---|
 | Llega una notificación con sonido | **Duck**: el volumen baja temporalmente y vuelve solo |
-| Entra una llamada | **Pausa**, y al colgar **reanuda** |
-| Otra app empieza a reproducir música | **Pausa** (pérdida permanente de foco). No reanuda solo |
+| Entra una llamada | **Pausa**, y al colgar **reanuda**. La notificación se queda: es una interrupción, no un final |
+| Otra app empieza a reproducir música | **Pausa** (pérdida permanente de foco). No reanuda solo, pero la notificación se queda para poder volver |
 | Se desconectan los auriculares | **Pausa**. Nunca saltar al altavoz: sería un despertar brusco |
 | Se conectan unos auriculares | No arranca solo. Si estaba sonando, sigue |
 | Asistente de voz | Duck mientras habla |

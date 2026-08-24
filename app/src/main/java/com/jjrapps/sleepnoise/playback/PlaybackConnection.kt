@@ -29,6 +29,7 @@ class PlaybackConnection(private val context: Context) {
     val state: StateFlow<PlaybackState> = _state.asStateFlow()
 
     private var controller: MediaController? = null
+    private var playWhenConnected = false
 
     fun connect() {
         if (controller != null) return
@@ -49,6 +50,12 @@ class PlaybackConnection(private val context: Context) {
                 controller?.let { ready ->
                     ready.addListener(listener)
                     readFrom(ready)
+                    if (playWhenConnected) {
+                        playWhenConnected = false
+                        // The service starts playing by itself when "play on open" is
+                        // on; this covers the case where it is off.
+                        if (!ready.isPlaying) ready.play()
+                    }
                 }
             }, MoreExecutors.directExecutor())
         }
@@ -63,9 +70,30 @@ class PlaybackConnection(private val context: Context) {
 
     // ------------------------------------------------------------------ actions
 
+    /**
+     * Play or pause. Pausing ends the session, so the next play may have to bring the
+     * service back from nothing — hence the reconnect: after a pause there is no
+     * controller left to talk to.
+     */
     fun togglePlay() {
-        val player = controller ?: return
-        if (player.isPlaying) player.pause() else player.play()
+        val player = controller
+        if (player == null) {
+            playWhenConnected = true
+            connect()
+            return
+        }
+        if (player.isPlaying) {
+            player.pause()
+        } else if (player.mediaItemCount == 0) {
+            // The service is still around but its queue was cleared when the session
+            // ended. Starting again is a fresh service, which restores what was
+            // playing from preferences.
+            playWhenConnected = true
+            release()
+            connect()
+        } else {
+            player.play()
+        }
     }
 
     fun play() {

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.SystemClock
 import androidx.annotation.OptIn
+import androidx.core.app.NotificationManagerCompat
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
@@ -66,6 +67,22 @@ class PlaybackService : MediaSessionService() {
     private var volume: Int = DEFAULT_VOLUME
     private var currentType: NoiseType = NoiseType.Default
 
+    /**
+     * Set when a *person* asks to pause, and only then.
+     *
+     * Pausing is the end of a session, not an interruption: the user has finished
+     * listening, so the notification goes away and the service stops rather than
+     * leaving a dead control in the shade all night.
+     *
+     * But the system pauses too — an incoming call, another app taking audio focus,
+     * headphones being unplugged — and those are interruptions that must be able to
+     * resume. Treating them the same would mean a phone call ends the night's noise
+     * for good. The difference is where the pause comes from: a controller's request
+     * goes through [SessionCallback.onPlayerCommandRequest], while the system's goes
+     * straight into ExoPlayer's audio focus handling and never touches it.
+     */
+    private var finishOnPause = false
+
     override fun onCreate() {
         super.onCreate()
         noise = StereoNoiseSource(currentType, sampleRate = SAMPLE_RATE)
@@ -84,6 +101,9 @@ class PlaybackService : MediaSessionService() {
             DefaultMediaNotificationProvider.Builder(this)
                 .setChannelId(CHANNEL_ID)
                 .setChannelName(R.string.notification_channel_name)
+                // Fixed rather than left to the default so that ending the session
+                // can cancel this exact notification instead of guessing its id.
+                .setNotificationId(NOTIFICATION_ID)
                 .build()
         )
 
@@ -154,14 +174,45 @@ class PlaybackService : MediaSessionService() {
     private val playerListener = object : Player.Listener {
         override fun onIsPlayingChanged(isPlaying: Boolean) {
             if (isPlaying) {
+                finishOnPause = false
                 timer.resume()
                 startTicking()
             } else {
                 timer.freeze()
                 timerJob?.cancel()
+                if (finishOnPause) {
+                    finishPlayback()
+                    return
+                }
             }
             publishState()
         }
+    }
+
+    /**
+     * Ends the session: no sound, no notification, no service.
+     *
+     * `clearMediaItems` is what actually removes the notification — Media3 keeps it
+     * while the player has something to play — and `stopSelf` releases the service
+     * once the UI unbinds. Reaching this is meant to feel like closing the app,
+     * because that is what the user just did.
+     */
+    private fun finishPlayback() {
+        Timber.d("session finished by the user, clearing the notification")
+        finishOnPause = false
+        timer.cancel()
+        timerJob?.cancel()
+        player.setTimerFade(0f)
+        exoPlayer.clearMediaItems()
+        publishState()
+        // Three steps, and all three are needed. Clearing the queue stops Media3
+        // rebuilding the notification; leaving the foreground drops its sticky
+        // status; and the explicit cancel removes the one already on screen, which
+        // the other two leave behind while the UI still holds a binding to the
+        // service. Ending the session has to leave nothing in the shade.
+        stopForeground(STOP_FOREGROUND_REMOVE)
+        NotificationManagerCompat.from(this).cancel(NOTIFICATION_ID)
+        stopSelf()
     }
 
     private fun changeNoise(type: NoiseType) {
@@ -202,13 +253,13 @@ class PlaybackService : MediaSessionService() {
             while (timer.isSet && !timer.isFrozen) {
                 player.setTimerFade(timer.fadeProgress())
                 if (timer.hasExpired) {
-                    Timber.d("sleep timer expired, pausing")
+                    Timber.d("sleep timer expired, ending the session")
                     // Already silent from the closing fade, so no second fade: it
                     // would only add 400 ms of nothing.
                     player.pauseImmediately()
-                    player.setTimerFade(0f)
-                    timer.cancel()
-                    publishState()
+                    // And the session ends here as well. The user is asleep; a
+                    // notification left in the shade until morning helps nobody.
+                    finishPlayback()
                     return@launch
                 }
                 publishState()
@@ -265,6 +316,25 @@ class PlaybackService : MediaSessionService() {
                 .build()
         }
 
+        /**
+         * Where a person's pause is told apart from the system's.
+         *
+         * Only controllers come through here — the app's own screen, the buttons in
+         * the notification, a headset. ExoPlayer's audio focus handling pauses
+         * without asking anyone, so an incoming call never sets the flag and the
+         * noise can come back when the call ends.
+         */
+        override fun onPlayerCommandRequest(
+            session: MediaSession,
+            controller: MediaSession.ControllerInfo,
+            playerCommand: Int
+        ): Int {
+            if (playerCommand == Player.COMMAND_PLAY_PAUSE && player.isPlaying) {
+                finishOnPause = true
+            }
+            return SessionResult.RESULT_SUCCESS
+        }
+
         override fun onCustomCommand(
             session: MediaSession,
             controller: MediaSession.ControllerInfo,
@@ -296,6 +366,9 @@ class PlaybackService : MediaSessionService() {
 
     companion object {
         const val CHANNEL_ID = "playback"
+
+        /** Fixed so the service can cancel its own notification when the session ends. */
+        const val NOTIFICATION_ID = 1001
 
         /** Specification RF-01: mid volume on a fresh install. */
         const val DEFAULT_VOLUME = 50
