@@ -472,7 +472,7 @@ El orden no es negociable en las dependencias marcadas.
 | **H6** ✅ | Temporizador | Hoja P2, cuenta atrás, fade out, +15 min, cancelar, congelar al pausar | **Hecho.** Presets 15/30/45/60/90/120, la cuenta atrás aparece en la fila, y el congelado al pausar y el fade final están cubiertos por `SleepTimerTest` con reloj virtual |
 | **H7** ✅ | Ajustes y novedades | P3 y P4 completas, changelog con su catálogo, feedback por correo, selector de idioma | **Hecho.** Cambio a español desde Ajustes: toda la app, incluida la fecha del changelog («24 de agosto de 2026») |
 | **H8** 🟨 | Pulido | R8 y reglas de proguard, **copiar los assets del icono** a `res/` y rasterizar el PNG de Play, edge-to-edge, TalkBack completo, revisión de contrastes, splash | **Parcial.** R8 en verde: el APK minificado se instala y suena, sin nada que R8 se llevara. Objetivos táctiles medidos, todos ≥ 48 dp. Falta el recorrido con TalkBack, el icono en un dispositivo real y la sesión de resistencia de 8 h |
-| **H9** | Publicación | Firma, pipeline de capturas (6 escenas × 2 idiomas × 3 formatos), publicar la política de privacidad, rellenar la ficha con los textos ya escritos, declaración de servicio en primer plano, test interno | §13 completo, `revisar.py` en verde y la release aceptada en Play Console |
+| **H9** | Publicación | Firma, pipeline de capturas (7 escenas × 2 idiomas × 3 formatos), publicar la política de privacidad, rellenar la ficha con los textos ya escritos, declaración de servicio en primer plano, test interno | §13 completo, `revisar.py` en verde y la release aceptada en Play Console |
 
 Dependencias duras: H1 antes de H2, H2 antes de H3, H3 antes de H4 (la UI habla con el servicio, no
 con el reproductor). H5, H6 y H7 son independientes entre sí una vez cerrado H4.
@@ -496,7 +496,7 @@ está ya escrito**: lo que queda para H9 es ejecutarlo, no redactarlo.
 | Declaración de servicio en primer plano (`mediaPlayback`), en los dos idiomas | `docs/play-store-publication-texts.md` | **Escrita** |
 | Checklist de publicación y recorrido manual | `docs/play-store-publication-texts.md` | **Escrito** |
 | Pipeline de capturas | `docs/store-assets/generar-capturas/README.md` | **Diseñado**, scripts pendientes de H9 |
-| Capturas (36 imágenes) | `docs/store-assets/capturas/` | Pendiente de H9 |
+| Capturas (42 imágenes) | `docs/store-assets/capturas/<idioma>/<formato>/` | **Hechas**, y `revisar.py` en verde |
 | Icono de la app, las cuatro piezas | `docs/design/icono/vector/` | **Hecho** (ADR 004), pendiente de copiar a `res/` en H8 |
 | Icono 512×512 de la ficha | `docs/design/icono/play-icon-512.svg` | **Diseñado**, pendiente de rasterizar a PNG |
 | Gráfico de cabecera 1024×500 | — | Pendiente de H8 |
@@ -527,7 +527,9 @@ y no grabado**, y que la interfaz es **oscura siempre**.
 
 ### 13.3 Capturas
 
-Automatizadas: 6 escenas × 2 idiomas × 3 formatos = **36 imágenes**, con `revisar.py` obligatorio
+Automatizadas: 7 escenas × 2 idiomas × 3 formatos = **42 imágenes**, guardadas por idioma y luego
+por formato —`capturas/<idioma>/<formato>/`, que es como Play Console las pide—, con `revisar.py`
+obligatorio
 antes de subirlas. El diseño, las escenas y las lecciones portadas de «¡Bebe agua!» están en
 `docs/store-assets/generar-capturas/README.md`, y la decisión en el ADR 003.
 

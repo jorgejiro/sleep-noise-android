@@ -102,7 +102,7 @@ def variance(path, sample_every=17):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("raiz", help="carpeta con telefono/, tablet7/ y tablet10/")
+    parser.add_argument("raiz", help="carpeta con es/ y en/, y dentro los tres formatos")
     parser.add_argument("--formato", action="append", choices=sorted(EXPECTED),
                         help="revisar solo estos formatos")
     args = parser.parse_args()
@@ -116,7 +116,7 @@ def main():
         for scene in tanda.SCENES:
             digests = {}
             for language in LANGUAGES:
-                path = os.path.join(args.raiz, fmt, language, scene + ".png")
+                path = os.path.join(args.raiz, language, fmt, scene + ".png")
                 if not os.path.exists(path):
                     problems.append("falta %s" % path)
                     continue
@@ -133,8 +133,8 @@ def main():
                     digests[language] = zlib.crc32(handle.read())
             # Un idioma colado: las dos capturas de la misma escena serian identicas.
             if len(digests) == 2 and len(set(digests.values())) == 1:
-                problems.append("%s/%s: las capturas es y en son identicas, "
-                                "hay un idioma colado" % (fmt, scene))
+                problems.append("%s en %s: las capturas es y en son identicas, "
+                                "hay un idioma colado" % (scene, fmt))
 
     print("revisadas %d capturas" % checked)
     expected_total = len(formats) * len(LANGUAGES) * len(tanda.SCENES)

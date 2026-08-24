@@ -6,7 +6,7 @@
 ## Contexto
 
 Play pide capturas en tres formatos —teléfono, tablet de 7" y tablet de 10"— y la ficha va en dos
-idiomas. Con seis escenas por idioma son **36 imágenes**, y hay que rehacerlas cada vez que cambie una
+idiomas. Con siete escenas por idioma son **42 imágenes**, y hay que rehacerlas cada vez que cambie una
 pantalla. Hechas a mano son 36 secuencias de navegación con dos problemas que no avisan:
 
 - **Una captura mala no da error.** Sale negra o a medio pintar, se guarda y se sube.
@@ -23,9 +23,17 @@ siguen aplicando**: esperar por contenido y no por tiempo, coincidencia exacta a
 idioma desde los ajustes de la app y no del sistema, vaciar la sombra antes de capturar la
 notificación, y `revisar.py` obligatorio antes de subir.
 
-Los scripts se escriben en H9, cuando haya app que navegar. El diseño, las seis escenas y las
+Los scripts se escriben en H9, cuando haya app que navegar. El diseño, las siete escenas y las
 diferencias respecto a Bebe Agua están ya en
 [`docs/store-assets/generar-capturas/README.md`](../store-assets/generar-capturas/README.md).
+
+## Nota posterior (2026-08-24): la jerarquía es por idioma
+
+Las capturas se guardan en **`capturas/<idioma>/<formato>/`**, no al revés. Play Console pide los
+recursos **por ficha de idioma**, y cada ficha lleva sus tres formatos: con el idioma en el primer
+nivel, actualizar un idioma es abrir una carpeta, y con el formato delante había que picotear en tres.
+El pipeline heredado de «¡Bebe agua!» lo hacía al revés; si vuelve a portarse a otra app, va en este
+orden.
 
 ## Consecuencias
 

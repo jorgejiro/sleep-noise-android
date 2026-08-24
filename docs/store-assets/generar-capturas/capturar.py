@@ -3,8 +3,14 @@
 
 Uso:
 
-    python3 capturar.py ../capturas/telefono            # el formato conectado
-    python3 capturar.py ../capturas/telefono --idioma es
+    python3 capturar.py ../capturas --formato telefono
+    python3 capturar.py ../capturas --formato tablet7 --idioma es
+
+Las capturas se guardan como **`<raiz>/<idioma>/<formato>/`**, con el idioma
+primero. No es un detalle de orden: Play Console pide los recursos por ficha de
+idioma, y cada ficha lleva sus capturas de telefono, tablet de 7" y tablet de 10".
+Con el idioma en el primer nivel, actualizar la ficha de un idioma es abrir una
+carpeta; con el formato primero habia que ir picoteando por tres.
 """
 import argparse
 import os
@@ -75,7 +81,7 @@ def restore(device):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("destino", help="carpeta de salida, p. ej. ../capturas/telefono")
+    parser.add_argument("destino", help="raiz de las capturas, p. ej. ../capturas")
     parser.add_argument("--formato", choices=sorted(FORMATS), default="telefono")
     parser.add_argument("--idioma", choices=("es", "en"), action="append",
                         help="solo este idioma; se puede repetir")
@@ -90,7 +96,7 @@ def main():
 
     total = 0
     for language in languages:
-        out_dir = os.path.join(args.destino, language)
+        out_dir = os.path.join(args.destino, language, args.formato)
         os.makedirs(out_dir, exist_ok=True)
         print("  tanda en %s -> %s" % (language, out_dir))
         total += len(tanda.run(device, language, out_dir))

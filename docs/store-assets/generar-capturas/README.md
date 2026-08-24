@@ -6,7 +6,12 @@ costaron una iteración cada una en «¡Bebe agua!» y «¡Aquí hay tomate!». 
 primera línea ahorra ese día.
 
 El juego completo es **7 escenas × 2 idiomas × 3 formatos = 42 imágenes**, en
-`docs/store-assets/capturas/<formato>/<idioma>/`, versionadas en el repositorio.
+`docs/store-assets/capturas/<idioma>/<formato>/`, versionadas en el repositorio.
+
+**El idioma va primero**, y no es un detalle de orden: Play Console pide los recursos por ficha de
+idioma, y cada ficha lleva sus capturas de teléfono, tablet de 7" y tablet de 10". Con esta jerarquía,
+actualizar la ficha de un idioma es abrir una carpeta; con el formato delante había que picotear en
+tres.
 
 Va automatizado porque hay que rehacerlas cada vez que cambie una pantalla, y hechas a mano son 42
 secuencias de navegación con dos fallos que no avisan: **una captura mala no da error** (sale negra o

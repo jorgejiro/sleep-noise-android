@@ -24,8 +24,8 @@ for fmt in telefono tablet7 tablet10; do
   # Datos limpios en cada formato: asi las capturas ensenan siempre el sonido que
   # viene puesto y no el que quedara de la tanda anterior.
   $ADB shell pm clear com.jjrapps.sleepnoise >/dev/null
-  rm -rf "../capturas/$fmt"
-  python3 capturar.py "../capturas/$fmt" --formato "$fmt" --sin-restaurar
+  rm -rf ../capturas/*/"$fmt"
+  python3 capturar.py ../capturas --formato "$fmt" --sin-restaurar
 done
 
 # El ultimo pase deja el tamano cambiado; se devuelve al del dispositivo.

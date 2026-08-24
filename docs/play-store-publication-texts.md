@@ -207,6 +207,9 @@ El orden importa: en Play se ven las dos primeras sin desplazarse.
 
 Generación automatizada: ver `docs/store-assets/generar-capturas/README.md`. **No se hacen a mano.**
 
+Los ficheros están en `docs/store-assets/capturas/<idioma>/<formato>/`, con el idioma primero porque
+así es como Play Console las pide: una ficha por idioma, y dentro sus tres formatos.
+
 ---
 
 ## Feature graphic — Texto sugerido
