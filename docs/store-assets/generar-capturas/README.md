@@ -115,3 +115,43 @@ notan al ponerlas una al lado de la otra en la ficha.
 5. Que ninguna contenga el aviso del sistema en la sombra en la escena 04.
 
 Devuelve 1 si algo falla, así que sirve tal cual dentro de `todos.sh`.
+
+
+## Un solo emulador
+
+No hacen falta tres AVD: `capturar.py` fija tamaño y densidad con `wm size` y `wm density`.
+
+
+## Lo que costó una iteración cada uno, en este repositorio
+
+- **Dos dispositivos conectados y `adb` sin `-s`.** Un emulador y un móvil de pruebas
+  a la vez: cada `adb shell` falla con «more than one device» y devuelve **cadena
+  vacía**, no un error. Todo lo que pregunte el pipeline contesta que no, para
+  siempre. Se veía como «la app no llegó a sonar» mientras la app sonaba delante.
+  Por eso `Device` resuelve el serie al construirse.
+- **El bucle de espera saturaba al emulador.** Comprobar si suena con `dumpsys audio`
+  desde fuera trae miles de líneas; noventa veces seguidas retrasaba el arranque de la
+  propia app que se esperaba. Ahora el filtro corre dentro del dispositivo y solo
+  viaja un número.
+- **El reintento se mataba a sí mismo.** La primera versión relanzaba cada quince
+  segundos con `force-stop` delante, abortando el arranque en curso. Cuatro reintentos
+  fallaban donde un solo intento con paciencia funcionaba.
+- **La sombra se limpia con `cmd notification snooze`.** No existe un `dismiss`, el
+  `service call notification 1` que se suele citar no vacía nada, y tocar «Borrar
+  todo» exige que la sombra se abra, cosa que no siempre pasa a la primera. Y la
+  clave **va entrecomillada**: lleva barras verticales y el shell del dispositivo la
+  parte en tuberías.
+- **Etiquetas genéricas tocan cualquier cosa.** Buscar «OK» o «Aceptar» para cerrar
+  diálogos, con una sombra abierta de un pase anterior, acabó tocando los ajustes
+  rápidos y metiendo el pase en los ajustes de Bluetooth del sistema.
+- **Sanear el estado antes de cada tanda.** Una hoja modal a medio abrir desvía todos
+  los toques siguientes.
+
+## Lo que encontró el pipeline
+
+En su primera pasada completa destapó un fallo que ninguna prueba a mano había visto:
+**la notificación no cambiaba de idioma**. El texto lo genera el servicio, que no se
+recrea cuando la app cambia de idioma, así que la captura española del control de
+medios decía «Masking noise». Está arreglado —el servicio resuelve sus textos con un
+contexto que lleva el idioma elegido, y Ajustes le avisa al cambiarlo— y es
+exactamente la clase de cosa para la que existe este pipeline.

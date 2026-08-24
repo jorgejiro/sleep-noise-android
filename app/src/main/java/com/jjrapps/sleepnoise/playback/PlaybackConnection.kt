@@ -114,6 +114,9 @@ class PlaybackConnection(private val context: Context) {
     fun extendTimer(minutes: Int = SleepTimer.EXTEND_MINUTES) =
         send(PlaybackCommands.extendTimer(minutes))
 
+    /** Que el servicio vuelva a publicar sus textos, tras un cambio de idioma. */
+    fun refreshLabels() = send(PlaybackCommands.refreshLabels())
+
     private fun send(command: Pair<androidx.media3.session.SessionCommand, Bundle>) {
         controller?.sendCustomCommand(command.first, command.second)
     }

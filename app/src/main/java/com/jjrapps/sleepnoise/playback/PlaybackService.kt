@@ -227,6 +227,24 @@ class PlaybackService : MediaSessionService() {
         publishState()
     }
 
+    /**
+     * Vuelve a publicar el título con el idioma vigente.
+     *
+     * El item no cambia de URI, así que el reproductor no reinicia nada: solo se
+     * reemplazan sus metadatos, que es lo que la notificación muestra.
+     */
+    private fun refreshLabels() {
+        exoPlayer.replaceMediaItem(0, NoisePlayer.mediaItemFor(currentType, this))
+        publishState()
+    }
+
+    override fun onConfigurationChanged(newConfig: android.content.res.Configuration) {
+        super.onConfigurationChanged(newConfig)
+        // En API 33 y superiores el cambio de idioma llega hasta aquí. Por debajo no,
+        // y por eso además existe el comando REFRESH_LABELS.
+        refreshLabels()
+    }
+
     private fun changeVolume(newVolume: Int) {
         volume = newVolume.coerceIn(0, 100)
         // Safe to write at any time: FadingPlayer keeps the user's volume, the
@@ -348,6 +366,7 @@ class PlaybackService : MediaSessionService() {
                     changeVolume(args.getInt(PlaybackCommands.ARG_VOLUME, volume))
                 PlaybackCommands.SET_TIMER ->
                     startTimer(args.getInt(PlaybackCommands.ARG_MINUTES, 0))
+                PlaybackCommands.REFRESH_LABELS -> refreshLabels()
                 PlaybackCommands.EXTEND_TIMER -> {
                     timer.extend(args.getInt(PlaybackCommands.ARG_MINUTES, SleepTimer.EXTEND_MINUTES))
                     // Back up from wherever the closing fade had got to (RF-08).

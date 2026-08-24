@@ -1,6 +1,9 @@
 package com.jjrapps.sleepnoise.playback
 
 import android.content.Context
+import android.content.res.Configuration
+import android.os.LocaleList
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
@@ -58,8 +61,28 @@ object NoisePlayer {
         .Factory(NoiseDataSource.Factory(generator))
         .createMediaSource(mediaItemFor(type, context))
 
+    /**
+     * A context carrying the language the user chose in Settings.
+     *
+     * The service is not an Activity, so it does not get recreated when
+     * `AppCompatDelegate.setApplicationLocales` is called: its resources keep
+     * answering in the previous language, and the notification — which is generated
+     * here — stays in it too. The screenshot pipeline caught this: the Spanish
+     * capture of the notification said "Masking noise".
+     *
+     * Below API 33 AppCompat only emulates the per-app language, so this is the only
+     * way the service learns about it at all.
+     */
+    fun localized(context: Context): Context {
+        val locales = AppCompatDelegate.getApplicationLocales()
+        if (locales.isEmpty) return context
+        val configuration = Configuration(context.resources.configuration)
+        configuration.setLocales(LocaleList.forLanguageTags(locales.toLanguageTags()))
+        return context.createConfigurationContext(configuration)
+    }
+
     /** Title for the notification and every system media surface. */
-    fun titleFor(type: NoiseType, context: Context): String = context.getString(
+    fun titleFor(type: NoiseType, context: Context): String = localized(context).getString(
         when (type) {
             NoiseType.White -> R.string.sound_white_name
             NoiseType.Pink -> R.string.sound_pink_name
@@ -80,7 +103,7 @@ object NoisePlayer {
             .setMediaMetadata(
                 MediaMetadata.Builder()
                     .setTitle(titleFor(type, context))
-                    .setArtist(context.getString(R.string.app_name))
+                    .setArtist(localized(context).getString(R.string.app_name))
                     .setIsBrowsable(false)
                     .setIsPlayable(true)
                     .build()

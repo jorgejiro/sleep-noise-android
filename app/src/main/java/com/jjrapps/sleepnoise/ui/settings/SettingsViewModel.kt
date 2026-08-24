@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jjrapps.sleepnoise.domain.model.PlaybackPreferences
 import com.jjrapps.sleepnoise.domain.repository.PlaybackPreferencesRepository
+import com.jjrapps.sleepnoise.playback.PlaybackConnection
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
@@ -15,7 +16,8 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val repository: PlaybackPreferencesRepository
+    private val repository: PlaybackPreferencesRepository,
+    private val playback: PlaybackConnection
 ) : ViewModel() {
 
     val preferences: StateFlow<PlaybackPreferences> = repository.preferences
@@ -42,5 +44,8 @@ class SettingsViewModel @Inject constructor(
                 LocaleListCompat.forLanguageTags(language)
             }
         )
+        // El servicio no se recrea con el cambio de idioma, así que hay que decírselo:
+        // si no, su notificación se queda en el idioma anterior.
+        playback.refreshLabels()
     }
 }

@@ -20,6 +20,15 @@ object PlaybackCommands {
     const val SET_TIMER = "com.jjrapps.sleepnoise.SET_TIMER"
     const val EXTEND_TIMER = "com.jjrapps.sleepnoise.EXTEND_TIMER"
 
+    /**
+     * Vuelve a publicar los textos de la notificación.
+     *
+     * Lo envía la pantalla de Ajustes justo después de cambiar el idioma: el
+     * servicio no se recrea con ese cambio, así que si nadie se lo dice, su
+     * notificación se queda en el idioma anterior.
+     */
+    const val REFRESH_LABELS = "com.jjrapps.sleepnoise.REFRESH_LABELS"
+
     const val ARG_NOISE = "noise"
     const val ARG_VOLUME = "volume"
     const val ARG_MINUTES = "minutes"
@@ -30,7 +39,7 @@ object PlaybackCommands {
     const val EXTRA_TIMER_MINUTES = "timer_minutes"
     const val EXTRA_TIMER_REMAINING_MS = "timer_remaining_ms"
 
-    val all: List<SessionCommand> = listOf(SET_NOISE, SET_VOLUME, SET_TIMER, EXTEND_TIMER)
+    val all: List<SessionCommand> = listOf(SET_NOISE, SET_VOLUME, SET_TIMER, EXTEND_TIMER, REFRESH_LABELS)
         .map { SessionCommand(it, Bundle.EMPTY) }
 
     fun setNoise(type: NoiseType): Pair<SessionCommand, Bundle> =
@@ -46,6 +55,9 @@ object PlaybackCommands {
 
     fun extendTimer(minutes: Int): Pair<SessionCommand, Bundle> =
         SessionCommand(EXTEND_TIMER, Bundle.EMPTY) to Bundle().apply { putInt(ARG_MINUTES, minutes) }
+
+    fun refreshLabels(): Pair<SessionCommand, Bundle> =
+        SessionCommand(REFRESH_LABELS, Bundle.EMPTY) to Bundle.EMPTY
 }
 
 /**
