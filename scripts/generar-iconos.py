@@ -558,3 +558,87 @@ for tag in ("div", "table", "tbody", "ul", "p", "h2"):
     assert page.count("<" + tag + ">") + page.count("<" + tag + " ") == page.count("</" + tag + ">"), tag
 print("grano:", len(GRAIN), "puntos | borde:", len(RIM), "puntos")
 print("página:", len(page), "bytes | XML:", len(list(VEC.glob("*.xml"))), "ficheros")
+
+
+# --------------------------------------------------------- PNG para la tienda
+def _rasterize(width, height, painter, supersample=3):
+    """Dibuja a lo grande y reduce: es como se consigue el suavizado sin depender
+    de un rasterizador de SVG, que en esta maquina no hay."""
+    from PIL import Image, ImageDraw
+    big = Image.new("RGB", (width * supersample, height * supersample), BG_OUT)
+    painter(big, ImageDraw.Draw(big), supersample)
+    return big.resize((width, height), Image.LANCZOS)
+
+
+def _hex(value):
+    value = value.lstrip("#")
+    return tuple(int(value[i:i + 2], 16) for i in (0, 2, 4))
+
+
+def _paint_background(image, scale, cx_ratio=0.5, cy_ratio=0.42, radius_ratio=0.72):
+    """El mismo vineteado radial del icono, pixel a pixel."""
+    inner, outer = _hex(BG_IN), _hex(BG_OUT)
+    width, height = image.size
+    cx, cy = width * cx_ratio, height * cy_ratio
+    radius = max(width, height) * radius_ratio
+    pixels = image.load()
+    for y in range(height):
+        dy = (y - cy) ** 2
+        for x in range(width):
+            t = min(1.0, ((x - cx) ** 2 + dy) ** 0.5 / radius)
+            pixels[x, y] = tuple(int(inner[i] + (outer[i] - inner[i]) * t) for i in range(3))
+
+
+def write_play_icon(path, size=512):
+    """El PNG de 512x512 de la ficha. Esquinas cuadradas: la mascara la pone Play."""
+    accent = _hex(ACCENT)
+
+    def paint(image, draw, scale):
+        _paint_background(image, scale)
+        unit = size * scale / CANVAS          # de dp del lienzo a pixeles
+        for x, y, r in GRAIN:
+            draw.ellipse(
+                [(x - r) * unit, (y - r) * unit, (x + r) * unit, (y + r) * unit],
+                fill=accent,
+            )
+
+    _rasterize(size, size, paint).save(path)
+    return path
+
+
+def write_feature_graphic(path, width=1024, height=500):
+    """El grafico de cabecera. Los dos propositos, y en ese orden: el primero es el
+    que trae a la gente a buscar la app, el segundo el que la hace distinta."""
+    from PIL import ImageFont
+    accent = _hex(ACCENT)
+    ink = (240, 234, 230)
+    muted = (136, 126, 118)
+    font_file = str(ROOT / "app/src/main/res/font/sora.ttf")
+
+    def paint(image, draw, scale):
+        _paint_background(image, scale, cx_ratio=0.22, cy_ratio=0.5, radius_ratio=0.55)
+        # El creciente a la izquierda, al mismo tamano relativo que en el icono.
+        unit = height * scale * 0.62 / CANVAS
+        ox = width * scale * 0.20 - 54 * unit
+        oy = height * scale * 0.5 - 54 * unit
+        for x, y, r in GRAIN:
+            draw.ellipse([ox + (x - r) * unit, oy + (y - r) * unit,
+                          ox + (x + r) * unit, oy + (y + r) * unit], fill=accent)
+        try:
+            title = ImageFont.truetype(font_file, int(58 * scale))
+            line = ImageFont.truetype(font_file, int(30 * scale))
+        except OSError:
+            title = line = ImageFont.load_default()
+        left = width * scale * 0.40
+        draw.text((left, height * scale * 0.34), "Sleep Noise", font=title, fill=ink)
+        draw.text((left, height * scale * 0.52), "Para dormir. Para concentrarte.",
+                  font=line, fill=muted)
+        draw.text((left, height * scale * 0.62), "Ruido generado en tu teléfono.",
+                  font=line, fill=muted)
+
+    _rasterize(width, height, paint).save(path)
+    return path
+
+
+if __name__ != "__main__":
+    pass

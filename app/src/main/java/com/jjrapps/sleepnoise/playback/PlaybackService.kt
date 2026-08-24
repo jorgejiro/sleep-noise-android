@@ -228,6 +228,22 @@ class PlaybackService : MediaSessionService() {
     }
 
     /**
+     * Repone la fuente de audio tras terminar una sesión.
+     *
+     * `clearMediaItems` deja al reproductor en IDLE y sin nada que reproducir, que es
+     * justo lo que hace desaparecer la notificación. Volver a sonar necesita una
+     * fuente nueva y un `prepare`; sin ellos, `play()` no falla, simplemente no suena
+     * — que es como se veía el fallo.
+     *
+     * El generador **no** se reinicia: sigue donde estaba, así que el ruido continúa
+     * en vez de volver a empezar.
+     */
+    private fun restoreSource() {
+        exoPlayer.setMediaSource(NoisePlayer.sourceFor(currentType, noise, this))
+        exoPlayer.prepare()
+    }
+
+    /**
      * Vuelve a publicar el título con el idioma vigente.
      *
      * El item no cambia de URI, así que el reproductor no reinicia nada: solo se
@@ -347,8 +363,17 @@ class PlaybackService : MediaSessionService() {
             controller: MediaSession.ControllerInfo,
             playerCommand: Int
         ): Int {
-            if (playerCommand == Player.COMMAND_PLAY_PAUSE && player.isPlaying) {
-                finishOnPause = true
+            if (playerCommand == Player.COMMAND_PLAY_PAUSE) {
+                if (player.isPlaying) {
+                    finishOnPause = true
+                } else if (exoPlayer.mediaItemCount == 0) {
+                    // La sesion anterior termino y dejo la cola vacia. Se repone aqui
+                    // y no en la pantalla porque la peticion de reproducir llega
+                    // tambien desde la notificacion, desde los auriculares y desde el
+                    // control de medios del sistema: arreglarlo en la pantalla habria
+                    // dejado rotas las otras tres.
+                    restoreSource()
+                }
             }
             return SessionResult.RESULT_SUCCESS
         }

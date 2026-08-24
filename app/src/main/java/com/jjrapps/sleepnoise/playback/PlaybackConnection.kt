@@ -71,9 +71,16 @@ class PlaybackConnection(private val context: Context) {
     // ------------------------------------------------------------------ actions
 
     /**
-     * Play or pause. Pausing ends the session, so the next play may have to bring the
-     * service back from nothing — hence the reconnect: after a pause there is no
-     * controller left to talk to.
+     * Play or pause.
+     *
+     * Pausing ends the session, so playing again may need the service to put its
+     * source back — but that is the service's job, not this one's. An earlier version
+     * tried to handle it here by reconnecting, and it did not work: after a pause the
+     * screen is still bound, so the service is still alive and reconnecting hands back
+     * the same session with the same empty queue. Play did nothing at all.
+     *
+     * The only case this has to handle is the service being gone, which happens when
+     * the app was closed after ending a session.
      */
     fun togglePlay() {
         val player = controller
@@ -82,18 +89,7 @@ class PlaybackConnection(private val context: Context) {
             connect()
             return
         }
-        if (player.isPlaying) {
-            player.pause()
-        } else if (player.mediaItemCount == 0) {
-            // The service is still around but its queue was cleared when the session
-            // ended. Starting again is a fresh service, which restores what was
-            // playing from preferences.
-            playWhenConnected = true
-            release()
-            connect()
-        } else {
-            player.play()
-        }
+        if (player.isPlaying) player.pause() else player.play()
     }
 
     fun play() {
