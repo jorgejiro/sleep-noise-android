@@ -5,10 +5,10 @@ que navegar. Este documento es el diseño del pipeline y, sobre todo, el traslad
 costaron una iteración cada una en «¡Bebe agua!» y «¡Aquí hay tomate!». Leerlo antes de escribir la
 primera línea ahorra ese día.
 
-El juego completo es **6 escenas × 2 idiomas × 3 formatos = 36 imágenes**, en
+El juego completo es **7 escenas × 2 idiomas × 3 formatos = 42 imágenes**, en
 `docs/store-assets/capturas/<formato>/<idioma>/`, versionadas en el repositorio.
 
-Va automatizado porque hay que rehacerlas cada vez que cambie una pantalla, y hechas a mano son 36
+Va automatizado porque hay que rehacerlas cada vez que cambie una pantalla, y hechas a mano son 42
 secuencias de navegación con dos fallos que no avisan: **una captura mala no da error** (sale negra o
 a medio pintar y se sube), y **un idioma se cuela** — que es exactamente lo que pasó con el primer
 juego de «¡Aquí hay tomate!».
@@ -18,21 +18,25 @@ juego de «¡Aquí hay tomate!».
 | Fichero | Responsabilidad |
 |---|---|
 | `ui.py` | Localizar elementos por texto con `uiautomator dump` y tocar su centro. **Nunca por coordenadas**: falla la mitad de las veces y no sobrevive al cambio de resolución |
-| `tanda.py` | Las seis escenas en **un** idioma |
+| `tanda.py` | Las siete escenas en **un** idioma |
 | `capturar.py` | Orquesta las dos tandas y prepara el dispositivo (tamaño, densidad, tema oscuro, animaciones) |
 | `revisar.py` | Control de las 36 antes de subirlas. Código de salida 1 si algo falla |
 | `todos.sh` | Los tres formatos de un tirón, arrancando y apagando cada emulador |
 
-## Las seis escenas
+## Las siete escenas
+
+La ficha tiene que enseñar los **dos** propósitos, no solo el de dormir: quien busca algo para
+concentrarse en una oficina ruidosa tiene que reconocer su caso en las capturas.
 
 | Fichero | Qué enseña |
 |---|---|
-| `01-suena-ruido-marron` | La pantalla principal reproduciendo: el aro, el nombre del sonido, las píldoras |
+| `01-suena-enmascarador` | La pantalla principal reproduciendo el enmascarador, que es el sonido que viene puesto: el aro, el nombre y la rejilla de cuatro |
 | `02-elegir-temporizador` | La hoja del temporizador abierta, con los presets |
 | `03-temporizador-activo` | La principal con la cuenta atrás corriendo |
 | `04-control-en-la-notificacion` | La sombra con el control de reproducción y sus acciones |
-| `05-ajustes` | Ajustes completos: reproducir al abrir, idioma, versión, novedades, comentarios |
-| `06-novedades` | El changelog de la versión |
+| `05-los-cuatro-sonidos` | La rejilla con los cuatro, para que se vea que hay uno pensado para tapar voces |
+| `06-ajustes` | Ajustes completos: reproducir al abrir, idioma, versión, novedades, comentarios |
+| `07-novedades` | El changelog de la versión |
 
 Orden de subida a Play y motivo de cada posición: `docs/play-store-publication-texts.md`, sección
 «Capturas — Orden recomendado».
@@ -104,7 +108,7 @@ notan al ponerlas una al lado de la otra en la ficha.
 
 ## Qué comprueba `revisar.py` antes de subir
 
-1. Que estén las **36**, con los nombres esperados.
+1. Que estén las **42**, con los nombres esperados.
 2. Las **dimensiones exactas** de cada formato, y el aspecto 9:16 en las dos de tablet.
 3. Que la captura **`es` y la `en` de la misma escena no sean idénticas** — un idioma colado.
 4. Que ninguna esté **negra o a medio pintar** (varianza de píxeles por debajo de un umbral).

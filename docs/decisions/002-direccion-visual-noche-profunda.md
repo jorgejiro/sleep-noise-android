@@ -36,6 +36,19 @@ Las tres se descartan **de forma definitiva**; no se retoman en revisiones poste
   demasiada información para alguien que solo quiere dormirse, y una cuenta atrás con segundos invita
   a mirar el reloj, que es justo lo contrario de lo que busca la app.
 
+## Nota posterior (2026-08-24, tras el ADR 006)
+
+Esta decisión se tomó cuando la app tenía un solo propósito: dormir. El argumento para renunciar al
+modo claro era que «el contexto de uso de esta app es la oscuridad», y con el segundo propósito —tapar
+el ruido de alrededor con auriculares, muchas veces de día y en un sitio iluminado— **ese argumento ya
+no es completo**.
+
+La decisión se mantiene, por dos razones que sí siguen en pie: una interfaz oscura no molesta de día,
+mientras que una clara sí deslumbra de noche; y un solo tema es la mitad de superficie de diseño y de
+pruebas. Pero conviene tenerlo escrito: si algún día llegan quejas por usar la app con luz, **la
+respuesta correcta es reconsiderar el modo claro**, no defender un argumento que ya solo vale para la
+mitad de los usos.
+
 ## Consecuencias
 
 **A favor:**

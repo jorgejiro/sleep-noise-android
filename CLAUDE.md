@@ -20,15 +20,26 @@ Guía de trabajo para este repositorio. Léela entera antes de tocar nada.
 
 ## 1. Visión del producto
 
-Una app para dormir con ruido. Se abre, suena, y no pide nada más. La referencia funcional es
+Una app para poner un ruido de fondo continuo, y tiene **dos propósitos que pesan igual**:
+
+- **Dormirse.** Un ruido estable que tape los golpes y las voces que despiertan de madrugada.
+- **Tapar el ruido de alrededor cuando no puedes irte de donde estás.** Con auriculares, y a veces con
+  tapones debajo, en un sitio donde hay gente hablando o trabajando.
+
+No es una app de dormir con un extra: el segundo uso es el que decide cosas del producto —el sonido que
+viene puesto, el nivel de salida, la forma espectral de la mitad del catálogo— y está detrás del
+ADR 006. Se abre, suena, y no pide nada más. La referencia funcional es
 [White Noise de TMSOFT](https://play.google.com/store/apps/details?id=com.tmsoft.whitenoise.full),
 pero solo su núcleo: escuchar un ruido y poder cambiarlo por otro.
 
 ### Principios de diseño
 
 - **Cero fricción.** Abrir la app ya es escuchar. Sin bienvenida, sin login, sin pulsar play.
-- **Silencio de interfaz.** Quien usa esto está a punto de dormirse, con la luz apagada. La UI no
-  compite por la atención.
+- **Silencio de interfaz.** Quien la usa está a punto de dormirse o intentando concentrarse. La UI no
+  compite por la atención en ninguno de los dos casos.
+- **Enmascarar es una función, no un efecto secundario.** Un ruido que suena bonito y no tapa nada no
+  sirve para la mitad de lo que la app promete. Cuando haya que elegir entre que un sonido sea
+  agradable y que tape, **hay que medir dónde pone su energía** antes de decidir (ADR 006).
 - **Funciona con la pantalla apagada y durante horas.** Es el caso de uso principal, no un extra.
 - **Sin red, sin cuentas, sin analítica.** La app no necesita internet para nada.
 

@@ -48,8 +48,8 @@ se lee peor en el lanzador, donde de todas formas se trunca.
 
 ### Con cola de búsqueda (recomendado para la ficha)
 
-- **es-ES** (30 caracteres): `Sleep Noise: ruido para dormir`
-- **en-US** (30 caracteres): `Sleep Noise: white noise sleep`
+- **es-ES** (25 caracteres): `Sleep Noise: ruido blanco`
+- **en-US** (24 caracteres): `Sleep Noise: white noise`
 
 ### Limpio
 
@@ -163,9 +163,11 @@ What you get:
 
 ## Ficha principal — Categoría y etiquetas
 
-- **Categoría**: Salud y bienestar.
-- **Etiquetas** (hasta cinco, en orden de preferencia): Sueño · Relajación · Ruido blanco ·
-  Meditación · Sonidos ambientales.
+- **Categoría**: Salud y bienestar. La app también sirve para concentrarse, que apuntaría a
+  Productividad, pero Play solo admite una y es donde busca la gente que quiere ruido de fondo.
+- **Etiquetas** (hasta cinco, en orden de preferencia): Ruido blanco · Sueño · Concentración ·
+  Relajación · Sonidos ambientales. **Concentración entra a costa de Meditación**: la app no medita,
+  y el segundo propósito —tapar el ruido de alrededor— necesita aparecer en las etiquetas.
 - **Precio**: gratis, sin compras integradas.
 - **Países**: todos.
 
@@ -196,11 +198,12 @@ El orden importa: en Play se ven las dos primeras sin desplazarse.
 | # | Escena | Por qué está aquí |
 |---|---|---|
 | 1 | Pantalla principal sonando, el enmascarador | Es la app entera en una imagen, con el sonido que viene puesto |
-| 2 | Temporizador abierto con los presets | La segunda razón por la que alguien instala esto |
-| 3 | Pantalla principal con el temporizador corriendo | Enseña el estado en uso, no en reposo |
-| 4 | Notificación de control en la sombra | Que se puede pausar sin abrir la app |
-| 5 | Ajustes | Que existe el idioma y que no hay nada raro dentro |
-| 6 | Novedades | Señal de app mantenida |
+| 2 | La rejilla con los cuatro sonidos | Que hay uno pensado para tapar voces, no un catálogo de colores |
+| 3 | Temporizador abierto con los presets | La segunda razón por la que alguien instala esto |
+| 4 | Pantalla principal con el temporizador corriendo | Enseña el estado en uso, no en reposo |
+| 5 | Notificación de control en la sombra | Que se puede pausar sin abrir la app |
+| 6 | Ajustes | Que existe el idioma y que no hay nada raro dentro |
+| 7 | Novedades | Señal de app mantenida |
 
 Generación automatizada: ver `docs/store-assets/generar-capturas/README.md`. **No se hacen a mano.**
 
@@ -210,8 +213,11 @@ Generación automatizada: ver `docs/store-assets/generar-capturas/README.md`. **
 
 1024 × 500. Fondo oscuro cálido con el aro ámbar, coherente con la app.
 
-- **es-ES**: «Ruido para dormir. Generado en tu teléfono.»
-- **en-US**: «Noise for sleeping. Generated on your phone.»
+- **es-ES**: «Para dormir. Para concentrarte. Generado en tu teléfono.»
+- **en-US**: «To sleep. To concentrate. Generated on your phone.»
+
+Los dos propósitos en la cabecera, y en ese orden: el primero es el que trae a la gente a buscar la
+app, y el segundo es el que la hace distinta de las demás.
 
 ---
 
@@ -248,9 +254,10 @@ bloquea en revisión**, así que se prepara antes de subir el AAB, no cuando la 
 **en-US**
 
 ```text
-Sleep Noise plays continuous generated noise (white and brown) to help the user fall asleep. The
-audio must keep playing while the app is in the background and the screen is off, for the entire
-sleep session, so playback runs in a foreground service of type mediaPlayback with a MediaSession.
+Sleep Noise plays continuous generated noise (white, pink, brown and a speech-masking shape) both to
+help the user fall asleep and to cover the noise of the room around them. The audio must keep playing
+while the app is in the background and the screen is off, for hours at a time, so playback runs in a
+foreground service of type mediaPlayback with a MediaSession.
 The ongoing notification is the user's control surface: pause, stop and extend the sleep timer
 without unlocking the phone. No other foreground service type would allow uninterrupted audio for
 several hours, and the service stops as soon as the user stops playback or the sleep timer expires.
@@ -259,10 +266,11 @@ several hours, and the service stops as soon as the user stops playback or the s
 **es-ES**
 
 ```text
-Sleep Noise reproduce ruido generado de forma continua (blanco y marrón) para ayudar al usuario a
-dormirse. El audio debe seguir sonando con la app en segundo plano y la pantalla apagada durante toda
-la sesión de sueño, así que la reproducción corre en un servicio en primer plano de tipo mediaPlayback
-con una MediaSession. La notificación permanente es la superficie de control del usuario: pausar,
+Sleep Noise reproduce ruido generado de forma continua (blanco, rosa, marrón y una forma pensada para
+enmascarar voces) tanto para ayudar al usuario a dormirse como para tapar el ruido de la sala en la
+que está. El audio debe seguir sonando con la app en segundo plano y la pantalla apagada durante horas
+seguidas, así que la reproducción corre en un servicio en primer plano de tipo mediaPlayback con una
+MediaSession. La notificación permanente es la superficie de control del usuario: pausar,
 parar y ampliar el temporizador sin desbloquear el teléfono. Ningún otro tipo de servicio permitiría
 audio ininterrumpido durante horas, y el servicio se detiene en cuanto el usuario para la
 reproducción o vence el temporizador.
@@ -291,7 +299,8 @@ encenderla y pausar desde la notificación. Sin cortes de edición.
 **en-US**
 
 ```text
-Sleep Noise is an offline white/brown noise player for sleeping. The noise is synthesised on the
+Sleep Noise generates background noise offline, for sleeping and for covering the noise of the room
+around you. Four sounds, one of them shaped to cover conversation. The noise is synthesised on the
 device in real time; the app ships no audio files and never connects to the network. It stores seven
 local preferences and collects no user data.
 ```
@@ -299,7 +308,8 @@ local preferences and collects no user data.
 **es-ES**
 
 ```text
-Sleep Noise es un reproductor de ruido blanco y marrón para dormir, que funciona sin conexión. El
-ruido se sintetiza en el dispositivo en tiempo real; la app no incluye ficheros de audio y nunca se
-conecta a la red. Guarda siete preferencias locales y no recoge ningún dato del usuario.
+Sleep Noise genera ruido de fondo sin conexión, para dormir y para tapar el ruido de alrededor. Cuatro
+sonidos, uno de ellos con la forma pensada para tapar conversaciones. El ruido se sintetiza en el
+dispositivo en tiempo real; la app no incluye ficheros de audio y nunca se conecta a la red. Guarda
+siete preferencias locales y no recoge ningún dato del usuario.
 ```

@@ -10,6 +10,11 @@
 
 ## 1. Visión del producto
 
+> **Nota posterior (ADR 006).** Este documento se escribió con un solo propósito en la cabeza:
+> dormir. El segundo —tapar el ruido de alrededor con auriculares— apareció después y cambió el
+> sonido por defecto, el nivel de salida y el número de sonidos. La visión vigente está en
+> `CLAUDE.md` §1 y en la especificación §1.
+
 Una app para dormir con ruido. Se abre, suena, y no pide nada más. La referencia funcional es
 [White Noise de TMSOFT](https://play.google.com/store/apps/details?id=com.tmsoft.whitenoise.full),
 pero solo en su núcleo: escuchar un ruido y poder cambiarlo por otro. Nada de catálogos de cientos

@@ -1,9 +1,13 @@
 # Sleep Noise (Android)
 
-App Android para dormir escuchando ruido blanco o ruido marrón. Se abre, suena, y no pide nada más.
+App Android que genera ruido de fondo continuo con **dos propósitos que pesan igual**: dormirse, y
+tapar el ruido de alrededor cuando no puedes irte de donde estás —con auriculares, y a veces con
+tapones debajo—. Se abre, suena, y no pide nada más.
 
-- **Sonidos**: ruido blanco (gaussiano) y ruido marrón, generados en tiempo real en el dispositivo.
-- **Arranque**: al abrir la app suena el último sonido escuchado; tras instalar, ruido marrón.
+- **Sonidos**: cuatro, generados en tiempo real en el dispositivo. Blanco, rosa, marrón y un
+  **enmascarador** con la forma espectral pensada para tapar conversaciones: pone el 71 % de su
+  energía en la banda donde vive la voz, frente al 8,6 % del marrón.
+- **Arranque**: al abrir la app suena el último sonido escuchado; tras instalar, el enmascarador.
 - **Control**: notificación de medios para pausar y parar, con la app cerrada y la pantalla apagada.
 - **Temporizador**: apagado a los X minutos, con fade out para no despertar a nadie.
 - **Idiomas**: inglés y español, siguiendo el idioma del sistema con fallback a inglés, y cambiable

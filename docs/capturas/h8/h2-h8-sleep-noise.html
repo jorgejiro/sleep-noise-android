@@ -77,6 +77,14 @@
   <p class="lede">El motor de ruido llega al altavoz, sobrevive a cerrar la app y apagar la pantalla, y la app tiene sus cuatro pantallas en dos idiomas. 59 tests en verde, y el APK de release —el mismo que se publicaría, pasado por R8— verificado en el emulador.</p>
 </header>
 
+<div class="note" style="margin-bottom: 30px">
+  <strong>Nota posterior.</strong> Esta página retrata el estado al cerrar H7, cuando la app tenía dos
+  sonidos y un solo propósito: dormir. Después se añadió el segundo — tapar el ruido de alrededor con
+  auriculares — y con él dos sonidos más, un nivel de salida 6 dB más alto y un sonido por defecto
+  distinto. Lo que se lee aquí sobre el motor y el servicio sigue siendo cierto; el catálogo de
+  sonidos, no.
+</div>
+
 <h2>Comprobado en el emulador, no solo compilado</h2>
 <ul class="checks">
   <li><svg class="yes" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4.5 4.5L19 7"></path></svg><div><strong>Suena de verdad.</strong> <code>AudioTrack</code> en estado <code>started</code>, <code>USAGE_MEDIA</code>, estéreo a 48 kHz y con <code>FLAG_DEEP_BUFFER</code> — el buffer grande que pedía el requisito de batería.</div></li>

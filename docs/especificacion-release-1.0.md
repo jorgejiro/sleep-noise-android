@@ -9,11 +9,19 @@
 
 ## 1. Definición del producto
 
-Una app Android para dormir escuchando ruido. Se abre, suena, y no pide nada más.
+Una app Android que genera ruido de fondo continuo, con **dos propósitos que pesan igual**.
 
-**El caso de uso que gobierna cada decisión**: una persona en la cama, a oscuras, con los ojos medio
-cerrados, que quiere que suene algo en dos segundos y luego olvidarse del móvil durante ocho horas.
-Cualquier funcionalidad que no sirva a ese momento se queda fuera.
+**Los dos casos de uso que gobiernan cada decisión:**
+
+1. **Dormirse.** Una persona en la cama, a oscuras, con los ojos medio cerrados, que quiere que suene
+   algo en dos segundos y luego olvidarse del móvil durante ocho horas.
+2. **Tapar el ruido de alrededor.** Una persona con auriculares —y a veces tapones debajo— en un
+   sitio del que no puede irse, que necesita que el ruido de la app cubra las conversaciones y el
+   ruido ambiente todo lo posible.
+
+Cualquier funcionalidad que no sirva a uno de esos dos momentos se queda fuera. Y no son intercambiables:
+el segundo es el que fija el nivel de salida y la forma espectral de la mitad del catálogo (ADR 006),
+y el primero el que fija el temporizador, los fades y que la interfaz sea oscura.
 
 | | |
 |---|---|
@@ -569,9 +577,16 @@ Estas cinco no las puedo decidir yo. Ninguna bloquea empezar por H0.
 3. **Requisito de test cerrado de 12 testers** (§13.4): hay que mirarlo en Play Console. Cambia el
    calendario en dos semanas y es lo único de esta lista que puede retrasar la publicación.
 4. **Nombre en la ficha de Play.** Hay dos versiones escritas y contadas: con cola de búsqueda
-   («Sleep Noise: ruido para dormir» / «Sleep Noise: white noise sleep», 30 caracteres justos los
-   dos) o limpio («Sleep Noise», 11). La recomendación es la cola en la ficha y «Sleep Noise» a secas
-   en el lanzador. Hay que elegir.
+   («Sleep Noise: ruido blanco» / «Sleep Noise: white noise», 25 y 24 caracteres) o limpio («Sleep
+   Noise», 11). La recomendación es la cola en la ficha y «Sleep Noise» a secas en el lanzador.
+
+   La cola decía antes «ruido para dormir», y se cambió: contaba la mitad del producto, porque la app
+   sirve igual para tapar el ruido de alrededor. «Ruido blanco» es además lo que la gente escribe en
+   el buscador y no inclina la app hacia uno de los dos usos.
+
+   **Queda un asunto más grande que la cola: el nombre mismo.** «Sleep Noise» nombra un solo
+   propósito, y ahora hay dos. Cambiarlo obliga a cambiar `applicationId`, que en Play es
+   irreversible, así que la decisión es ahora o nunca.
 5. **Presets del temporizador** (§4, P2): la lista propuesta es 15/30/45/60/90/120. Si prefieres otra,
    es el momento de cambiarla, porque el último preset usado se persiste y aparece en las capturas.
 
