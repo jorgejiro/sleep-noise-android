@@ -87,7 +87,7 @@ Las tres cosas que este texto dice **a propósito**, porque son las que evitan u
 estrella el primer día: que hay **solo dos sonidos**, que el ruido está **generado y no grabado**, y
 que la interfaz es **oscura siempre**.
 
-### es-ES (2017 caracteres)
+### es-ES (2224 caracteres)
 
 ```text
 Sleep Noise reproduce ruido blanco o ruido marrón para dormir. Se abre y suena: no hay que pulsar nada.
@@ -98,7 +98,9 @@ El ruido no está grabado: se genera en tu teléfono, muestra a muestra, mientra
 
 El temporizador apaga el sonido cuando tú digas: 15, 30, 45, 60, 90 o 120 minutos, o el tiempo exacto que quieras. Al llegar al final el volumen baja poco a poco durante el último minuto en vez de cortarse de golpe, porque un corte seco despierta a quien justo se estaba durmiendo.
 
-Se controla sin abrir la app: la notificación permite pausar, parar y añadir quince minutos al temporizador, y el botón de los auriculares también funciona. Puedes cerrar la app y dejar el móvil boca abajo; el sonido sigue.
+Se controla sin abrir la app: la notificación permite pausar y añadir quince minutos al temporizador, y el botón de los auriculares también funciona. Puedes cerrar la app y dejar el móvil boca abajo; el sonido sigue.
+
+Y cuando pulsas pausa, se acabó: la notificación desaparece sola y no queda nada rondando. Volver a escuchar es abrir la app, que es lo que ibas a hacer de todas formas.
 
 La interfaz es oscura siempre. No hay modo claro, y no es un olvido: esta app se usa en la cama con la luz apagada, y una pantalla blanca ahí deslumbra.
 
@@ -109,14 +111,14 @@ Qué incluye:
 • Ruido blanco y ruido marrón, generados en el dispositivo.
 • Suena al abrir la app, con el último sonido que escuchaste.
 • Temporizador con apagado progresivo, y opción de añadir quince minutos.
-• Control desde la notificación y desde los auriculares.
+• Control desde la notificación y desde los auriculares; al pausar, la notificación se cierra sola.
 • Volumen propio, independiente del volumen de multimedia del sistema.
 • Sigue sonando con la pantalla apagada y la app cerrada.
 • Español e inglés.
 • Sin internet, sin cuentas, sin anuncios, sin seguimiento.
 ```
 
-### en-US (2066 caracteres)
+### en-US (2293 caracteres)
 
 ```text
 Sleep Noise plays white noise or brown noise to help you sleep. Open it and it plays — there is nothing to press.
@@ -127,7 +129,9 @@ The noise is not a recording: it is generated on your phone, sample by sample, a
 
 The sleep timer stops the sound whenever you say: 15, 30, 45, 60, 90 or 120 minutes, or any length you like. At the end the volume fades down through the last minute instead of cutting out, because an abrupt stop wakes up the person who was finally falling asleep.
 
-You can control it without opening the app: the notification lets you pause, stop and add fifteen minutes to the timer, and your headphone button works too. Close the app and put the phone face down — the sound keeps going.
+You can control it without opening the app: the notification lets you pause and add fifteen minutes to the timer, and your headphone button works too. Close the app and put the phone face down — the sound keeps going.
+
+And when you press pause, that is that: the notification clears itself away and nothing is left hanging around. Listening again means opening the app, which is what you were going to do anyway.
 
 The interface is dark, always. There is no light mode, and that is not an oversight: this app gets used in bed with the lights off, and a white screen there is blinding.
 
@@ -138,7 +142,7 @@ What you get:
 • White noise and brown noise, generated on your device.
 • Plays as soon as you open the app, with the last sound you were listening to.
 • Sleep timer with a gradual fade out, and a button to add fifteen minutes.
-• Control from the notification and from your headphones.
+• Control from the notification and from your headphones; pausing clears the notification away.
 • Its own volume, independent of the system media volume.
 • Keeps playing with the screen off and the app closed.
 • English and Spanish.

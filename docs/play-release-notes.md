@@ -21,15 +21,15 @@ Textos de **«Novedades»** («What's new») listos para pegar en Play Console a
 
 ## 1.0 (versionCode 1) — pendiente de publicar
 
-### es-ES (453 caracteres)
+### es-ES (454 caracteres)
 
 ```text
 Primera versión de Sleep Noise.
 
 • Ruido blanco y ruido marrón para dormir, generados en tu teléfono en lugar de reproducirse desde un fichero: no hay bucle que se note ni artefactos de compresión.
 • Suena al abrir la app, con el último sonido que escuchaste.
-• Temporizador de 15 a 120 minutos, o el tiempo que quieras, con apagado progresivo.
-• Control desde la notificación, con la app cerrada.
+• Temporizador de 15 a 120 minutos, con apagado progresivo.
+• Control desde la notificación, con la app cerrada. Al pausar se cierra sola.
 
 Sin cuentas, sin nube, sin anuncios y sin seguimiento.
 ```
@@ -41,8 +41,8 @@ The first version of Sleep Noise.
 
 • White noise and brown noise for sleeping, generated on your phone instead of played from a file: no loop you can notice, no compression artefacts.
 • Plays as soon as you open the app, with the last sound you were listening to.
-• Sleep timer from 15 to 120 minutes, or any length you like, with a gradual fade out.
-• Control it from the notification, with the app closed.
+• Sleep timer from 15 to 120 minutes, with a gradual fade out.
+• Control it from the notification, with the app closed. Pausing clears it away.
 
 No accounts, no cloud, no ads, no tracking.
 ```
@@ -55,8 +55,8 @@ Primera versión de Sleep Noise.
 
 • Ruido blanco y ruido marrón para dormir, generados en tu teléfono en lugar de reproducirse desde un fichero: no hay bucle que se note ni artefactos de compresión.
 • Suena al abrir la app, con el último sonido que escuchaste.
-• Temporizador de 15 a 120 minutos, o el tiempo que quieras, con apagado progresivo.
-• Control desde la notificación, con la app cerrada.
+• Temporizador de 15 a 120 minutos, con apagado progresivo.
+• Control desde la notificación, con la app cerrada. Al pausar se cierra sola.
 
 Sin cuentas, sin nube, sin anuncios y sin seguimiento.
 </es-ES>
@@ -65,8 +65,8 @@ The first version of Sleep Noise.
 
 • White noise and brown noise for sleeping, generated on your phone instead of played from a file: no loop you can notice, no compression artefacts.
 • Plays as soon as you open the app, with the last sound you were listening to.
-• Sleep timer from 15 to 120 minutes, or any length you like, with a gradual fade out.
-• Control it from the notification, with the app closed.
+• Sleep timer from 15 to 120 minutes, with a gradual fade out.
+• Control it from the notification, with the app closed. Pausing clears it away.
 
 No accounts, no cloud, no ads, no tracking.
 </en-US>
