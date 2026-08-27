@@ -2,8 +2,9 @@
 
 Guía de trabajo para este repositorio. Léela entera antes de tocar nada.
 
-> **Estado del proyecto: 1.0 publicada en Google Play el 2026-08-27.** Enviada el 24, aprobada el 27.
-> En curso, una **1.0.1** con lo que salió al probarla en un teléfono real (ADR 007).
+> **Estado del proyecto: 1.0 publicada en Google Play el 2026-08-27** (enviada el 24, aprobada el 27),
+> y **1.0.1 enviada ese mismo día**, a la espera de revisión: las flechas de la notificación cambian
+> de sonido, se va la barra de progreso y el temporizador pasa a ir de diez en diez (ADR 007).
 >
 > Hechos H0 a H9: la app funciona entera, con cuatro sonidos, y está firmada, con sus 42 capturas,
 > su icono de tienda, su política de privacidad publicada y su ficha escrita. Siguen pendientes las
