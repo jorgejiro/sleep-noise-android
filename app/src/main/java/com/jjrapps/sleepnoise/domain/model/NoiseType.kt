@@ -16,6 +16,19 @@ enum class NoiseType(val key: String) {
     Brown("brown"),
     Masking("masking");
 
+    /**
+     * The next sound in the order the app shows them, wrapping round at the end.
+     *
+     * Wrapping is not a detail: these two feed the arrows in the notification, and
+     * an order with ends would leave the first and last sound with a dead arrow
+     * beside them — which is the exact thing those arrows were given a job to stop
+     * being. See ADR 007.
+     */
+    fun next(): NoiseType = entries[(ordinal + 1) % entries.size]
+
+    /** The previous sound, wrapping round at the beginning. See [next]. */
+    fun previous(): NoiseType = entries[(ordinal + entries.size - 1) % entries.size]
+
     companion object {
         /**
          * What a fresh install starts with (RF-01).

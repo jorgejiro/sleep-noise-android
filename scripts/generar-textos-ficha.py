@@ -28,9 +28,9 @@ Cuatro sonidos, y ni uno más. No hay catálogo que recorrer ni mezclas que conf
 
 El ruido no está grabado: se genera en tu teléfono, muestra a muestra, mientras lo escuchas. Eso significa que no hay un bucle que se repita y que acabes notando, y tampoco la textura metálica que deja el audio comprimido cuando intenta comprimir algo que no tiene estructura. Suena limpio la primera hora y la octava.
 
-El temporizador apaga el sonido cuando tú digas: 15, 30, 45, 60, 90 o 120 minutos, o el tiempo exacto que quieras. Al llegar al final el volumen baja poco a poco durante el último minuto en vez de cortarse de golpe, porque un corte seco despierta a quien justo se estaba durmiendo.
+El temporizador apaga el sonido cuando tú digas: de diez en diez hasta una hora, y 90 o 120 minutos. Al llegar al final el volumen baja poco a poco durante el último minuto en vez de cortarse de golpe, porque un corte seco despierta a quien justo se estaba durmiendo.
 
-Se controla sin abrir la app: la notificación permite pausar y añadir quince minutos al temporizador, y el botón de los auriculares también funciona. Puedes cerrar la app y dejar el móvil boca abajo; el sonido sigue.
+Se controla sin abrir la app: la notificación permite pausar, cambiar de sonido y añadir diez minutos al temporizador, y el botón de los auriculares también funciona. Puedes cerrar la app y dejar el móvil boca abajo; el sonido sigue.
 
 Y cuando pulsas pausa, se acabó: la notificación desaparece sola y no queda nada rondando. Volver a escuchar es abrir la app, que es lo que ibas a hacer de todas formas.
 
@@ -42,7 +42,7 @@ Qué incluye:
 
 • Cuatro ruidos generados en el dispositivo: enmascarador, rosa, blanco y marrón.
 • Suena al abrir la app, con el último sonido que escuchaste.
-• Temporizador con apagado progresivo, y opción de añadir quince minutos.
+• Temporizador con apagado progresivo, y opción de añadir diez minutos.
 • Control desde la notificación y desde los auriculares; al pausar, la notificación se cierra sola.
 • Volumen propio, independiente del volumen de multimedia del sistema.
 • Sigue sonando con la pantalla apagada y la app cerrada.
@@ -60,9 +60,9 @@ Four sounds, and not one more. No catalogue to scroll through, no mix to configu
 
 The noise is not a recording: it is generated on your phone, sample by sample, as you listen. That means there is no loop that repeats until you start noticing it, and none of the metallic texture that compressed audio leaves behind when it tries to compress something with no structure in it. It sounds as clean in the eighth hour as in the first.
 
-The sleep timer stops the sound whenever you say: 15, 30, 45, 60, 90 or 120 minutes, or any length you like. At the end the volume fades down through the last minute instead of cutting out, because an abrupt stop wakes up the person who was finally falling asleep.
+The sleep timer stops the sound whenever you say: in tens up to an hour, then 90 or 120 minutes. At the end the volume fades down through the last minute instead of cutting out, because an abrupt stop wakes up the person who was finally falling asleep.
 
-You can control it without opening the app: the notification lets you pause and add fifteen minutes to the timer, and your headphone button works too. Close the app and put the phone face down — the sound keeps going.
+You can control it without opening the app: the notification lets you pause, change sound and add ten minutes to the timer, and your headphone button works too. Close the app and put the phone face down — the sound keeps going.
 
 And when you press pause, that is that: the notification clears itself away and nothing is left hanging around. Listening again means opening the app, which is what you were going to do anyway.
 
@@ -74,7 +74,7 @@ What you get:
 
 • Four noises generated on your device: masking, pink, white and brown.
 • Plays as soon as you open the app, with the last sound you were listening to.
-• Sleep timer with a gradual fade out, and a button to add fifteen minutes.
+• Sleep timer with a gradual fade out, and a button to add ten minutes.
 • Control from the notification and from your headphones; pausing clears the notification away.
 • Its own volume, independent of the system media volume.
 • Keeps playing with the screen off and the app closed.
@@ -84,7 +84,7 @@ What you get:
 PROMO_ES = "Ruido blanco y marrón generados en tu teléfono. Suena al abrir. Se apaga cuando tú digas."
 PROMO_EN = "White and brown noise generated on your phone. Plays on open. Stops when you say."
 
-NOTES_ES = """Primera versión de Sleep Noise.
+NOTES_1_0_ES = """Primera versión de Sleep Noise.
 
 • Cuatro ruidos generados en tu teléfono, no reproducidos desde un fichero: sin bucle que se note ni artefactos de compresión. Uno de ellos está pensado para tapar conversaciones.
 • Suena al abrir la app, con el último sonido que escuchaste.
@@ -93,7 +93,7 @@ NOTES_ES = """Primera versión de Sleep Noise.
 
 Sin cuentas, sin nube, sin anuncios y sin seguimiento."""
 
-NOTES_EN = """The first version of Sleep Noise.
+NOTES_1_0_EN = """The first version of Sleep Noise.
 
 • Four noises generated on your phone, not played from a file: no loop you can notice, no compression artefacts. One of them is shaped to cover conversation.
 • Plays as soon as you open the app, with the last sound you were listening to.
@@ -102,13 +102,40 @@ NOTES_EN = """The first version of Sleep Noise.
 
 No accounts, no cloud, no ads, no tracking."""
 
+NOTES_1_0_1_ES = """Lo que salió al usar la app en un teléfono de verdad.
+
+• Las flechas de la notificación ya sirven para algo: pasan al sonido anterior y al siguiente, sin abrir la app.
+• Fuera la barra de progreso, que avanzaba hacia un final que no existe: el ruido no se acaba.
+• El temporizador va de diez en diez: 10, 20, 30, 40, 50 y 60 minutos, más 90 y 120.
+
+Sin cuentas, sin nube, sin anuncios y sin seguimiento."""
+
+NOTES_1_0_1_EN = """What came out of using the app on a real phone.
+
+• The arrows in the notification now do something: they move to the previous or next sound, without opening the app.
+• The progress bar is gone. It was creeping towards an end that does not exist: the noise never finishes.
+• The sleep timer counts in tens: 10, 20, 30, 40, 50 and 60 minutes, plus 90 and 120.
+
+No accounts, no cloud, no ads, no tracking."""
+
+# Las versiones publicadas, la más reciente primero. Cada una lleva sus notas en los
+# dos idiomas; el bloque de la de arriba es el que se pega al crear la release, y los
+# de abajo se quedan como historial.
+RELEASES = [
+    ("1.0.1", 2, "pendiente de publicar", NOTES_1_0_1_ES, NOTES_1_0_1_EN),
+    ("1.0", 1, "publicada el 2026-08-27", NOTES_1_0_ES, NOTES_1_0_EN),
+]
+
 LIMITS = [
     ("Nombre ES", NAME_ES, 30), ("Nombre EN", NAME_EN, 30),
     ("Nombre ES alt", NAME_ES_ALT, 30), ("Nombre EN alt", NAME_EN_ALT, 30),
     ("Short ES", SHORT_ES, 80), ("Short EN", SHORT_EN, 80),
     ("Full ES", FULL_ES, 4000), ("Full EN", FULL_EN, 4000),
     ("Promo ES", PROMO_ES, 170), ("Promo EN", PROMO_EN, 170),
-    ("Notas 1.0 ES", NOTES_ES, 500), ("Notas 1.0 EN", NOTES_EN, 500),
+] + [
+    item
+    for version, _code, _status, es, en in RELEASES
+    for item in (("Notas %s ES" % version, es, 500), ("Notas %s EN" % version, en, 500))
 ]
 fail = False
 for label, text, limit in LIMITS:
@@ -155,7 +182,7 @@ pasar el script para que el conteo no mienta.
    - permiso de notificaciones concedido y **denegado**;
    - cambio de sonido durante la reproducción, sin chasquido;
    - volumen desde el aro y desde el slider;
-   - temporizador: preset, personalizado, +15 min, cancelar, y pausa manual a mitad de cuenta;
+   - temporizador: preset, +10 min, cancelar, y pausa manual a mitad de cuenta;
    - fade out del último minuto;
    - las trece filas de la tabla de convivencia con el sistema (llamada entrante, otra app
      reproduciendo, auriculares desconectados, Doze, app fuera de recientes…);
@@ -401,32 +428,21 @@ Textos de **«Novedades»** («What's new») listos para pegar en Play Console a
 
 ---
 
-## 1.0 (versionCode 1) — pendiente de publicar
+@@releases@@"""
 
-### es-ES (@@es_n@@ caracteres)
 
-```text
-@@es@@
-```
+def release_block(version, code, status, es, en):
+    """Un bloque de novedades con sus tres subsecciones obligatorias."""
+    return (
+        "## %s (versionCode %d) — %s\n\n" % (version, code, status)
+        + "### es-ES (%d caracteres)\n\n```text\n%s\n```\n\n" % (len(es), es)
+        + "### en-US (%d caracteres)\n\n```text\n%s\n```\n\n" % (len(en), en)
+        + "### Formato con etiquetas de idioma\n\n```xml\n<es-ES>\n%s\n</es-ES>\n<en-US>\n%s\n</en-US>\n```\n"
+        % (es, en)
+    )
 
-### en-US (@@en_n@@ caracteres)
 
-```text
-@@en@@
-```
-
-### Formato con etiquetas de idioma
-
-```xml
-<es-ES>
-@@es@@
-</es-ES>
-<en-US>
-@@en@@
-</en-US>
-```
-"""
-notes = fill(notes_tpl, {"es": NOTES_ES, "es_n": len(NOTES_ES), "en": NOTES_EN, "en_n": len(NOTES_EN)})
+notes = fill(notes_tpl, {"releases": "\n---\n\n".join(release_block(*r) for r in RELEASES)})
 (ROOT / "docs/play-release-notes.md").write_text(notes)
 
 print("\nescritos:")

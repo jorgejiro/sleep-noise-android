@@ -239,8 +239,15 @@ una interrupción, es el final. El usuario ha acabado de escuchar.
 
 ### 5.2 Temporizador
 
-**RF-06 · Configuración.** Presets de 15, 30, 45, 60, 90 y 120 minutos, «Sin temporizador» y un valor
-personalizado entre 5 y 600 minutos. El último valor usado se recuerda y aparece preseleccionado.
+**RF-06 · Configuración.** «Sin temporizador» y presets de **10, 20, 30, 40, 50 y 60 minutos, más 90
+y 120**. El último valor usado se recuerda y aparece preseleccionado.
+
+Los diez en la primera hora y los saltos gruesos después: ahí es donde se elige casi siempre, y
+«cuarenta minutos» es algo que la gente piensa, mientras que «cuarenta y cinco» venía de contar en
+cuartos de hora. Pasada la hora la precisión deja de significar nada —nadie distingue una hora y
+cincuenta de dos horas mientras se duerme— y once filas más las tendría que pasar de largo todo el
+que quiere veinte minutos. La hoja se abre desplegada del todo, para que las nueve opciones se vean
+sin arrastrarla.
 
 **RF-07 · Cuenta atrás y apagado.** El tiempo restante se muestra en P1 y en la notificación, en
 unidades legibles («1 h 26 min», no «01:26:04»).
@@ -254,10 +261,11 @@ unidades legibles («1 h 26 min», no «01:26:04»).
 - *Dado* un temporizador activo, *cuando* el usuario cambia de sonido, *entonces* el temporizador
   sigue corriendo sin alterarse.
 
-**RF-08 · Ajuste en caliente.** Desde la notificación y desde P1 se puede añadir 15 minutos o
-cancelar el temporizador.
+**RF-08 · Ajuste en caliente.** Desde la notificación y desde P1 se puede añadir 10 minutos o
+cancelar el temporizador. Diez, como los presets: un temporizador de 40 alargado dos veces es una
+hora, y sigue en la misma rejilla que se le ofreció al usuario.
 
-- *Dado* un temporizador en fade out, *cuando* se pulsa «+15 min», *entonces* el volumen vuelve a su
+- *Dado* un temporizador en fade out, *cuando* se pulsa «+10 min», *entonces* el volumen vuelve a su
   valor con un fade in de 1,5 s y la cuenta atrás se reanuda.
 
 ### 5.3 Segundo plano y sistema
@@ -308,10 +316,18 @@ avanzaba hacia un final que nadie va a alcanzar, midiendo la aritmética de una 
 declara ahora duración desconocida y el sistema deja de dibujarla. Lo único que se pierde con la barra
 es saber cuánto lleva sonando, que no es lo que se pregunta quien va a dormir.
 
-**Límite conocido:** los huecos de esas flechas los dibuja la plantilla del sistema, no la app. Dejar
-de anunciar las acciones las deja inertes y atenuadas, pero no las borra de la pantalla —en AOSP
-desaparecen, en One UI se quedan—. Para que desaparezcan habría que ocupar su sitio con acciones
-propias, que es una decisión de producto tomada en contra: la notificación se queda mínima.
+**RF-21 · Las flechas de la notificación cambian de sonido.** Los huecos de las flechas los dibuja
+la plantilla del sistema, no la app: se pintan haya o no acción detrás —en AOSP desaparecen, en One
+UI se quedan apagados—, así que la elección real no era tener botones o no tenerlos, sino que
+sirvieran para algo o no sirvieran para nada. Sirven (ADR 007).
+
+- *Dado* el ruido blanco sonando, *cuando* se pulsa la flecha de avanzar, *entonces* pasa al rosa,
+  con el mismo crossfade que un cambio desde la pantalla, y la notificación pasa a decir su nombre.
+- El orden es el de la pantalla principal —blanco, rosa, marrón, enmascarador— y **da la vuelta en
+  los extremos**: del enmascarador se avanza al blanco. Un orden con final dejaría una flecha muerta
+  en cada extremo, que es lo que se estaba arreglando.
+- El «+15 min» del temporizador se mantiene, en el hueco secundario de la derecha y solo mientras
+  hay temporizador (RF-08).
 
 ### 5.4 Ajustes y meta
 

@@ -25,6 +25,8 @@
     <string name="changelog_title">Novedades</string>
 
     <string name="notification_channel_name">Reproducción</string>
+    <string name="notification_previous_sound">Sonido anterior</string>
+    <string name="notification_next_sound">Sonido siguiente</string>
 
     <string name="settings_section_playback">Reproducción</string>
     <string name="settings_section_about">Acerca de</string>
@@ -38,6 +40,12 @@
     <string name="action_close">Cerrar</string>
     <string name="a11y_open_settings">Abrir ajustes</string>
     <string name="a11y_back">Atrás</string>
+
+    <string-array name="changelog_1_0_1">
+        <item>Las flechas de la notificación ya sirven para algo: pasan al sonido anterior y al siguiente, sin abrir la app.</item>
+        <item>Fuera la barra de progreso de la notificación. El ruido no tiene final hacia el que avanzar.</item>
+        <item>El temporizador va de diez en diez: 10, 20, 30, 40, 50 y 60 minutos, más 90 y 120. El botón de la notificación añade 10.</item>
+    </string-array>
 
     <string-array name="changelog_1_0">
         <item>Cuatro ruidos generados en tu dispositivo —enmascarador, rosa, blanco y marrón—, sin bucle que se note ni artefactos de compresión.</item>

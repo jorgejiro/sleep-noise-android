@@ -21,6 +21,16 @@ object PlaybackCommands {
     const val EXTEND_TIMER = "com.jjrapps.sleepnoise.EXTEND_TIMER"
 
     /**
+     * Sonido anterior y siguiente, para las flechas de la notificación.
+     *
+     * Van sin argumento a propósito, en vez de reusar [SET_NOISE] con el destino ya
+     * calculado: quien pulsa la flecha no sabe qué sonido hay puesto —el botón se
+     * dibujó hace rato— y el único que lo sabe con certeza es el servicio.
+     */
+    const val PREVIOUS_SOUND = "com.jjrapps.sleepnoise.PREVIOUS_SOUND"
+    const val NEXT_SOUND = "com.jjrapps.sleepnoise.NEXT_SOUND"
+
+    /**
      * Vuelve a publicar los textos de la notificación.
      *
      * Lo envía la pantalla de Ajustes justo después de cambiar el idioma: el
@@ -39,8 +49,9 @@ object PlaybackCommands {
     const val EXTRA_TIMER_MINUTES = "timer_minutes"
     const val EXTRA_TIMER_REMAINING_MS = "timer_remaining_ms"
 
-    val all: List<SessionCommand> = listOf(SET_NOISE, SET_VOLUME, SET_TIMER, EXTEND_TIMER, REFRESH_LABELS)
-        .map { SessionCommand(it, Bundle.EMPTY) }
+    val all: List<SessionCommand> = listOf(
+        SET_NOISE, SET_VOLUME, SET_TIMER, EXTEND_TIMER, REFRESH_LABELS, PREVIOUS_SOUND, NEXT_SOUND
+    ).map { SessionCommand(it, Bundle.EMPTY) }
 
     fun setNoise(type: NoiseType): Pair<SessionCommand, Bundle> =
         SessionCommand(SET_NOISE, Bundle.EMPTY) to Bundle().apply { putString(ARG_NOISE, type.key) }
@@ -55,6 +66,10 @@ object PlaybackCommands {
 
     fun extendTimer(minutes: Int): Pair<SessionCommand, Bundle> =
         SessionCommand(EXTEND_TIMER, Bundle.EMPTY) to Bundle().apply { putInt(ARG_MINUTES, minutes) }
+
+    fun previousSound(): SessionCommand = SessionCommand(PREVIOUS_SOUND, Bundle.EMPTY)
+
+    fun nextSound(): SessionCommand = SessionCommand(NEXT_SOUND, Bundle.EMPTY)
 
     fun refreshLabels(): Pair<SessionCommand, Bundle> =
         SessionCommand(REFRESH_LABELS, Bundle.EMPTY) to Bundle.EMPTY

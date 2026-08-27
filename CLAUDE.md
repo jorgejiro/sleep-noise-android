@@ -2,12 +2,13 @@
 
 Guía de trabajo para este repositorio. Léela entera antes de tocar nada.
 
-> **Estado del proyecto: 1.0 enviada a Google Play el 2026-08-24.**
+> **Estado del proyecto: 1.0 publicada en Google Play el 2026-08-27.** Enviada el 24, aprobada el 27.
+> En curso, una **1.0.1** con lo que salió al probarla en un teléfono real (ADR 007).
 >
 > Hechos H0 a H9: la app funciona entera, con cuatro sonidos, y está firmada, con sus 42 capturas,
-> su icono de tienda, su política de privacidad publicada y su ficha escrita. Lo que queda es lo que
-> no depende de nosotros —la revisión de Play— más dos pruebas que necesitan tiempo real y una
-> persona: el recorrido con TalkBack y la sesión de resistencia de ocho horas con el build de release.
+> su icono de tienda, su política de privacidad publicada y su ficha escrita. Siguen pendientes las
+> dos pruebas que necesitan tiempo real y una persona: el recorrido con TalkBack y la sesión de
+> resistencia de ocho horas con el build de release.
 >
 > Para un evolutivo: leer esta guía entera, y `docs/decisions/` antes de proponer cambiar algo que ya
 > se decidió. El ADR 006 es el que explica de verdad qué es este producto.
@@ -170,6 +171,11 @@ Reglas:
   Si alguna vez hay que tocar esto, esa distinción es lo primero que hay que entender.
 - **Nunca parar el audio en seco.** Todo arranque, parada y cambio de sonido pasa por una rampa de
   volumen (`Fader`). Un corte abrupto despierta a quien se estaba durmiendo, y produce un clic audible.
+- **La sesión no declara duración, y sus botones sirven todos** (ADR 007). El ruido no dura nada:
+  `FadingPlayer` responde `C.TIME_UNSET`, y por eso el sistema no dibuja barra de progreso. Los huecos
+  de las flechas, en cambio, los pinta la plantilla del sistema haya o no acción detrás, así que se
+  ocupan con sonido anterior y siguiente en vez de dejarlos apagados. Los botones se declaran con
+  `setMediaButtonPreferences`, que es la API que entiende de huecos.
 
 ### Configuración del reproductor que no se toca sin motivo
 

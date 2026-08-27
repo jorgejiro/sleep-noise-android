@@ -86,7 +86,13 @@ class SleepTimer(private val nowMillis: () -> Long) {
         /** Specification RF-07: the closing fade lasts the last minute. */
         const val FADE_OUT_MILLIS = 60_000L
 
-        /** What the notification's button adds (RF-08). */
-        const val EXTEND_MINUTES = 15
+        /**
+         * What the notification's button adds (RF-08).
+         *
+         * Ten, matching the presets: a timer set to forty and extended twice is an
+         * hour, and stays on the same grid as everything the user was offered. A
+         * quarter of an hour is a natural unit for a clock and a stray one here.
+         */
+        const val EXTEND_MINUTES = 10
     }
 }

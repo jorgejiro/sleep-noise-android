@@ -2,6 +2,8 @@ package com.jjrapps.sleepnoise.ui.timer
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,6 +16,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,8 +34,16 @@ import com.jjrapps.sleepnoise.ui.theme.SleepNoiseColors
  *
  * Presets in minutes, from the specification §4. They are also what the screenshot
  * pipeline of H9 photographs, so changing them changes the store listing.
+ *
+ * Tens up to the hour, then the two coarse steps. The first hour is where nearly
+ * every choice is made — someone setting a timer to fall asleep is picking how long
+ * they think it takes them, and "forty minutes" is a thing people think, while
+ * "forty-five" was an artefact of counting in quarters. Past the hour the precision
+ * stops meaning anything: nobody distinguishes an hour and fifty from two hours
+ * while falling asleep, and eleven more rows would have to be scrolled past by
+ * everyone who wanted twenty minutes.
  */
-val TIMER_PRESETS = listOf(15, 30, 45, 60, 90, 120)
+val TIMER_PRESETS = listOf(10, 20, 30, 40, 50, 60, 90, 120)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,11 +54,19 @@ fun TimerSheet(
 ) {
     ModalBottomSheet(
         onDismissRequest = onDismiss,
+        // Abierta del todo desde el primer momento. A media altura la lista se corta
+        // por donde caiga, y la mitad de las opciones piden un arrastre que nadie
+        // sabe que hay que hacer.
+        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
         containerColor = SleepNoiseColors.SurfaceRaised
     ) {
+        // Nueve filas caben en un teléfono, pero dejan de caber en cuanto alguien
+        // usa el tamaño de fuente grande de Accesibilidad. Sin scroll, lo que no
+        // cabe no es que se vea apretado: no se ve.
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
                 .navigationBarsPadding()
                 .padding(horizontal = 20.dp)
                 .padding(bottom = 20.dp)

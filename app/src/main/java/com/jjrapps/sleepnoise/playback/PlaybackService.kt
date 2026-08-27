@@ -343,7 +343,7 @@ class PlaybackService : MediaSessionService() {
             putLong(PlaybackCommands.EXTRA_TIMER_REMAINING_MS, timer.remainingMillis)
         }
         session?.setSessionExtras(extras)
-        session?.setCustomLayout(customLayout())
+        session?.setMediaButtonPreferences(mediaButtons())
     }
 
     /**
@@ -379,17 +379,47 @@ class PlaybackService : MediaSessionService() {
             .remove(Player.COMMAND_CHANGE_MEDIA_ITEMS)
             .build()
 
-    /** The extra button in the notification, only while there is a timer to extend. */
-    private fun customLayout(): ImmutableList<CommandButton> {
-        if (!timer.isSet) return ImmutableList.of()
-        return ImmutableList.of(
-            CommandButton.Builder(CommandButton.ICON_PLUS)
-                .setSessionCommand(PlaybackCommands.extendTimer(SleepTimer.EXTEND_MINUTES).first)
-                .setDisplayName(
-                    getString(R.string.timer_extend, SleepTimer.EXTEND_MINUTES)
-                )
+    /**
+     * Los botones de la notificación, y en qué hueco va cada uno.
+     *
+     * Las plantillas de medios del sistema dibujan cinco huecos alrededor del
+     * play: dos a cada lado. Los de las flechas se dibujan **haya o no** algo que
+     * poner en ellos —en AOSP desaparecen, en One UI se quedan ahí, apagados—, y
+     * un botón que no hace nada es peor que no tenerlo. Así que se ocupan, y con
+     * lo único que esta app puede ofrecer en ese sitio: pasar de un sonido al
+     * siguiente, que es la otra cosa que se hace con la app abierta.
+     *
+     * El «+15 min» va al hueco secundario de la derecha, y solo mientras haya un
+     * temporizador que alargar (RF-08).
+     */
+    private fun mediaButtons(): ImmutableList<CommandButton> {
+        val buttons = ImmutableList.builder<CommandButton>()
+        buttons.add(
+            CommandButton.Builder(CommandButton.ICON_PREVIOUS)
+                .setSessionCommand(PlaybackCommands.previousSound())
+                .setDisplayName(getString(R.string.notification_previous_sound))
+                .setSlots(CommandButton.SLOT_BACK, CommandButton.SLOT_OVERFLOW)
                 .build()
         )
+        buttons.add(
+            CommandButton.Builder(CommandButton.ICON_NEXT)
+                .setSessionCommand(PlaybackCommands.nextSound())
+                .setDisplayName(getString(R.string.notification_next_sound))
+                .setSlots(CommandButton.SLOT_FORWARD, CommandButton.SLOT_OVERFLOW)
+                .build()
+        )
+        if (timer.isSet) {
+            buttons.add(
+                CommandButton.Builder(CommandButton.ICON_PLUS)
+                    .setSessionCommand(PlaybackCommands.extendTimer(SleepTimer.EXTEND_MINUTES).first)
+                    .setDisplayName(
+                        getString(R.string.timer_extend, SleepTimer.EXTEND_MINUTES)
+                    )
+                    .setSlots(CommandButton.SLOT_FORWARD_SECONDARY, CommandButton.SLOT_OVERFLOW)
+                    .build()
+            )
+        }
+        return buttons.build()
     }
 
     private inner class SessionCallback : MediaSession.Callback {
@@ -410,7 +440,7 @@ class PlaybackService : MediaSessionService() {
             return MediaSession.ConnectionResult.AcceptedResultBuilder(session)
                 .setAvailableSessionCommands(sessionCommands.build())
                 .setAvailablePlayerCommands(availablePlayerCommands())
-                .setCustomLayout(customLayout())
+                .setMediaButtonPreferences(mediaButtons())
                 .build()
         }
 
@@ -451,6 +481,8 @@ class PlaybackService : MediaSessionService() {
             when (customCommand.customAction) {
                 PlaybackCommands.SET_NOISE ->
                     changeNoise(NoiseType.fromKey(args.getString(PlaybackCommands.ARG_NOISE)))
+                PlaybackCommands.PREVIOUS_SOUND -> changeNoise(currentType.previous())
+                PlaybackCommands.NEXT_SOUND -> changeNoise(currentType.next())
                 PlaybackCommands.SET_VOLUME ->
                     changeVolume(args.getInt(PlaybackCommands.ARG_VOLUME, volume))
                 PlaybackCommands.SET_TIMER ->

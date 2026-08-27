@@ -29,6 +29,8 @@
     <string name="changelog_title">What\'s new</string>
 
     <string name="notification_channel_name">Playback</string>
+    <string name="notification_previous_sound">Previous sound</string>
+    <string name="notification_next_sound">Next sound</string>
 
     <string name="settings_section_playback">Playback</string>
     <string name="settings_section_about">About</string>
@@ -45,6 +47,12 @@
     <string name="action_close">Close</string>
     <string name="a11y_open_settings">Open settings</string>
     <string name="a11y_back">Back</string>
+
+    <string-array name="changelog_1_0_1">
+        <item>The arrows in the notification now do something: they move to the previous or next sound, without opening the app.</item>
+        <item>The progress bar is gone from the notification. The noise has no end for a bar to creep towards.</item>
+        <item>The sleep timer now counts in tens: 10, 20, 30, 40, 50 and 60 minutes, plus 90 and 120. The button in the notification adds 10.</item>
+    </string-array>
 
     <string-array name="changelog_1_0">
         <item>Four noises generated on your device — masking, pink, white and brown — with no loop you can notice and no compression artefacts.</item>

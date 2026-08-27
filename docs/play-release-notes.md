@@ -19,7 +19,58 @@ Textos de **«Novedades»** («What's new») listos para pegar en Play Console a
 
 ---
 
-## 1.0 (versionCode 1) — pendiente de publicar
+## 1.0.1 (versionCode 2) — pendiente de publicar
+
+### es-ES (403 caracteres)
+
+```text
+Lo que salió al usar la app en un teléfono de verdad.
+
+• Las flechas de la notificación ya sirven para algo: pasan al sonido anterior y al siguiente, sin abrir la app.
+• Fuera la barra de progreso, que avanzaba hacia un final que no existe: el ruido no se acaba.
+• El temporizador va de diez en diez: 10, 20, 30, 40, 50 y 60 minutos, más 90 y 120.
+
+Sin cuentas, sin nube, sin anuncios y sin seguimiento.
+```
+
+### en-US (402 caracteres)
+
+```text
+What came out of using the app on a real phone.
+
+• The arrows in the notification now do something: they move to the previous or next sound, without opening the app.
+• The progress bar is gone. It was creeping towards an end that does not exist: the noise never finishes.
+• The sleep timer counts in tens: 10, 20, 30, 40, 50 and 60 minutes, plus 90 and 120.
+
+No accounts, no cloud, no ads, no tracking.
+```
+
+### Formato con etiquetas de idioma
+
+```xml
+<es-ES>
+Lo que salió al usar la app en un teléfono de verdad.
+
+• Las flechas de la notificación ya sirven para algo: pasan al sonido anterior y al siguiente, sin abrir la app.
+• Fuera la barra de progreso, que avanzaba hacia un final que no existe: el ruido no se acaba.
+• El temporizador va de diez en diez: 10, 20, 30, 40, 50 y 60 minutos, más 90 y 120.
+
+Sin cuentas, sin nube, sin anuncios y sin seguimiento.
+</es-ES>
+<en-US>
+What came out of using the app on a real phone.
+
+• The arrows in the notification now do something: they move to the previous or next sound, without opening the app.
+• The progress bar is gone. It was creeping towards an end that does not exist: the noise never finishes.
+• The sleep timer counts in tens: 10, 20, 30, 40, 50 and 60 minutes, plus 90 and 120.
+
+No accounts, no cloud, no ads, no tracking.
+</en-US>
+```
+
+---
+
+## 1.0 (versionCode 1) — publicada el 2026-08-27
 
 ### es-ES (469 caracteres)
 

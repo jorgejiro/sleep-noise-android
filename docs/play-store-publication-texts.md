@@ -22,7 +22,7 @@ pasar el script para que el conteo no mienta.
    - permiso de notificaciones concedido y **denegado**;
    - cambio de sonido durante la reproducción, sin chasquido;
    - volumen desde el aro y desde el slider;
-   - temporizador: preset, personalizado, +15 min, cancelar, y pausa manual a mitad de cuenta;
+   - temporizador: preset, +10 min, cancelar, y pausa manual a mitad de cuenta;
    - fade out del último minuto;
    - las trece filas de la tabla de convivencia con el sistema (llamada entrante, otra app
      reproduciendo, auriculares desconectados, Doze, app fuera de recientes…);
@@ -87,7 +87,7 @@ Las tres cosas que este texto dice **a propósito**, porque son las que evitan u
 estrella el primer día: que hay **cuatro sonidos y ni uno más**, que el ruido está **generado y no
 grabado**, y que la interfaz es **oscura siempre**.
 
-### es-ES (2737 caracteres)
+### es-ES (2738 caracteres)
 
 ```text
 Sleep Noise genera ruido para dormir, y para tapar el ruido de alrededor cuando no puedes irte de donde estás. Se abre y suena: no hay que pulsar nada.
@@ -101,9 +101,9 @@ Cuatro sonidos, y ni uno más. No hay catálogo que recorrer ni mezclas que conf
 
 El ruido no está grabado: se genera en tu teléfono, muestra a muestra, mientras lo escuchas. Eso significa que no hay un bucle que se repita y que acabes notando, y tampoco la textura metálica que deja el audio comprimido cuando intenta comprimir algo que no tiene estructura. Suena limpio la primera hora y la octava.
 
-El temporizador apaga el sonido cuando tú digas: 15, 30, 45, 60, 90 o 120 minutos, o el tiempo exacto que quieras. Al llegar al final el volumen baja poco a poco durante el último minuto en vez de cortarse de golpe, porque un corte seco despierta a quien justo se estaba durmiendo.
+El temporizador apaga el sonido cuando tú digas: de diez en diez hasta una hora, y 90 o 120 minutos. Al llegar al final el volumen baja poco a poco durante el último minuto en vez de cortarse de golpe, porque un corte seco despierta a quien justo se estaba durmiendo.
 
-Se controla sin abrir la app: la notificación permite pausar y añadir quince minutos al temporizador, y el botón de los auriculares también funciona. Puedes cerrar la app y dejar el móvil boca abajo; el sonido sigue.
+Se controla sin abrir la app: la notificación permite pausar, cambiar de sonido y añadir diez minutos al temporizador, y el botón de los auriculares también funciona. Puedes cerrar la app y dejar el móvil boca abajo; el sonido sigue.
 
 Y cuando pulsas pausa, se acabó: la notificación desaparece sola y no queda nada rondando. Volver a escuchar es abrir la app, que es lo que ibas a hacer de todas formas.
 
@@ -115,7 +115,7 @@ Qué incluye:
 
 • Cuatro ruidos generados en el dispositivo: enmascarador, rosa, blanco y marrón.
 • Suena al abrir la app, con el último sonido que escuchaste.
-• Temporizador con apagado progresivo, y opción de añadir quince minutos.
+• Temporizador con apagado progresivo, y opción de añadir diez minutos.
 • Control desde la notificación y desde los auriculares; al pausar, la notificación se cierra sola.
 • Volumen propio, independiente del volumen de multimedia del sistema.
 • Sigue sonando con la pantalla apagada y la app cerrada.
@@ -123,7 +123,7 @@ Qué incluye:
 • Sin internet, sin cuentas, sin anuncios, sin seguimiento.
 ```
 
-### en-US (2788 caracteres)
+### en-US (2782 caracteres)
 
 ```text
 Sleep Noise generates noise to help you sleep, and to cover the room around you when you cannot leave it. Open it and it plays — there is nothing to press.
@@ -137,9 +137,9 @@ Four sounds, and not one more. No catalogue to scroll through, no mix to configu
 
 The noise is not a recording: it is generated on your phone, sample by sample, as you listen. That means there is no loop that repeats until you start noticing it, and none of the metallic texture that compressed audio leaves behind when it tries to compress something with no structure in it. It sounds as clean in the eighth hour as in the first.
 
-The sleep timer stops the sound whenever you say: 15, 30, 45, 60, 90 or 120 minutes, or any length you like. At the end the volume fades down through the last minute instead of cutting out, because an abrupt stop wakes up the person who was finally falling asleep.
+The sleep timer stops the sound whenever you say: in tens up to an hour, then 90 or 120 minutes. At the end the volume fades down through the last minute instead of cutting out, because an abrupt stop wakes up the person who was finally falling asleep.
 
-You can control it without opening the app: the notification lets you pause and add fifteen minutes to the timer, and your headphone button works too. Close the app and put the phone face down — the sound keeps going.
+You can control it without opening the app: the notification lets you pause, change sound and add ten minutes to the timer, and your headphone button works too. Close the app and put the phone face down — the sound keeps going.
 
 And when you press pause, that is that: the notification clears itself away and nothing is left hanging around. Listening again means opening the app, which is what you were going to do anyway.
 
@@ -151,7 +151,7 @@ What you get:
 
 • Four noises generated on your device: masking, pink, white and brown.
 • Plays as soon as you open the app, with the last sound you were listening to.
-• Sleep timer with a gradual fade out, and a button to add fifteen minutes.
+• Sleep timer with a gradual fade out, and a button to add ten minutes.
 • Control from the notification and from your headphones; pausing clears the notification away.
 • Its own volume, independent of the system media volume.
 • Keeps playing with the screen off and the app closed.
