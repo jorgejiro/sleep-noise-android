@@ -1,6 +1,7 @@
 package com.jjrapps.sleepnoise.playback
 
 import androidx.annotation.OptIn
+import androidx.media3.common.C
 import androidx.media3.common.ForwardingPlayer
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
@@ -81,6 +82,24 @@ class FadingPlayer(
         transitionGain = 0f
         apply()
     }
+
+    /**
+     * The noise has no length, and the session must not claim one.
+     *
+     * A WAV header cannot say more than about 6.2 hours, so the item the extractor
+     * sees is finite and the player reports that figure as its duration. Every
+     * system media surface reads it and draws a progress bar with a running time
+     * next to it — a bar creeping towards an end nobody will ever reach, measuring
+     * the header's arithmetic and nothing about the session. Reporting an unset
+     * duration takes the bar away: the system only draws one when the duration is
+     * positive.
+     *
+     * This is the face the session sees, not the player that does the work, so the
+     * repeat that keeps the sound going is untouched.
+     */
+    override fun getDuration(): Long = C.TIME_UNSET
+
+    override fun getContentDuration(): Long = C.TIME_UNSET
 
     fun releaseFades() {
         fadeJob?.cancel()

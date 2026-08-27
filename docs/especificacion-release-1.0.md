@@ -301,10 +301,17 @@ pista, rebobinar, avanzar, buscar una posición, cambiar la velocidad, aleatorio
 defecto una sesión de medios anuncia las veinte, y Android dibuja botones a partir de ellas: el
 resultado eran unas flechas en la notificación que no hacían absolutamente nada al pulsarlas.
 
+**La notificación tampoco dice cuánto dura el ruido**, porque no dura nada. La cabecera WAV no sabe
+declarar más de 6,2 horas, así que el reproductor tenía una duración concreta y todas las superficies
+de medios del sistema dibujaban con ella una barra de progreso con su tiempo al lado: una barra que
+avanzaba hacia un final que nadie va a alcanzar, midiendo la aritmética de una cabecera. La sesión
+declara ahora duración desconocida y el sistema deja de dibujarla. Lo único que se pierde con la barra
+es saber cuánto lleva sonando, que no es lo que se pregunta quien va a dormir.
+
 **Límite conocido:** los huecos de esas flechas los dibuja la plantilla del sistema, no la app. Dejar
-de anunciar las acciones las deja inertes y atenuadas, pero no las borra de la pantalla. Para que
-desaparezcan habría que ocupar su sitio con acciones propias, que es una decisión de producto tomada
-en contra: la notificación se queda mínima.
+de anunciar las acciones las deja inertes y atenuadas, pero no las borra de la pantalla —en AOSP
+desaparecen, en One UI se quedan—. Para que desaparezcan habría que ocupar su sitio con acciones
+propias, que es una decisión de producto tomada en contra: la notificación se queda mínima.
 
 ### 5.4 Ajustes y meta
 

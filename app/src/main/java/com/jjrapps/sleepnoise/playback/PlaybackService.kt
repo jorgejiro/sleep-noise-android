@@ -354,11 +354,12 @@ class PlaybackService : MediaSessionService() {
      * repetición— y Android dibuja botones a partir de ellas. Aquí ninguna de esas
      * tiene sentido: no hay lista de pistas que recorrer y el ruido no tiene
      * principio ni final al que saltar. El resultado eran unas flechas en la
-     * notificación que no hacían absolutamente nada al pulsarlas, y una barra de
-     * posición que avanzaba sin significar nada.
+     * notificación que no hacían absolutamente nada al pulsarlas.
      *
      * Anunciar solo lo que se cumple es lo correcto, y además deja la notificación
-     * con lo único que hace falta: pausar.
+     * con lo único que hace falta: pausar. La barra de posición es aparte, y no se
+     * va quitando comandos: se va cuando la sesión deja de declarar una duración.
+     * Ver [FadingPlayer.getDuration].
      */
     private fun availablePlayerCommands(): Player.Commands =
         MediaSession.ConnectionResult.DEFAULT_PLAYER_COMMANDS.buildUpon()
