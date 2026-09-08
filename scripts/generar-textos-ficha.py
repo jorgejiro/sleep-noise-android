@@ -392,9 +392,20 @@ encenderla y pausar desde la notificación. Sin cortes de edición.
 | `FOREGROUND_SERVICE` | Reproducción continua en segundo plano |
 | `FOREGROUND_SERVICE_MEDIA_PLAYBACK` | Tipo del servicio anterior, obligatorio desde Android 14 |
 | `POST_NOTIFICATIONS` | Mostrar la notificación de control, que es la única forma de pausar sin abrir la app |
+| `ACCESS_NOTIFICATION_POLICY` | Poner el teléfono en No molestar mientras suena el ruido, y devolverlo al parar (RF-22). Es un acceso especial que **solo concede el usuario a mano**; sin él la app suena igual y la función no hace nada |
 
-**No** se declaran: `INTERNET`, `SCHEDULE_EXACT_ALARM`, `RECEIVE_BOOT_COMPLETED`, `WAKE_LOCK`
-(lo gestiona Media3 por dentro), ni ningún permiso de almacenamiento.
+`ACCESS_NOTIFICATION_POLICY` **no está en la lista de permisos restringidos de Play** —comprobado en
+«Permissions and APIs that Access Sensitive Information»—, así que no hay formulario de declaración
+que rellenar por él. La única declaración obligatoria de esta app sigue siendo la del servicio en
+primer plano.
+
+**No** se declaran en el manifest de la app: `INTERNET`, `SCHEDULE_EXACT_ALARM`,
+`RECEIVE_BOOT_COMPLETED` ni ningún permiso de almacenamiento.
+
+Y un matiz que conviene tener a mano si alguien en revisión compara esta tabla con el APK: el
+**manifest fusionado** añade dos permisos que vienen de Media3, `WAKE_LOCK` y `ACCESS_NETWORK_STATE`.
+No los pide esta app, pero **son los que Play enseña**, porque Play mira el binario y no el fichero
+del repositorio. Verificado con `aapt2 dump badging` sobre el APK de la 1.1.0.
 
 ---
 
