@@ -35,15 +35,17 @@ import com.jjrapps.sleepnoise.ui.theme.SleepNoiseColors
  * Presets in minutes, from the specification §4. They are also what the screenshot
  * pipeline of H9 photographs, so changing them changes the store listing.
  *
- * Tens up to the hour, then the two coarse steps. The first hour is where nearly
- * every choice is made — someone setting a timer to fall asleep is picking how long
- * they think it takes them, and "forty minutes" is a thing people think, while
- * "forty-five" was an artefact of counting in quarters. Past the hour the precision
- * stops meaning anything: nobody distinguishes an hour and fifty from two hours
- * while falling asleep, and eleven more rows would have to be scrolled past by
- * everyone who wanted twenty minutes.
+ * Fives up to the half hour, tens up to the hour, then the two coarse steps. The
+ * grid gets coarser as the numbers grow because that is how the choice actually
+ * works: whoever picks twenty minutes is timing something they can feel — a nap on a
+ * train, the twenty minutes it takes them to drop off — and five minutes either way
+ * is the difference. Past the hour the precision stops meaning anything: nobody
+ * distinguishes an hour and fifty from two hours while falling asleep.
+ *
+ * Where the steps change is where the reason changes, not a round number chosen for
+ * looking tidy.
  */
-val TIMER_PRESETS = listOf(10, 20, 30, 40, 50, 60, 90, 120)
+val TIMER_PRESETS = listOf(10, 15, 20, 25, 30, 40, 50, 60, 90, 120)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -60,9 +62,9 @@ fun TimerSheet(
         sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
         containerColor = SleepNoiseColors.SurfaceRaised
     ) {
-        // Nueve filas caben en un teléfono, pero dejan de caber en cuanto alguien
-        // usa el tamaño de fuente grande de Accesibilidad. Sin scroll, lo que no
-        // cabe no es que se vea apretado: no se ve.
+        // Once filas ya no caben en un teléfono ni con el tamaño de fuente normal,
+        // y con el grande de Accesibilidad no caben ni la mitad. Sin scroll, lo que
+        // no cabe no es que se vea apretado: no se ve.
         Column(
             modifier = Modifier
                 .fillMaxWidth()
