@@ -25,7 +25,9 @@ import com.jjrapps.sleepnoise.domain.model.NoiseType
 import com.jjrapps.sleepnoise.domain.repository.PlaybackPreferencesRepository
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -50,6 +52,9 @@ class PlaybackService : MediaSessionService() {
     @Inject
     lateinit var preferences: PlaybackPreferencesRepository
 
+    @Inject
+    lateinit var doNotDisturb: DoNotDisturbController
+
     private var session: MediaSession? = null
     private lateinit var exoPlayer: ExoPlayer
     private lateinit var player: FadingPlayer
@@ -63,6 +68,20 @@ class PlaybackService : MediaSessionService() {
     private val timer = SleepTimer { SystemClock.elapsedRealtime() }
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
     private var timerJob: Job? = null
+
+    /**
+     * A second scope, for the one write that has to outlive the service.
+     *
+     * Releasing Do Not Disturb on the way out has to leave a note saying so, and
+     * [scope] is cancelled in `onDestroy` before any write of its own could land —
+     * which would leave the note saying the phone is still silenced when it is not.
+     * This one is never cancelled: the process normally outlives the service, and a
+     * flag in DataStore is the only thing it carries.
+     */
+    private val breadcrumbScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
+    /** RF-22: whether the phone gets silenced while the noise plays. */
+    private var silenceWhilePlaying = true
 
     private var volume: Int = DEFAULT_VOLUME
     private var currentType: NoiseType = NoiseType.Default
@@ -121,6 +140,7 @@ class PlaybackService : MediaSessionService() {
             .build()
         publishState()
         restorePreferences()
+        observeSilencePreference()
     }
 
     /**
@@ -133,6 +153,16 @@ class PlaybackService : MediaSessionService() {
     private fun restorePreferences() {
         scope.launch {
             val stored = preferences.preferences.first()
+            // A session that never got to end — the process killed in the middle of
+            // the night — leaves the phone silenced. Handing it back is the first
+            // thing done on the way in, before anything can start playing and ask
+            // for it again.
+            if (stored.doNotDisturbHeld) {
+                Timber.d("a previous session left Do Not Disturb on; handing it back")
+                doNotDisturb.releaseStale()
+                preferences.setDoNotDisturbHeld(false)
+            }
+            silenceWhilePlaying = stored.doNotDisturbWhilePlaying
             volume = stored.volume
             player.setUserVolume(volume)
             if (stored.lastSound != currentType) {
@@ -155,6 +185,27 @@ class PlaybackService : MediaSessionService() {
      * and stopping would be the opposite of what was asked. It stops from the
      * notification, or when the timer runs out.
      */
+    /**
+     * Keeps [silenceWhilePlaying] in step with the switch in Settings, and acts on it
+     * straight away: turning it off with the noise already playing has to give the
+     * phone back its notifications there and then, not next session.
+     */
+    private fun observeSilencePreference() {
+        scope.launch {
+            preferences.preferences
+                .map { it.doNotDisturbWhilePlaying }
+                .distinctUntilChanged()
+                .collect { enabled ->
+                    silenceWhilePlaying = enabled
+                    if (enabled) {
+                        if (player.isPlaying) holdSilence()
+                    } else {
+                        releaseSilence()
+                    }
+                }
+        }
+    }
+
     override fun onTaskRemoved(rootIntent: Intent?) {
         if (!player.isPlaying) {
             // Nothing is playing, so there is nothing to keep alive and no reason to
@@ -166,6 +217,9 @@ class PlaybackService : MediaSessionService() {
     override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaSession? = session
 
     override fun onDestroy() {
+        // Before the scope goes: a service that dies holding Do Not Disturb would
+        // leave the phone silent with nothing on screen to explain why.
+        releaseSilence()
         timerJob?.cancel()
         player.releaseFades()
         scope.cancel()
@@ -185,9 +239,14 @@ class PlaybackService : MediaSessionService() {
             if (changingSound) return
             if (isPlaying) {
                 finishOnPause = false
+                holdSilence()
                 timer.resume()
                 startTicking()
             } else {
+                // Every pause gives the phone back, the system's included: an
+                // incoming call the user cannot hear is worse than a night of noise
+                // interrupted. Resuming asks for the silence again.
+                releaseSilence()
                 timer.freeze()
                 timerJob?.cancel()
                 if (finishOnPause) {
@@ -210,6 +269,10 @@ class PlaybackService : MediaSessionService() {
     private fun finishPlayback() {
         Timber.d("session finished by the user, clearing the notification")
         finishOnPause = false
+        // Belt and braces: every route into here goes through a pause first, which
+        // already gave the phone back. Ending the session is the funnel where it
+        // must be true, so it is asserted here rather than assumed.
+        releaseSilence()
         timer.cancel()
         timerJob?.cancel()
         player.setTimerFade(0f)
@@ -223,6 +286,29 @@ class PlaybackService : MediaSessionService() {
         stopForeground(STOP_FOREGROUND_REMOVE)
         NotificationManagerCompat.from(this).cancel(NOTIFICATION_ID)
         stopSelf()
+    }
+
+    // ---------------------------------------------------------------- silence
+
+    /**
+     * Asks the system for silence, and writes down that the app is holding it.
+     *
+     * Failing is normal and costs nothing: without Do Not Disturb access — which no
+     * app can grant itself — [DoNotDisturbController.acquire] returns false and the
+     * noise plays exactly the same.
+     */
+    private fun holdSilence() {
+        if (!silenceWhilePlaying) return
+        if (doNotDisturb.acquire()) {
+            breadcrumbScope.launch { preferences.setDoNotDisturbHeld(true) }
+        }
+    }
+
+    /** Gives it back, but only if this app is what took it. */
+    private fun releaseSilence() {
+        if (!doNotDisturb.isHeld) return
+        doNotDisturb.release()
+        breadcrumbScope.launch { preferences.setDoNotDisturbHeld(false) }
     }
 
     private fun changeNoise(type: NoiseType) {

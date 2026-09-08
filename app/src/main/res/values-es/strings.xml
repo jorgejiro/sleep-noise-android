@@ -32,6 +32,10 @@
     <string name="settings_section_about">Acerca de</string>
     <string name="settings_autoplay">Reproducir al abrir la app</string>
     <string name="settings_autoplay_subtitle">Empieza con el último sonido que escuchaste</string>
+    <string name="settings_dnd">No molestar mientras suena</string>
+    <string name="settings_dnd_subtitle">Se activa con el sonido y se desactiva cuando lo paras</string>
+    <string name="settings_dnd_grant">Conceder acceso a No molestar</string>
+    <string name="settings_dnd_pending">Pendiente</string>
     <string name="settings_language">Idioma</string>
     <string name="settings_language_auto">Automático (sistema)</string>
     <string name="settings_version">Versión</string>
@@ -40,6 +44,12 @@
     <string name="action_close">Cerrar</string>
     <string name="a11y_open_settings">Abrir ajustes</string>
     <string name="a11y_back">Atrás</string>
+
+    <string-array name="changelog_1_1_0">
+        <item>El teléfono se calla mientras suena el ruido, y vuelve a la normalidad cuando lo paras. Las alarmas siguen pasando: se respetan las excepciones que ya tengas puestas en No molestar.</item>
+        <item>Android solo permite concederlo desde sus propios ajustes, así que la app lo explica una vez y te lleva allí. También hay un interruptor en Ajustes.</item>
+        <item>El temporizador va de cinco en cinco hasta la media hora: 10, 15, 20, 25 y 30 minutos, y después 40, 50, 60, 90 y 120.</item>
+    </string-array>
 
     <string-array name="changelog_1_0_1">
         <item>Las flechas de la notificación ya sirven para algo: pasan al sonido anterior y al siguiente, sin abrir la app.</item>
@@ -55,4 +65,12 @@
         <item>Control desde la notificación, con la app cerrada y la pantalla apagada. Al pausar, la sesión termina y la notificación se cierra sola.</item>
         <item>Español e inglés.</item>
     </string-array>
+
+    <!-- La hoja que se muestra una sola vez, al primer sonido. Ver ADR 008. -->
+    <string name="dnd_sheet_title">Silenciar el teléfono mientras suena</string>
+    <string name="dnd_sheet_body">Una notificación a las tres de la madrugada despierta igual que el ruido que has venido a tapar. Sleep Noise puede activar No molestar mientras suena el sonido, y desactivarlo cuando lo pares.</string>
+    <string name="dnd_sheet_alarms">Tus alarmas no se ven afectadas, salvo que le hayas dicho lo contrario a No molestar: se respetan las excepciones que ya tengas puestas.</string>
+    <string name="dnd_sheet_where">Android solo permite concederlo desde sus propios ajustes. Busca Sleep Noise en la lista que se abre.</string>
+    <string name="dnd_sheet_grant">Conceder acceso</string>
+    <string name="dnd_sheet_not_now">Ahora no</string>
 </resources>

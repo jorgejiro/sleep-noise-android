@@ -55,8 +55,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jjrapps.sleepnoise.R
 import com.jjrapps.sleepnoise.domain.model.NoiseType
+import com.jjrapps.sleepnoise.domain.model.PlaybackPreferences
 import com.jjrapps.sleepnoise.playback.PlaybackState
 import com.jjrapps.sleepnoise.ui.common.animationsEnabled
+import com.jjrapps.sleepnoise.ui.common.openDoNotDisturbAccessSettings
+import com.jjrapps.sleepnoise.ui.common.rememberDoNotDisturbAccess
 import com.jjrapps.sleepnoise.ui.common.iconRes
 import com.jjrapps.sleepnoise.ui.common.nameRes
 import com.jjrapps.sleepnoise.ui.common.shortNameRes
@@ -71,6 +74,7 @@ fun PlayerScreen(
     viewModel: PlayerViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val preferences by viewModel.preferences.collectAsStateWithLifecycle()
     LaunchedEffect(Unit) { viewModel.connect() }
     NotificationPermissionRequest()
 
@@ -81,6 +85,45 @@ fun PlayerScreen(
         onSelectNoise = viewModel::selectNoise,
         onVolumeChange = viewModel::setVolume,
         onTimerChange = viewModel::setTimer
+    )
+
+    DoNotDisturbPrompt(
+        playing = state.isPlaying,
+        preferences = preferences,
+        onAsked = { viewModel.markDoNotDisturbAsked() }
+    )
+}
+
+/**
+ * Shows the Do Not Disturb sheet the first time there is noise, and only then.
+ *
+ * Four conditions, and all four matter: there has to be sound (this is what the
+ * silence is for), the feature has to be on, the sheet must never have been shown,
+ * and the access must still be missing — someone who granted it from Settings first
+ * gets no sheet at all.
+ */
+@Composable
+private fun DoNotDisturbPrompt(
+    playing: Boolean,
+    preferences: PlaybackPreferences?,
+    onAsked: () -> Unit
+) {
+    val context = LocalContext.current
+    val accessGranted = rememberDoNotDisturbAccess()
+    // Null means DataStore has not answered yet. Asking now would be guessing.
+    val stored = preferences ?: return
+    val pending = playing &&
+        stored.doNotDisturbWhilePlaying &&
+        !stored.doNotDisturbAsked &&
+        !accessGranted
+    if (!pending) return
+
+    DoNotDisturbSheet(
+        onGrant = {
+            onAsked()
+            openDoNotDisturbAccessSettings(context)
+        },
+        onDismiss = onAsked
     )
 }
 

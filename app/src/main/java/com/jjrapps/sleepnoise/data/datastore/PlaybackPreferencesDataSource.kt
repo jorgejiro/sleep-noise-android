@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.map
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "sleep_noise")
 
 /**
- * The seven preferences of the specification §8, and nothing else.
+ * The preferences of the specification §8, and nothing else.
  *
  * The running timer is deliberately **not** stored: if the process dies the sleep
  * session is already lost, and resuming an orphaned countdown would be worse than
@@ -32,7 +32,10 @@ class PlaybackPreferencesDataSource(private val context: Context) {
             autoplayOnOpen = stored[Keys.AUTOPLAY] ?: true,
             language = stored[Keys.LANGUAGE] ?: PlaybackPreferences.LANGUAGE_AUTO,
             lastSeenChangelog = stored[Keys.LAST_SEEN_CHANGELOG] ?: 0,
-            notificationRationaleShown = stored[Keys.NOTIF_RATIONALE] ?: false
+            notificationRationaleShown = stored[Keys.NOTIF_RATIONALE] ?: false,
+            doNotDisturbWhilePlaying = stored[Keys.DND_WHILE_PLAYING] ?: true,
+            doNotDisturbAsked = stored[Keys.DND_ASKED] ?: false,
+            doNotDisturbHeld = stored[Keys.DND_HELD] ?: false
         )
     }
 
@@ -44,6 +47,13 @@ class PlaybackPreferencesDataSource(private val context: Context) {
     suspend fun setLastSeenChangelog(code: Int) = edit { it[Keys.LAST_SEEN_CHANGELOG] = code }
     suspend fun setNotificationRationaleShown(shown: Boolean) =
         edit { it[Keys.NOTIF_RATIONALE] = shown }
+
+    suspend fun setDoNotDisturbWhilePlaying(enabled: Boolean) =
+        edit { it[Keys.DND_WHILE_PLAYING] = enabled }
+
+    suspend fun setDoNotDisturbAsked(asked: Boolean) = edit { it[Keys.DND_ASKED] = asked }
+
+    suspend fun setDoNotDisturbHeld(held: Boolean) = edit { it[Keys.DND_HELD] = held }
 
     private suspend fun edit(block: (androidx.datastore.preferences.core.MutablePreferences) -> Unit) {
         context.dataStore.edit(block)
@@ -57,5 +67,8 @@ class PlaybackPreferencesDataSource(private val context: Context) {
         val LANGUAGE = stringPreferencesKey("language")
         val LAST_SEEN_CHANGELOG = intPreferencesKey("last_seen_changelog")
         val NOTIF_RATIONALE = booleanPreferencesKey("notif_rationale_shown")
+        val DND_WHILE_PLAYING = booleanPreferencesKey("dnd_while_playing")
+        val DND_ASKED = booleanPreferencesKey("dnd_asked")
+        val DND_HELD = booleanPreferencesKey("dnd_held")
     }
 }

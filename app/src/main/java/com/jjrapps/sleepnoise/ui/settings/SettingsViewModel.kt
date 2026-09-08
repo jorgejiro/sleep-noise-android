@@ -28,6 +28,15 @@ class SettingsViewModel @Inject constructor(
     }
 
     /**
+     * RF-22. Only the wish is stored here; the service is watching this preference and
+     * acts on it, so turning it off with the noise already playing gives the phone
+     * back its notifications straight away.
+     */
+    fun setDoNotDisturb(enabled: Boolean) = viewModelScope.launch {
+        repository.setDoNotDisturbWhilePlaying(enabled)
+    }
+
+    /**
      * Applies the language immediately and remembers it.
      *
      * `setApplicationLocales` is the platform's own per-app language on API 33 and

@@ -11,6 +11,12 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
+    <!-- Para poner el telefono en No molestar mientras suena el ruido (RF-22). Es un
+         acceso especial: declararlo solo hace que la app aparezca en la lista de
+         Ajustes, y quien lo concede es el usuario a mano. Sin el, la app suena igual y
+         la funcion simplemente no hace nada. Ver ADR 008. -->
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+
     <application
         android:name=".SleepNoiseApplication"
         android:allowBackup="false"

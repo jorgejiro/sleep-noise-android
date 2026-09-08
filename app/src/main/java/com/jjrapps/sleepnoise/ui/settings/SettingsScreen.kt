@@ -43,6 +43,8 @@ import com.jjrapps.sleepnoise.BuildConfig
 import com.jjrapps.sleepnoise.R
 import com.jjrapps.sleepnoise.domain.model.PlaybackPreferences
 import com.jjrapps.sleepnoise.ui.common.ScreenHeader
+import com.jjrapps.sleepnoise.ui.common.openDoNotDisturbAccessSettings
+import com.jjrapps.sleepnoise.ui.common.rememberDoNotDisturbAccess
 import com.jjrapps.sleepnoise.ui.theme.SleepNoiseColors
 import com.jjrapps.sleepnoise.ui.theme.SleepNoiseTheme
 import timber.log.Timber
@@ -71,6 +73,9 @@ fun SettingsScreen(
     val preferences by viewModel.preferences.collectAsStateWithLifecycle()
     var showLanguageDialog by rememberSaveable { mutableStateOf(false) }
     val context = LocalContext.current
+    // Re-read every time this screen comes back, because granting the access happens
+    // on a screen of the system's and there is nothing else to tell us it happened.
+    val dndAccessGranted = rememberDoNotDisturbAccess()
 
     Column(
         modifier = Modifier
@@ -95,6 +100,24 @@ fun SettingsScreen(
                         checked = preferences.autoplayOnOpen,
                         onCheckedChange = viewModel::setAutoplay
                     )
+                    RowDivider()
+                    SwitchRow(
+                        label = stringResource(R.string.settings_dnd),
+                        subtitle = stringResource(R.string.settings_dnd_subtitle),
+                        checked = preferences.doNotDisturbWhilePlaying,
+                        onCheckedChange = viewModel::setDoNotDisturb
+                    )
+                    // A row of its own, and not a warning inside the one above,
+                    // because it does something: the switch holds a wish, this is
+                    // what makes it come true. It disappears the moment it is done.
+                    if (preferences.doNotDisturbWhilePlaying && !dndAccessGranted) {
+                        RowDivider()
+                        ActionRow(
+                            label = stringResource(R.string.settings_dnd_grant),
+                            value = stringResource(R.string.settings_dnd_pending),
+                            onClick = { openDoNotDisturbAccessSettings(context) }
+                        )
+                    }
                 }
             }
             item {
@@ -304,7 +327,15 @@ private fun SwitchRow(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Column(modifier = Modifier.padding(end = 16.dp)) {
+        // Con peso, y no solo con padding: sin él la columna de texto reclama todo el
+        // ancho que necesita y el interruptor se sale por la derecha, dejando el
+        // subtítulo por debajo. Se veía ya en la fila de «reproducir al abrir», y un
+        // subtítulo de dos líneas lo hace evidente.
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .padding(end = 16.dp)
+        ) {
             Text(
                 text = label,
                 style = MaterialTheme.typography.bodyLarge,

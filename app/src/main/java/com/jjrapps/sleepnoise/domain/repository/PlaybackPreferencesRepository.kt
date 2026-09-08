@@ -13,4 +13,7 @@ interface PlaybackPreferencesRepository {
     suspend fun setLanguage(language: String)
     suspend fun setLastSeenChangelog(versionCode: Int)
     suspend fun setNotificationRationaleShown(shown: Boolean)
+    suspend fun setDoNotDisturbWhilePlaying(enabled: Boolean)
+    suspend fun setDoNotDisturbAsked(asked: Boolean)
+    suspend fun setDoNotDisturbHeld(held: Boolean)
 }

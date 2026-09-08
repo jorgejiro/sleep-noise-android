@@ -19,4 +19,9 @@ class PlaybackPreferencesRepositoryImpl(
         source.setLastSeenChangelog(versionCode)
     override suspend fun setNotificationRationaleShown(shown: Boolean) =
         source.setNotificationRationaleShown(shown)
+    override suspend fun setDoNotDisturbWhilePlaying(enabled: Boolean) =
+        source.setDoNotDisturbWhilePlaying(enabled)
+    override suspend fun setDoNotDisturbAsked(asked: Boolean) =
+        source.setDoNotDisturbAsked(asked)
+    override suspend fun setDoNotDisturbHeld(held: Boolean) = source.setDoNotDisturbHeld(held)
 }
