@@ -6,16 +6,20 @@ Guía de trabajo para este repositorio. Léela entera antes de tocar nada.
 > y **1.0.1 publicada** también: las flechas de la notificación cambian de sonido, se va la barra
 > de progreso y el temporizador pasa a ir de diez en diez (ADR 007).
 >
-> **1.1.0 (versionCode 3) escrita el 2026-09-08 y sin enviar todavía.** Dos evolutivos: la app activa
-> **No molestar mientras suena** y lo devuelve al parar (RF-22, ADR 008), y el temporizador pasa a ir
-> de cinco en cinco hasta la media hora. Falta probarla en un teléfono real: el acceso a No molestar
-> es un permiso especial que hay que conceder a mano, y el efecto en el teléfono no se puede testear
-> en JVM. Ver la fila nueva de la especificación §7.
+> **1.1.0 (versionCode 3) escrita el 2026-09-08 y sin enviar todavía a Play.** Dos evolutivos: la app
+> activa **No molestar mientras suena** y lo devuelve al parar (RF-22, ADR 008), y el temporizador
+> pasa a ir de cinco en cinco hasta la media hora. El mecanismo está verificado en emulador API 37 y
+> API 31 con el build de release; lo que no lo está es una noche entera. Hay un APK firmado para
+> validar a mano en
+> [la release v1.1.0](https://github.com/jorgejiro/sleep-noise-android/releases/tag/v1.1.0).
 >
 > Hechos H0 a H9: la app funciona entera, con cuatro sonidos, y está firmada, con sus 42 capturas,
-> su icono de tienda, su política de privacidad publicada y su ficha escrita. Siguen pendientes las
-> dos pruebas que necesitan tiempo real y una persona: el recorrido con TalkBack y la sesión de
-> resistencia de ocho horas con el build de release.
+> su icono de tienda, su política de privacidad publicada y su ficha escrita.
+>
+> De las dos pruebas que necesitaban tiempo real y una persona, **el recorrido con TalkBack sigue
+> pendiente** y **la sesión de resistencia de ocho horas quedó cerrada sin conclusión**: no se va a
+> ejecutar. Eso deja RNF-01 y RNF-02 sin verificar para siempre, y no es un pendiente que haya que
+> volver a proponer — el detalle de lo que queda sin saber está en la especificación §15 bis.
 >
 > Para un evolutivo: leer esta guía entera, y `docs/decisions/` antes de proponer cambiar algo que ya
 > se decidió. El ADR 006 es el que explica de verdad qué es este producto.

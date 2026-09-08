@@ -494,7 +494,7 @@ No es una fase final, es parte de cada pantalla.
 | UI | P1 refleja el estado del reproductor; el slider y el aro escriben el mismo valor; la hoja del temporizador devuelve el preset; navegación a Ajustes y Novedades | Compose UI Test |
 | Instrumentado | El servicio arranca en primer plano y publica notificación; el `MediaController` se conecta; parar desde la notificación detiene el audio | AndroidJUnit + `MediaController` de prueba |
 | Manual obligatorio | Las 13 filas de §7, una por una | Dispositivo físico |
-| Manual de resistencia | Una sesión de 8 h real con auriculares, y una escucha crítica de cada sonido | Oído |
+| Manual de resistencia | Una sesión de 8 h real con auriculares, y una escucha crítica de cada sonido | Oído. **La de 8 h quedó cerrada sin conclusión y no se ejecuta: ver §15 bis** |
 
 Matriz mínima antes de publicar: **API 31** (emulador), **API 33** (emulador, para el permiso de
 notificaciones), **API 36** (emulador, edge-to-edge y predictive back) y **un dispositivo físico**
@@ -664,10 +664,25 @@ puede hacer una máquina sola, y ninguna bloquea la revisión de Play:
 
 1. **El recorrido completo con TalkBack.** Los objetivos táctiles están medidos y el aro expone su
    valor y sus acciones, pero nadie ha navegado la app entera con el lector de pantalla encendido.
-2. **La sesión de resistencia de ocho horas con el build de release** (RNF-01 y RNF-02). Es la que
-   diría si el consumo cumple el objetivo de ≤ 2,5 %/h y si algún fabricante mata el servicio a mitad
-   de la noche. **Y si RNF-02 no se cumpliera, §14 tiene escrita la salida**: evaluar un bucle
-   pregrabado antes de seguir.
+   **Sigue pendiente.**
+2. **La sesión de resistencia de ocho horas con el build de release** (RNF-01 y RNF-02).
+   **Cerrada sin conclusión el 2026-09-08, y no se va a ejecutar**: el autor no usa la app tantas
+   horas seguidas de noche, así que no hay nadie que la pase en condiciones reales.
+
+   Cerrada no es hecha, y esto es lo que queda sin saber:
+
+   - **RNF-01 y RNF-02 no están verificados.** El objetivo de consumo de ≤ 2,5 %/h no se ha medido
+     nunca, y tampoco si algún fabricante mata el servicio a mitad de la noche.
+   - La salida de §14 —evaluar un bucle pregrabado si RNF-02 no se cumpliera— **sigue escrita y
+     sigue disponible**. No se descarta: simplemente nadie ha comprobado si hay que tomarla.
+   - Desde la 1.1.0 se suma que **nadie ha visto qué hace el No molestar a lo largo de una noche
+     entera** (RF-22). El mecanismo sí está verificado —coger y devolver, en API 37 y API 31, con el
+     build de release y con el usuario teniendo su propio No molestar puesto—; lo que no está
+     verificado es que aguante ocho horas sin que nada de por medio lo altere.
+
+   Si alguna vez llega un aviso de consumo de batería de Play Console, o alguien reporta que el ruido
+   se corta de madrugada, **esta fila es el sitio donde empezar a mirar**, y no hay que volver a
+   deducir que estaba sin probar.
 
 Y una cifra a comprobar en Play Console, que no se puede medir desde aquí: **el tamaño de descarga**.
 El AAB firmado ocupa 5,84 MB, y RNF-04 pide menos de 4 MB de descarga. El AAB genera descargas por
