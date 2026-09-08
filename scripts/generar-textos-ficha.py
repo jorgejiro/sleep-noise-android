@@ -28,9 +28,11 @@ Cuatro sonidos, y ni uno más. No hay catálogo que recorrer ni mezclas que conf
 
 El ruido no está grabado: se genera en tu teléfono, muestra a muestra, mientras lo escuchas. Eso significa que no hay un bucle que se repita y que acabes notando, y tampoco la textura metálica que deja el audio comprimido cuando intenta comprimir algo que no tiene estructura. Suena limpio la primera hora y la octava.
 
-El temporizador apaga el sonido cuando tú digas: de diez en diez hasta una hora, y 90 o 120 minutos. Al llegar al final el volumen baja poco a poco durante el último minuto en vez de cortarse de golpe, porque un corte seco despierta a quien justo se estaba durmiendo.
+El temporizador apaga el sonido cuando tú digas: de cinco en cinco hasta la media hora, de diez en diez hasta la hora, y 90 o 120 minutos. Al llegar al final el volumen baja poco a poco durante el último minuto en vez de cortarse de golpe, porque un corte seco despierta a quien justo se estaba durmiendo.
 
 Se controla sin abrir la app: la notificación permite pausar, cambiar de sonido y añadir diez minutos al temporizador, y el botón de los auriculares también funciona. Puedes cerrar la app y dejar el móvil boca abajo; el sonido sigue.
+
+Y tapa también el ruido que hace el propio teléfono: mientras suena, activa No molestar por ti, y lo desactiva cuando paras. Las alarmas siguen pasando, porque respeta las excepciones que ya tengas puestas. Android exige que ese permiso se conceda a mano, así que la app te lo explica una vez y te lleva a la pantalla; si prefieres que no lo toque, se apaga en Ajustes.
 
 Y cuando pulsas pausa, se acabó: la notificación desaparece sola y no queda nada rondando. Volver a escuchar es abrir la app, que es lo que ibas a hacer de todas formas.
 
@@ -43,6 +45,7 @@ Qué incluye:
 • Cuatro ruidos generados en el dispositivo: enmascarador, rosa, blanco y marrón.
 • Suena al abrir la app, con el último sonido que escuchaste.
 • Temporizador con apagado progresivo, y opción de añadir diez minutos.
+• No molestar automático mientras suena, desactivable, con las alarmas intactas.
 • Control desde la notificación y desde los auriculares; al pausar, la notificación se cierra sola.
 • Volumen propio, independiente del volumen de multimedia del sistema.
 • Sigue sonando con la pantalla apagada y la app cerrada.
@@ -60,9 +63,11 @@ Four sounds, and not one more. No catalogue to scroll through, no mix to configu
 
 The noise is not a recording: it is generated on your phone, sample by sample, as you listen. That means there is no loop that repeats until you start noticing it, and none of the metallic texture that compressed audio leaves behind when it tries to compress something with no structure in it. It sounds as clean in the eighth hour as in the first.
 
-The sleep timer stops the sound whenever you say: in tens up to an hour, then 90 or 120 minutes. At the end the volume fades down through the last minute instead of cutting out, because an abrupt stop wakes up the person who was finally falling asleep.
+The sleep timer stops the sound whenever you say: in fives up to half an hour, in tens up to an hour, then 90 or 120 minutes. At the end the volume fades down through the last minute instead of cutting out, because an abrupt stop wakes up the person who was finally falling asleep.
 
 You can control it without opening the app: the notification lets you pause, change sound and add ten minutes to the timer, and your headphone button works too. Close the app and put the phone face down — the sound keeps going.
+
+It covers the noise the phone itself makes, too: while the sound plays it switches Do Not Disturb on for you, and off again when you stop. Alarms still get through, because it keeps the exceptions you already set. Android insists that permission is granted by hand, so the app explains it once and takes you to the screen; if you would rather it left your phone alone, turn it off in Settings.
 
 And when you press pause, that is that: the notification clears itself away and nothing is left hanging around. Listening again means opening the app, which is what you were going to do anyway.
 
@@ -75,6 +80,7 @@ What you get:
 • Four noises generated on your device: masking, pink, white and brown.
 • Plays as soon as you open the app, with the last sound you were listening to.
 • Sleep timer with a gradual fade out, and a button to add ten minutes.
+• Do Not Disturb switched on for you while it plays, optional, with alarms untouched.
 • Control from the notification and from your headphones; pausing clears the notification away.
 • Its own volume, independent of the system media volume.
 • Keeps playing with the screen off and the app closed.
@@ -102,6 +108,22 @@ NOTES_1_0_EN = """The first version of Sleep Noise.
 
 No accounts, no cloud, no ads, no tracking."""
 
+NOTES_1_1_0_ES = """El teléfono ya no te despierta él.
+
+• No molestar se activa solo mientras suena el ruido, y se desactiva cuando lo paras. Las alarmas siguen pasando.
+• Android pide conceder ese acceso a mano: la app te lo explica una vez y te lleva a la pantalla. También hay un interruptor en Ajustes.
+• El temporizador va de cinco en cinco hasta la media hora: 10, 15, 20, 25 y 30 minutos, y después 40, 50, 60, 90 y 120.
+
+Sin cuentas, sin nube, sin anuncios y sin seguimiento."""
+
+NOTES_1_1_0_EN = """Now your phone stops waking you up too.
+
+• Do Not Disturb switches on by itself while the noise plays, and off when you stop it. Alarms still get through.
+• Android needs that access granted by hand: the app explains it once and takes you to the screen. There is a switch in Settings too.
+• The sleep timer counts in fives up to half an hour: 10, 15, 20, 25 and 30 minutes, then 40, 50, 60, 90 and 120.
+
+No accounts, no cloud, no ads, no tracking."""
+
 NOTES_1_0_1_ES = """Lo que salió al usar la app en un teléfono de verdad.
 
 • Las flechas de la notificación ya sirven para algo: pasan al sonido anterior y al siguiente, sin abrir la app.
@@ -122,7 +144,8 @@ No accounts, no cloud, no ads, no tracking."""
 # dos idiomas; el bloque de la de arriba es el que se pega al crear la release, y los
 # de abajo se quedan como historial.
 RELEASES = [
-    ("1.0.1", 2, "pendiente de publicar", NOTES_1_0_1_ES, NOTES_1_0_1_EN),
+    ("1.1.0", 3, "pendiente de publicar", NOTES_1_1_0_ES, NOTES_1_1_0_EN),
+    ("1.0.1", 2, "publicada", NOTES_1_0_1_ES, NOTES_1_0_1_EN),
     ("1.0", 1, "publicada el 2026-08-27", NOTES_1_0_ES, NOTES_1_0_EN),
 ]
 

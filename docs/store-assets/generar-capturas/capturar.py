@@ -56,6 +56,20 @@ def prepare(device, fmt):
                     "animator_duration_scale"):
         device.shell("settings", "put", "global", setting, "0")
 
+    # El acceso a No molestar, concedido antes del pase (RF-22).
+    #
+    # No es cosmetico: `todos.sh` hace `pm clear` antes de cada formato, y con los
+    # datos limpios la hoja que explica esa funcion se planta sobre el reproductor en
+    # cuanto empieza a sonar — es decir, encima de la escena 01, y de ahi al pase
+    # entero. Concederlo la hace desaparecer, porque solo se muestra cuando falta.
+    #
+    # Y ademas es el estado que conviene ensenar: la ficha muestra la app funcionando,
+    # con su interruptor puesto y sin nada pendiente. El precio es el icono de No
+    # molestar en la barra de estado mientras suena, que es la funcion haciendo su
+    # trabajo. Si alguna vez se prefiere lo contrario, se quita esta linea y las
+    # capturas ensenaran la fila de «conceder acceso».
+    device.shell("cmd", "notification", "allow_dnd", "com.jjrapps.sleepnoise")
+
     # Formato de 24 horas: en la ficha espanola un «10:42 PM» canta.
     device.shell("settings", "put", "system", "time_12_24", "24")
     device.shell("input", "keyevent", "KEYCODE_WAKEUP")

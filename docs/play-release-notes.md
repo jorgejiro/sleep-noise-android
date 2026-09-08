@@ -19,7 +19,58 @@ Textos de **«Novedades»** («What's new») listos para pegar en Play Console a
 
 ---
 
-## 1.0.1 (versionCode 2) — pendiente de publicar
+## 1.1.0 (versionCode 3) — pendiente de publicar
+
+### es-ES (463 caracteres)
+
+```text
+El teléfono ya no te despierta él.
+
+• No molestar se activa solo mientras suena el ruido, y se desactiva cuando lo paras. Las alarmas siguen pasando.
+• Android pide conceder ese acceso a mano: la app te lo explica una vez y te lleva a la pantalla. También hay un interruptor en Ajustes.
+• El temporizador va de cinco en cinco hasta la media hora: 10, 15, 20, 25 y 30 minutos, y después 40, 50, 60, 90 y 120.
+
+Sin cuentas, sin nube, sin anuncios y sin seguimiento.
+```
+
+### en-US (447 caracteres)
+
+```text
+Now your phone stops waking you up too.
+
+• Do Not Disturb switches on by itself while the noise plays, and off when you stop it. Alarms still get through.
+• Android needs that access granted by hand: the app explains it once and takes you to the screen. There is a switch in Settings too.
+• The sleep timer counts in fives up to half an hour: 10, 15, 20, 25 and 30 minutes, then 40, 50, 60, 90 and 120.
+
+No accounts, no cloud, no ads, no tracking.
+```
+
+### Formato con etiquetas de idioma
+
+```xml
+<es-ES>
+El teléfono ya no te despierta él.
+
+• No molestar se activa solo mientras suena el ruido, y se desactiva cuando lo paras. Las alarmas siguen pasando.
+• Android pide conceder ese acceso a mano: la app te lo explica una vez y te lleva a la pantalla. También hay un interruptor en Ajustes.
+• El temporizador va de cinco en cinco hasta la media hora: 10, 15, 20, 25 y 30 minutos, y después 40, 50, 60, 90 y 120.
+
+Sin cuentas, sin nube, sin anuncios y sin seguimiento.
+</es-ES>
+<en-US>
+Now your phone stops waking you up too.
+
+• Do Not Disturb switches on by itself while the noise plays, and off when you stop it. Alarms still get through.
+• Android needs that access granted by hand: the app explains it once and takes you to the screen. There is a switch in Settings too.
+• The sleep timer counts in fives up to half an hour: 10, 15, 20, 25 and 30 minutes, then 40, 50, 60, 90 and 120.
+
+No accounts, no cloud, no ads, no tracking.
+</en-US>
+```
+
+---
+
+## 1.0.1 (versionCode 2) — publicada
 
 ### es-ES (403 caracteres)
 

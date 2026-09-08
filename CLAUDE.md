@@ -3,8 +3,14 @@
 Guía de trabajo para este repositorio. Léela entera antes de tocar nada.
 
 > **Estado del proyecto: 1.0 publicada en Google Play el 2026-08-27** (enviada el 24, aprobada el 27),
-> y **1.0.1 enviada ese mismo día**, a la espera de revisión: las flechas de la notificación cambian
-> de sonido, se va la barra de progreso y el temporizador pasa a ir de diez en diez (ADR 007).
+> y **1.0.1 publicada** también: las flechas de la notificación cambian de sonido, se va la barra
+> de progreso y el temporizador pasa a ir de diez en diez (ADR 007).
+>
+> **1.1.0 (versionCode 3) escrita el 2026-09-08 y sin enviar todavía.** Dos evolutivos: la app activa
+> **No molestar mientras suena** y lo devuelve al parar (RF-22, ADR 008), y el temporizador pasa a ir
+> de cinco en cinco hasta la media hora. Falta probarla en un teléfono real: el acceso a No molestar
+> es un permiso especial que hay que conceder a mano, y el efecto en el teléfono no se puede testear
+> en JVM. Ver la fila nueva de la especificación §7.
 >
 > Hechos H0 a H9: la app funciona entera, con cuatro sonidos, y está firmada, con sus 42 capturas,
 > su icono de tienda, su política de privacidad publicada y su ficha escrita. Siguen pendientes las
@@ -72,6 +78,7 @@ pero solo su núcleo: escuchar un ruido y poder cambiarlo por otro.
 | F6 | Temporizador de apagado con fade out | ✅ Hecho |
 | F7 | Ajustes: changelog, versión, feedback por email, idioma | ✅ Hecho |
 | F8 | Inglés y español, con fallback a inglés y cambio desde Ajustes | ✅ Hecho |
+| F9 | No molestar mientras suena, activado por defecto y desactivable en Ajustes | ✅ Hecho en 1.1.0, sin probar en hardware |
 
 Los requisitos detallados, con sus criterios de aceptación, están en
 `docs/especificacion-release-1.0.md` §5. Esta tabla es solo el mapa.
@@ -133,7 +140,12 @@ Los avisos de lint que **sí** se dejan a la vista, porque son decisiones y no d
 <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
 <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+<uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
 ```
+
+`ACCESS_NOTIFICATION_POLICY` es el único que la app **no puede conseguir por sí misma**: es un acceso
+especial, no hay diálogo que pedir, y declararlo solo hace que la app aparezca en una lista de Ajustes
+del sistema. Sin él, la app suena igual y RF-22 no hace nada. Ver ADR 008.
 
 No se declara `SCHEDULE_EXACT_ALARM`: el temporizador es una corrutina dentro del servicio en
 foreground, que es fiable mientras hay audio sonando.
@@ -170,6 +182,10 @@ Reglas:
   termina nada**, o una llamada acabaría con el ruido de la noche. La diferencia está en de dónde
   viene: la petición de un controlador pasa por `onPlayerCommandRequest`, y la del foco de audio no.
   Si alguna vez hay que tocar esto, esa distinción es lo primero que hay que entender.
+- **El No molestar se devuelve en cada pausa, incluidas las del sistema** (RF-22). Una llamada
+  entrante que el usuario no puede oír es peor que una noche de ruido interrumpida; al reanudar se
+  vuelve a pedir. Y se devuelve **solo si lo cogió la app**: `DoNotDisturbController.isHeld` es toda
+  la clase, y sin esa bandera pausar apagaría el No molestar de quien lo puso él.
 - **Nunca parar el audio en seco.** Todo arranque, parada y cambio de sonido pasa por una rampa de
   volumen (`Fader`). Un corte abrupto despierta a quien se estaba durmiendo, y produce un clic audible.
 - **La sesión no declara duración, y sus botones sirven todos** (ADR 007). El ruido no dura nada:
@@ -293,7 +309,8 @@ quedaron descartadas de forma definitiva y no se retoman.
 - Si tocas audio o el servicio → prueba **una sesión larga real** con auriculares y pantalla apagada.
   Los tests no te dicen si suena bien.
 - Si tocas notificaciones o permisos → prueba en emulador con Android 12, 13 y 16: la lógica cambia en
-  cada uno.
+  cada uno. Y si tocas RF-22, en 14 y 16 por separado: desde Android 15 `setInterruptionFilter` ya no
+  cambia el estado global, sino que el sistema lo convierte en una regla zen implícita de la app.
 - No añadas dependencias sin justificarlas y sin actualizar `libs.versions.toml`.
 
 ### Al terminar una tarea
@@ -365,3 +382,5 @@ Sin compromiso de fechas ni de orden:
 - [Background playback with MediaSessionService](https://developer.android.com/media/media3/session/background-playback)
 - [Compose Material3 release notes](https://developer.android.com/jetpack/androidx/releases/compose-material3)
 - [Per-app language preferences](https://developer.android.com/guide/topics/resources/app-languages)
+- [Behavior changes: apps targeting Android 15](https://developer.android.com/about/versions/15/behavior-changes-15)
+  — el cambio de No molestar que decide el ADR 008

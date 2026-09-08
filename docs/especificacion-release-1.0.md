@@ -239,15 +239,16 @@ una interrupción, es el final. El usuario ha acabado de escuchar.
 
 ### 5.2 Temporizador
 
-**RF-06 · Configuración.** «Sin temporizador» y presets de **10, 20, 30, 40, 50 y 60 minutos, más 90
-y 120**. El último valor usado se recuerda y aparece preseleccionado.
+**RF-06 · Configuración.** «Sin temporizador» y presets de **10, 15, 20, 25 y 30 minutos, luego 40,
+50 y 60, más 90 y 120**. El último valor usado se recuerda y aparece preseleccionado.
 
-Los diez en la primera hora y los saltos gruesos después: ahí es donde se elige casi siempre, y
-«cuarenta minutos» es algo que la gente piensa, mientras que «cuarenta y cinco» venía de contar en
-cuartos de hora. Pasada la hora la precisión deja de significar nada —nadie distingue una hora y
-cincuenta de dos horas mientras se duerme— y once filas más las tendría que pasar de largo todo el
-que quiere veinte minutos. La hoja se abre desplegada del todo, para que las nueve opciones se vean
-sin arrastrarla.
+La rejilla se hace más gruesa a medida que crecen los números, porque así funciona la elección: quien
+pide veinte minutos está midiendo algo que nota —una siesta en el tren, lo que tarda en caerse— y
+cinco arriba o abajo son la diferencia. Pasada la media hora eso deja de ser cierto, y pasada la hora
+la precisión no significa nada: nadie distingue una hora y cincuenta de dos horas mientras se duerme.
+Donde cambian los escalones es donde cambia el motivo, no un número redondo elegido por quedar
+ordenado. La hoja se abre desplegada del todo y con scroll: once filas ya no caben en un teléfono, y
+con el tamaño de fuente grande de Accesibilidad no cabe ni la mitad.
 
 **RF-07 · Cuenta atrás y apagado.** El tiempo restante se muestra en P1 y en la notificación, en
 unidades legibles («1 h 26 min», no «01:26:04»).
@@ -329,9 +330,31 @@ sirvieran para algo o no sirvieran para nada. Sirven (ADR 007).
 - El «+15 min» del temporizador se mantiene, en el hueco secundario de la derecha y solo mientras
   hay temporizador (RF-08).
 
+**RF-22 · No molestar mientras suena.** Activado por defecto. *Cuando* empieza a sonar el ruido,
+*entonces* el teléfono pasa a No molestar; *cuando* el ruido se detiene —pausa del usuario, pausa del
+sistema, temporizador vencido o fin de la sesión—, *entonces* el teléfono vuelve a como estaba.
+
+- El filtro es `INTERRUPTION_FILTER_PRIORITY`, **no** `NONE`: silencia con las reglas que el usuario
+  ya eligió, y esas dejan pasar las alarmas. Ver ADR 008.
+- *Dado* un No molestar que el usuario activó él antes de abrir la app, *cuando* el ruido se detiene,
+  *entonces* sigue activado. La app **solo devuelve lo que ella cogió**.
+- *Dado* que el acceso `ACCESS_NOTIFICATION_POLICY` no está concedido, *entonces* la app suena
+  exactamente igual y la función no hace nada. No es un error: es un acceso especial que solo el
+  usuario puede conceder, a mano, en una pantalla del sistema.
+- *Cuando* suena el ruido por primera vez y falta ese acceso, *entonces* aparece **una vez** una hoja
+  modal que lo explica y ofrece abrir esa pantalla. Descartarla cuenta como respuesta y no vuelve.
+  Esto **no** es un onboarding —§2 lo deja fuera de alcance—: es el mismo momento y el mismo
+  razonamiento que RF-18.
+- *Dado* que una sesión murió sin devolver el silencio, *cuando* el servicio vuelve a arrancar,
+  *entonces* lo devuelve antes de cualquier otra cosa (clave `dnd_held`).
+
 ### 5.4 Ajustes y meta
 
 **RF-13 · Reproducir al abrir.** Interruptor, activado por defecto. Desactivado, la app abre en pausa.
+
+**RF-13 bis · No molestar mientras suena.** Interruptor, activado por defecto (RF-22). Mientras
+falte el acceso del sistema, debajo aparece una fila que lo pide y que desaparece en cuanto se
+concede. Apagarlo con el ruido ya sonando devuelve el teléfono en ese momento.
 
 **RF-14 · Idioma.** Tres opciones: Automático (sistema), English, Español. El cambio se aplica al
 instante sin reiniciar la app.
@@ -391,6 +414,9 @@ La tabla de decisiones que evita discusiones más adelante. Cada fila es un test
 | Batería crítica | El sistema puede matar el servicio. No se hace nada especial |
 | App deslizada fuera de recientes | **Sigue sonando** (RF-10) |
 | Modo «No molestar» | Sigue sonando: es multimedia, no una notificación |
+| La app activa No molestar al sonar | Con el acceso concedido, el teléfono se silencia; sin él, no pasa nada y el ruido suena igual (RF-22) |
+| El usuario revoca el acceso a No molestar a mitad de sesión | El audio no se entera y la fila de Ajustes vuelve a pedirlo. **El silencio se queda colgado**: el sistema no apaga la regla al revocar y la app ya no tiene API para hacerlo. Se apaga desde los ajustes rápidos del sistema (ADR 008) |
+| El usuario ya tenía No molestar puesto | Al parar el ruido **sigue puesto**. La app solo devuelve lo que ella cogió |
 | Alarma del despertador | El sistema la mezcla por encima. La app no interfiere |
 
 ---
@@ -408,12 +434,16 @@ Todo en DataStore Preferences. **Sin base de datos**: no hay nada que historiar.
 | `language` | String | `"auto"` | `"auto"`, `"en"`, `"es"` |
 | `last_seen_changelog` | Int | `0` | `versionCode` de las últimas novedades vistas |
 | `notif_rationale_shown` | Boolean | `false` | Para no repetir el aviso de RF-18 |
+| `dnd_while_playing` | Boolean | `true` | RF-22 |
+| `dnd_asked` | Boolean | `false` | Para que la hoja de RF-22 se muestre una sola vez |
+| `dnd_held` | Boolean | `false` | No es una preferencia: es una miga de pan. Cierto mientras el servicio tiene cogido el No molestar, para poder devolverlo si el proceso muere |
 
 El temporizador en curso **no** se persiste: si el proceso muere, se ha perdido la sesión de sueño de
 todas formas y reanudar una cuenta atrás huérfana sería peor que no hacerlo.
 
-`android:allowBackup="false"`: son siete preferencias reconstruibles en dos toques, y no merecen el
-riesgo de restaurar un estado incoherente en otro dispositivo.
+`android:allowBackup="false"`: son preferencias reconstruibles en dos toques, y no merecen el riesgo
+de restaurar un estado incoherente en otro dispositivo. `dnd_held` es el ejemplo que lo justifica:
+restaurada en otro teléfono no significaría nada.
 
 ---
 
