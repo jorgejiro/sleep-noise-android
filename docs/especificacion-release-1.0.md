@@ -675,10 +675,11 @@ puede hacer una máquina sola, y ninguna bloquea la revisión de Play:
      nunca, y tampoco si algún fabricante mata el servicio a mitad de la noche.
    - La salida de §14 —evaluar un bucle pregrabado si RNF-02 no se cumpliera— **sigue escrita y
      sigue disponible**. No se descarta: simplemente nadie ha comprobado si hay que tomarla.
-   - Desde la 1.1.0 se suma que **nadie ha visto qué hace el No molestar a lo largo de una noche
-     entera** (RF-22). El mecanismo sí está verificado —coger y devolver, en API 37 y API 31, con el
-     build de release y con el usuario teniendo su propio No molestar puesto—; lo que no está
-     verificado es que aguante ocho horas sin que nada de por medio lo altere.
+   - Desde la 1.1.0 —que nunca se envió a Play, y cuyos dos evolutivos van dentro de la 1.1.1— se
+     suma que **nadie ha visto qué hace el No molestar a lo largo de una noche entera** (RF-22). El
+     mecanismo sí está verificado —coger y devolver, en API 37 y API 31, con el build de release y
+     con el usuario teniendo su propio No molestar puesto—; lo que no está verificado es que aguante
+     ocho horas sin que nada de por medio lo altere.
 
    Si alguna vez llega un aviso de consumo de batería de Play Console, o alguien reporta que el ruido
    se corta de madrugada, **esta fila es el sitio donde empezar a mirar**, y no hay que volver a

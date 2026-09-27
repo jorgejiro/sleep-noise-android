@@ -11,7 +11,46 @@ ya tiene la app instalada, y `docs/play-release-notes.md` es para quien todavía
 
 ---
 
-## [1.1.0] — 2026-09-08
+## [1.1.1] — 2026-09-27
+
+La 1.1.0 se escribió y se validó en GitHub, pero nunca se envió a Google Play. Esta versión la
+sustituye: sus dos evolutivos van dentro de esta, junto con el arreglo que motivó no esperar más.
+
+### Arreglado
+
+- **El icono de pausa ya no se ve como un cuadrado.** Las dos barras se tocaban en x=12; ahora miden
+  4,6 de ancho con un hueco de 4,2, la proporción de Material.
+
+### Añadido (de la 1.1.0, nunca publicada)
+
+- **No molestar mientras suena** (RF-22), activado por defecto. El teléfono se silencia al empezar el
+  ruido y vuelve a la normalidad al pararlo, en cada pausa incluida la del sistema —una llamada
+  entrante que no se oye es peor que una noche de ruido interrumpida—. El filtro es
+  `INTERRUPTION_FILTER_PRIORITY` y no `NONE`, para que las alarmas sigan pasando: una app para dormir
+  que hace que la gente no se levante no tiene defensa. La app **solo devuelve el silencio que ella
+  cogió**, así que pausar no puede apagar el No molestar de quien lo activó él (ADR 008).
+- **Una hoja explicativa, una sola vez, al primer sonido**, que pide el acceso a No molestar. Es un
+  acceso especial: no hay diálogo de permiso que pedir, lo concede el usuario a mano en una pantalla
+  del sistema, y el intent que lleva directo a la fila de esta app es `@SystemApi`. No es un
+  onboarding —la especificación §2 lo deja fuera— sino el mismo sitio y el mismo razonamiento que ya
+  estaba escrito para el permiso de notificaciones: se pide donde significa algo. Descartarla cuenta
+  como respuesta y no vuelve a aparecer.
+- **Interruptor en Ajustes**, con su fila de «conceder acceso» al lado mientras falte. Apagarlo con el
+  ruido ya sonando devuelve el teléfono en ese momento, no en la sesión siguiente.
+- Miga de pan en DataStore (`dnd_held`) para que una sesión que muere sin ejecutar la devolución
+  —memoria, «forzar detención»— no deje el teléfono mudo hasta que alguien lo descubra.
+
+### Cambiado (de la 1.1.0, nunca publicada)
+
+- **El temporizador va de cinco en cinco hasta la media hora**: 10, 15, 20, 25 y 30 minutos, y
+  después 40, 50, 60, 90 y 120. La rejilla se hace más gruesa a medida que crecen los números porque
+  así funciona la elección: quien pide veinte minutos está midiendo algo que nota —una siesta en el
+  tren, lo que tarda en caerse—, y cinco arriba o abajo son la diferencia. Pasada la hora ya no
+  significan nada. El botón de la notificación sigue añadiendo 10, que sigue en la rejilla.
+
+---
+
+## [1.1.0] — 2026-09-08 (nunca enviada a Google Play)
 
 Dos evolutivos. El primero tapa el ruido que la app dejaba pasar: el del propio teléfono.
 

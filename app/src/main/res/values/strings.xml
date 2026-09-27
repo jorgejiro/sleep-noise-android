@@ -52,6 +52,12 @@
     <string name="a11y_open_settings">Open settings</string>
     <string name="a11y_back">Back</string>
 
+    <string-array name="changelog_1_1_1">
+        <item>The pause button no longer reads like a square: the two bars now have a visible gap between them.</item>
+        <item>Your phone now goes quiet while the noise plays, and back to normal when you stop it. Alarms still get through.</item>
+        <item>The sleep timer counts in fives up to half an hour: 10, 15, 20, 25 and 30 minutes, then 40, 50, 60, 90 and 120.</item>
+    </string-array>
+
     <string-array name="changelog_1_1_0">
         <item>Your phone now goes quiet while the noise plays, and back to normal when you stop it. Alarms still get through: it uses the Do Not Disturb exceptions you already set.</item>
         <item>Android only lets you grant that from its own settings, so the app explains it once and takes you there. There is a switch for it in Settings too.</item>

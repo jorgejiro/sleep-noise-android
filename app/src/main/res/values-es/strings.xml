@@ -45,6 +45,12 @@
     <string name="a11y_open_settings">Abrir ajustes</string>
     <string name="a11y_back">Atrás</string>
 
+    <string-array name="changelog_1_1_1">
+        <item>El botón de pausa ya no se confunde con un cuadrado: las dos barras tienen ahora un hueco entre ellas.</item>
+        <item>El teléfono se calla mientras suena el ruido, y vuelve a la normalidad cuando lo paras. Las alarmas siguen pasando.</item>
+        <item>El temporizador va de cinco en cinco hasta la media hora: 10, 15, 20, 25 y 30 minutos, y después 40, 50, 60, 90 y 120.</item>
+    </string-array>
+
     <string-array name="changelog_1_1_0">
         <item>El teléfono se calla mientras suena el ruido, y vuelve a la normalidad cuando lo paras. Las alarmas siguen pasando: se respetan las excepciones que ya tengas puestas en No molestar.</item>
         <item>Android solo permite concederlo desde sus propios ajustes, así que la app lo explica una vez y te lleva allí. También hay un interruptor en Ajustes.</item>

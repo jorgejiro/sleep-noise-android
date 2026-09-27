@@ -6,12 +6,15 @@ Guía de trabajo para este repositorio. Léela entera antes de tocar nada.
 > y **1.0.1 publicada** también: las flechas de la notificación cambian de sonido, se va la barra
 > de progreso y el temporizador pasa a ir de diez en diez (ADR 007).
 >
-> **1.1.0 (versionCode 3) escrita el 2026-09-08 y sin enviar todavía a Play.** Dos evolutivos: la app
-> activa **No molestar mientras suena** y lo devuelve al parar (RF-22, ADR 008), y el temporizador
-> pasa a ir de cinco en cinco hasta la media hora. El mecanismo está verificado en emulador API 37 y
-> API 31 con el build de release; lo que no lo está es una noche entera. Hay un APK firmado para
-> validar a mano en
-> [la release v1.1.0](https://github.com/jorgejiro/sleep-noise-android/releases/tag/v1.1.0).
+> **1.1.0 (versionCode 3) nunca se envió a Play.** Se quedó en validación como
+> [release de GitHub](https://github.com/jorgejiro/sleep-noise-android/releases/tag/v1.1.0), y sus
+> dos evolutivos —**No molestar mientras suena** (RF-22, ADR 008) y el temporizador de cinco en
+> cinco hasta la media hora— van dentro de la 1.1.1, no de una release propia.
+>
+> **1.1.1 (versionCode 4) escrita el 2026-09-27 y lista para enviar a Play.** Además de los dos
+> evolutivos de la 1.1.0, arregla el icono de pausa: las dos barras se tocaban en x=12 y se leía como
+> un cuadrado (`bf2f575`). El mecanismo de No molestar está verificado en emulador API 37 y API 31
+> con el build de release; lo que no lo está es una noche entera.
 >
 > Hechos H0 a H9: la app funciona entera, con cuatro sonidos, y está firmada, con sus 42 capturas,
 > su icono de tienda, su política de privacidad publicada y su ficha escrita.
@@ -82,7 +85,7 @@ pero solo su núcleo: escuchar un ruido y poder cambiarlo por otro.
 | F6 | Temporizador de apagado con fade out | ✅ Hecho |
 | F7 | Ajustes: changelog, versión, feedback por email, idioma | ✅ Hecho |
 | F8 | Inglés y español, con fallback a inglés y cambio desde Ajustes | ✅ Hecho |
-| F9 | No molestar mientras suena, activado por defecto y desactivable en Ajustes | ✅ Hecho en 1.1.0, sin probar en hardware |
+| F9 | No molestar mientras suena, activado por defecto y desactivable en Ajustes | ✅ Hecho, va en la 1.1.1 (la 1.1.0 nunca se envió), sin probar en hardware durante una noche entera |
 
 Los requisitos detallados, con sus criterios de aceptación, están en
 `docs/especificacion-release-1.0.md` §5. Esta tabla es solo el mapa.

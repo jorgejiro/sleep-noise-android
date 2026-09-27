@@ -124,6 +124,22 @@ NOTES_1_1_0_EN = """Now your phone stops waking you up too.
 
 No accounts, no cloud, no ads, no tracking."""
 
+NOTES_1_1_1_ES = """El teléfono ya no te despierta él, y el botón de pausa ya se ve como uno.
+
+• No molestar se activa solo mientras suena el ruido, y se desactiva al parar. Las alarmas siguen pasando. Android pide conceder ese acceso a mano; la app te lo explica una vez.
+• El temporizador va de cinco en cinco hasta la media hora: 10, 15, 20, 25 y 30, y después 40, 50, 60, 90 y 120.
+• Arreglado el icono de pausa, que se leía como un cuadrado.
+
+Sin cuentas, sin nube, sin anuncios y sin seguimiento."""
+
+NOTES_1_1_1_EN = """Now your phone stops waking you up too, and the pause button looks like one again.
+
+• Do Not Disturb switches on by itself while the noise plays, and off when you stop. Alarms still get through. Android needs that access granted by hand; the app explains it once.
+• The sleep timer counts in fives up to half an hour: 10, 15, 20, 25 and 30, then 40, 50, 60, 90 and 120.
+• Fixed the pause icon, which used to read like a square.
+
+No accounts, no cloud, no ads, no tracking."""
+
 NOTES_1_0_1_ES = """Lo que salió al usar la app en un teléfono de verdad.
 
 • Las flechas de la notificación ya sirven para algo: pasan al sonido anterior y al siguiente, sin abrir la app.
@@ -144,7 +160,8 @@ No accounts, no cloud, no ads, no tracking."""
 # dos idiomas; el bloque de la de arriba es el que se pega al crear la release, y los
 # de abajo se quedan como historial.
 RELEASES = [
-    ("1.1.0", 3, "pendiente de publicar", NOTES_1_1_0_ES, NOTES_1_1_0_EN),
+    ("1.1.1", 4, "pendiente de publicar", NOTES_1_1_1_ES, NOTES_1_1_1_EN),
+    ("1.1.0", 3, "nunca enviada a Play; sus dos evolutivos van dentro de la 1.1.1", NOTES_1_1_0_ES, NOTES_1_1_0_EN),
     ("1.0.1", 2, "publicada", NOTES_1_0_1_ES, NOTES_1_0_1_EN),
     ("1.0", 1, "publicada el 2026-08-27", NOTES_1_0_ES, NOTES_1_0_EN),
 ]

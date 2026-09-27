@@ -19,7 +19,58 @@ Textos de **«Novedades»** («What's new») listos para pegar en Play Console a
 
 ---
 
-## 1.1.0 (versionCode 3) — pendiente de publicar
+## 1.1.1 (versionCode 4) — pendiente de publicar
+
+### es-ES (482 caracteres)
+
+```text
+El teléfono ya no te despierta él, y el botón de pausa ya se ve como uno.
+
+• No molestar se activa solo mientras suena el ruido, y se desactiva al parar. Las alarmas siguen pasando. Android pide conceder ese acceso a mano; la app te lo explica una vez.
+• El temporizador va de cinco en cinco hasta la media hora: 10, 15, 20, 25 y 30, y después 40, 50, 60, 90 y 120.
+• Arreglado el icono de pausa, que se leía como un cuadrado.
+
+Sin cuentas, sin nube, sin anuncios y sin seguimiento.
+```
+
+### en-US (472 caracteres)
+
+```text
+Now your phone stops waking you up too, and the pause button looks like one again.
+
+• Do Not Disturb switches on by itself while the noise plays, and off when you stop. Alarms still get through. Android needs that access granted by hand; the app explains it once.
+• The sleep timer counts in fives up to half an hour: 10, 15, 20, 25 and 30, then 40, 50, 60, 90 and 120.
+• Fixed the pause icon, which used to read like a square.
+
+No accounts, no cloud, no ads, no tracking.
+```
+
+### Formato con etiquetas de idioma
+
+```xml
+<es-ES>
+El teléfono ya no te despierta él, y el botón de pausa ya se ve como uno.
+
+• No molestar se activa solo mientras suena el ruido, y se desactiva al parar. Las alarmas siguen pasando. Android pide conceder ese acceso a mano; la app te lo explica una vez.
+• El temporizador va de cinco en cinco hasta la media hora: 10, 15, 20, 25 y 30, y después 40, 50, 60, 90 y 120.
+• Arreglado el icono de pausa, que se leía como un cuadrado.
+
+Sin cuentas, sin nube, sin anuncios y sin seguimiento.
+</es-ES>
+<en-US>
+Now your phone stops waking you up too, and the pause button looks like one again.
+
+• Do Not Disturb switches on by itself while the noise plays, and off when you stop. Alarms still get through. Android needs that access granted by hand; the app explains it once.
+• The sleep timer counts in fives up to half an hour: 10, 15, 20, 25 and 30, then 40, 50, 60, 90 and 120.
+• Fixed the pause icon, which used to read like a square.
+
+No accounts, no cloud, no ads, no tracking.
+</en-US>
+```
+
+---
+
+## 1.1.0 (versionCode 3) — nunca enviada a Play; sus dos evolutivos van dentro de la 1.1.1
 
 ### es-ES (463 caracteres)
 
