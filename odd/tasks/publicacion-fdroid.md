@@ -40,4 +40,7 @@ La app es MIT, no usa red ni servicios de Google, y el público de F-Droid es ju
 
 ## Siguiente paso
 
-Jorge abre el merge request en `fdroiddata` siguiendo `docs/fdroid/LEEME.md`.
+Merge request abierto el 2026-09-28: https://gitlab.com/fdroid/fdroiddata/-/merge_requests/50449
+(rama `com.jjrapps.sleepnoise` del fork `jorgejiro/fdroiddata`, commit `807b2c7`). Firma de F-Droid
+elegida por Jorge: sin builds reproducibles, y ya no se puede cambiar. Falta que pase la CI y la
+revisión.

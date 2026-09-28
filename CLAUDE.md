@@ -298,6 +298,12 @@ quedaron descartadas de forma definitiva y no se retoman.
 - Strings en `strings.xml`, en los **dos** idiomas. Ver §5.
 - Si subes `versionCode`/`versionName` → actualiza `CHANGELOG.md`, los `string-array` `changelog_*`
   (EN y ES) y `ChangelogCatalog.kt`.
+- Cada versión sale también en **F-Droid**, y ahí no hay que abrir nada: su bot detecta el tag
+  `vX.Y.Z` y compila la app. Lo que sí hay que añadir es
+  `fastlane/metadata/android/{en-US,es-ES}/changelogs/<versionCode>.txt` (máximo 500 caracteres),
+  con el mismo texto que las notas de Play. Sin él, la versión sale en F-Droid sin novedades. Si
+  cambian los textos de la ficha o las capturas, la ficha de fastlane se vuelve a copiar. Ver
+  `docs/fdroid/LEEME.md`.
 - Si la versión se publica en Play → **no edites a mano** `docs/play-release-notes.md` ni
   `docs/play-store-publication-texts.md`: los dos los **genera** `scripts/generar-textos-ficha.py`,
   que además verifica los límites de caracteres de Play y escribe los conteos. Edita los textos en el
