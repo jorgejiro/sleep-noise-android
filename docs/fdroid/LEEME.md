@@ -26,9 +26,9 @@ abrir un merge request allí con la receta.
 - **La firma es la de F-Droid, no la tuya.** Quien instala desde Play no puede actualizar desde
   F-Droid, ni al revés, sin desinstalar antes. Para firmar con la clave propia hacen falta builds
   reproducibles, y es un trabajo aparte.
-- **La receta de la 1.1.1 apunta a un commit, no al tag `v1.1.1`.** El tag es anterior a quitar el
-  bloque de dependencias cifrado para Google (`dependenciesInfo`), que F-Droid rechaza. La app es la
-  misma: solo cambia la configuración del build.
+- **La receta de la 1.1.1 apunta a un commit, no al tag `v1.1.1`.** El tag es anterior a quitar dos
+  cosas que F-Droid rechaza: el bloque de dependencias cifrado para Google (`dependenciesInfo`) y el
+  plugin foojay. La app es la misma: solo cambia la configuración del build.
 - **Las versiones siguientes se publican solas.** Con `UpdateCheckMode: Tags` y
   `AutoUpdateMode: Version`, F-Droid detecta cada tag `vX.Y.Z` nuevo, lee `versionCode` y
   `versionName` de `app/build.gradle.kts` y añade el build. Basta con seguir etiquetando las releases.
@@ -36,5 +36,6 @@ abrir un merge request allí con la receta.
   con un máximo de 500 caracteres. Sirve el mismo texto que las notas de Play.
 - **La ficha de fastlane es una copia de la de Play.** Si cambian los textos de
   `scripts/generar-textos-ficha.py`, o las capturas, hay que volver a copiarlos aquí.
-- La receta instala JDK 21 porque `gradle/gradle-daemon-jvm.properties` lo pide. Si la CI de F-Droid
-  no lo encuentra, ese es el primer sitio que mirar.
+- **Nada en el build puede descargar herramientas por su cuenta.** El escáner de F-Droid rechaza el
+  plugin `foojay-resolver` y borra `gradle-daemon-jvm.properties` antes de compilar. Su servidor
+  (Debian trixie) ya trae JDK 21, así que no hace falta pedirlo.
