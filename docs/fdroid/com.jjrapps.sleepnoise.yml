@@ -1,0 +1,31 @@
+Categories:
+  - Ambient Sound
+  - Multimedia
+License: MIT
+AuthorName: Jorge
+AuthorEmail: jjrmobileapps@gmail.com
+SourceCode: https://github.com/jorgejiro/sleep-noise-android
+IssueTracker: https://github.com/jorgejiro/sleep-noise-android/issues
+Changelog: https://github.com/jorgejiro/sleep-noise-android/blob/HEAD/CHANGELOG.md
+
+AutoName: Sleep Noise
+
+RepoType: git
+Repo: https://github.com/jorgejiro/sleep-noise-android.git
+
+Builds:
+  - versionName: 1.1.1
+    versionCode: 4
+    commit: 753115a3095e81709d73ad79139c854ba890fd17
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-21-jdk-headless
+      - update-java-alternatives -a
+    gradle:
+      - yes
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.1.1
+CurrentVersionCode: 4
