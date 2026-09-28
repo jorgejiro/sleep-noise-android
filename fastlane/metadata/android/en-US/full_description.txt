@@ -1,0 +1,34 @@
+Sleep Noise generates noise to help you sleep, and to cover the room around you when you cannot leave it. Open it and it plays — there is nothing to press.
+
+Four sounds, and not one more. No catalogue to scroll through, no mix to configure at two in the morning: each one does something different.
+
+• Masking, the one it starts with. Its shape is built to cover conversation: it puts 71 % of its energy in the band where speech lives, against brown noise's 9 %. This is the one you want with headphones on in a room full of people.
+• Pink, the balanced one. The one hearing perceives as most natural, because it spreads equal energy across every octave.
+• White, flat across the spectrum. Good at covering sharp, sudden sounds.
+• Brown, deep and enveloping, closer to distant rain or the sea in the background. The most comfortable for sleeping, and the least able to cover a conversation.
+
+The noise is not a recording: it is generated on your phone, sample by sample, as you listen. That means there is no loop that repeats until you start noticing it, and none of the metallic texture that compressed audio leaves behind when it tries to compress something with no structure in it. It sounds as clean in the eighth hour as in the first.
+
+The sleep timer stops the sound whenever you say: in fives up to half an hour, in tens up to an hour, then 90 or 120 minutes. At the end the volume fades down through the last minute instead of cutting out, because an abrupt stop wakes up the person who was finally falling asleep.
+
+You can control it without opening the app: the notification lets you pause, change sound and add ten minutes to the timer, and your headphone button works too. Close the app and put the phone face down — the sound keeps going.
+
+It covers the noise the phone itself makes, too: while the sound plays it switches Do Not Disturb on for you, and off again when you stop. Alarms still get through, because it keeps the exceptions you already set. Android insists that permission is granted by hand, so the app explains it once and takes you to the screen; if you would rather it left your phone alone, turn it off in Settings.
+
+And when you press pause, that is that: the notification clears itself away and nothing is left hanging around. Listening again means opening the app, which is what you were going to do anyway.
+
+The interface is dark, always. There is no light mode, and that is not an oversight: this app gets used in bed with the lights off, and a white screen there is blinding.
+
+No accounts, no cloud, no ads and no tracking. The app never uses the internet: it does not even request the permission to connect, so it could not do it if it wanted to.
+
+What you get:
+
+• Four noises generated on your device: masking, pink, white and brown.
+• Plays as soon as you open the app, with the last sound you were listening to.
+• Sleep timer with a gradual fade out, and a button to add ten minutes.
+• Do Not Disturb switched on for you while it plays, optional, with alarms untouched.
+• Control from the notification and from your headphones; pausing clears the notification away.
+• Its own volume, independent of the system media volume.
+• Keeps playing with the screen off and the app closed.
+• English and Spanish.
+• No internet, no accounts, no ads, no tracking.
