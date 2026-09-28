@@ -42,5 +42,7 @@ La app es MIT, no usa red ni servicios de Google, y el público de F-Droid es ju
 
 Merge request abierto el 2026-09-28: https://gitlab.com/fdroid/fdroiddata/-/merge_requests/50449
 (rama `com.jjrapps.sleepnoise` del fork `jorgejiro/fdroiddata`, commit `807b2c7`). Firma de F-Droid
-elegida por Jorge: sin builds reproducibles, y ya no se puede cambiar. Falta que pase la CI y la
-revisión.
+elegida por Jorge: sin builds reproducibles, y ya no se puede cambiar. La primera CI falló en el escáner por el plugin
+foojay (`ec1b09a` lo quita; la receta pasa a ese commit y sin `sudo`, en `b8945a8`). La segunda, la
+pipeline 2888733043, pasa entera: `fdroid build` y `check apk` incluidos, sin avisos sobre la app.
+Falta la revisión.
