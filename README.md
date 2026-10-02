@@ -186,8 +186,22 @@ cd sleep-noise-android
 ./gradlew lint test
 ```
 
-The APK ends up in `app/build/outputs/apk/debug/`. The release build needs your own keystore, which
-is not in the repository.
+The APK ends up in `app/build/outputs/apk/debug/`.
+
+### Release signing
+
+The signing key is not in this repository. It lives in Bitwarden Secrets Manager as
+`SLEEP_NOISE_KEYSTORE_B64` (the `.jks`, base64), `SLEEP_NOISE_STORE_PASSWORD`, `SLEEP_NOISE_KEY_ALIAS` and
+`SLEEP_NOISE_KEY_PASSWORD`. `con-claves` injects them and the build decodes the keystore into
+`app/build/signing/` (owner-only), so any machine with access to the secrets can build a release:
+
+```bash
+con-claves './gradlew :app:assembleRelease'
+```
+
+No local copy of the keystore is kept. Without those variables the build falls back to a
+git-ignored `keystore.properties` at the repo root; with neither, the release APK is left unsigned
+and debug builds are unaffected.
 
 ---
 
