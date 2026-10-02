@@ -1,3 +1,7 @@
+import java.io.File
+import java.nio.file.Files
+import java.nio.file.attribute.PosixFilePermissions
+import java.util.Base64
 import java.util.Properties
 
 plugins {
@@ -8,7 +12,34 @@ plugins {
 }
 
 /**
- * La clave de subida, si está. El fichero vive fuera del control de versiones, así
+ * La clave de subida sale primero de Bitwarden Secrets Manager: `con-claves` inyecta
+ * SLEEP_NOISE_KEYSTORE_B64 (el `.jks` en base64) y las tres credenciales como variables
+ * de entorno, y el keystore se decodifica en el directorio de build, legible solo por
+ * el propietario. Si faltan, se usa keystore.properties.
+ */
+fun signingEnv(key: String): String? =
+    System.getenv("SLEEP_NOISE_$key")?.takeIf { it.isNotBlank() }
+
+fun decodeKeystore(base64: String, target: File): File {
+    target.parentFile.mkdirs()
+    target.delete()
+    target.createNewFile()
+    runCatching {
+        Files.setPosixFilePermissions(target.toPath(), PosixFilePermissions.fromString("rw-------"))
+    }
+    target.writeBytes(Base64.getDecoder().decode(base64.trim()))
+    return target
+}
+
+val envStorePassword = signingEnv("STORE_PASSWORD")
+val envKeyAlias = signingEnv("KEY_ALIAS")
+val envKeyPassword = signingEnv("KEY_PASSWORD")
+val envKeystoreFile = signingEnv("KEYSTORE_B64")
+    ?.takeIf { envStorePassword != null && envKeyAlias != null && envKeyPassword != null }
+    ?.let { decodeKeystore(it, layout.buildDirectory.file("signing/release.jks").get().asFile) }
+
+/**
+ * La alternativa local: la clave de subida, si está. El fichero vive fuera del control de versiones, así
  * que un clon recién hecho compila en debug sin más y solo falla al firmar una
  * release, que es cuando de verdad hace falta.
  */
@@ -43,7 +74,14 @@ android {
     }
 
     signingConfigs {
-        if (keystoreProperties.containsKey("storeFile")) {
+        if (envKeystoreFile != null) {
+            create("release") {
+                storeFile = envKeystoreFile
+                storePassword = envStorePassword
+                keyAlias = envKeyAlias
+                keyPassword = envKeyPassword
+            }
+        } else if (keystoreProperties.containsKey("storeFile")) {
             create("release") {
                 storeFile = rootProject.file(keystoreProperties["storeFile"] as String)
                 storePassword = keystoreProperties["storePassword"] as String
